@@ -348,7 +348,7 @@ def make_request(history, config, continuation_history=None):
         }
     return {
         "model": config["model"], "instructions": prompt["system"], "input": inputs,
-        "reasoning": {"effort": config["effort"], "context": "all_turns", "summary": "auto"},
+        "reasoning": {"effort": config["effort"], "context": "all_turns"},
         "include": ["reasoning.encrypted_content"], "text": {"format": {"type": "text"}},
         "max_output_tokens": config["max_output_tokens"], "tools": [], "store": False,
     }
@@ -526,16 +526,6 @@ def prepare_protocol(directory, config, resume):
         "round_end_policy": f"Every round: at most {config['max_attempts']} submissions. R1 criterion: {round_policies(config)[0]['success_streak_required']} consecutive correct answer(s); R2-5 criterion: {config['success_streak']}. Incorrect resets streak. A round exhausting T without meeting its criterion ends the problem; remaining rounds are excluded and the next problem starts with fresh history",
         "context": "Complete public history and original provider-native continuation items retained across all rounds of the same problem; reset only at the next problem. No previous_response_id or server-stored conversation",
         "reasoning_replay_policy": {"scope": "same_problem_across_all_rounds", "reset": "on_problem_change_only", "openai": "Replay complete original output items including encrypted_content; reasoning.context=all_turns; include=reasoning.encrypted_content; store=false. Only output-only null defaults and created_by provenance are omitted for input compatibility", "anthropic": "Replay complete assistant content with thinking signatures and redacted_thinking data, byte-for-byte field values and original block order; thinking=adaptive, display=omitted", "visible_history": "Public episode history remains separate; private blocks are not converted to text messages or shown as feedback", "integrity": "Persist per-trial continuation items and hashes; reconstruct solely from saved native responses on resume, with no new sampling"},
-        "reasoning_summary_policy": {
-            "version": 1, "openai": "reasoning.summary=auto",
-            "anthropic": "thinking.display=omitted remains unchanged; copy readable thinking only if returned",
-            "text_file": "trials/<trial>/reasoning_summary.txt",
-            "index_file": "reasoning_summaries.jsonl",
-            "source": "Copy only readable provider-returned summary text from each saved native response, including unscored responses. Never decode encrypted state, reconstruct reasoning, or make another API request",
-            "missing": "Mark not_returned; missing summary does not imply no reasoning. Partial stream events remain in the original stream log",
-            "isolation": "Derived text and its metadata are not participant messages or grading input. Original native reasoning items, including summaries and encrypted state, retain the existing replay behavior",
-            "resume": "Regenerate derived text and index from saved native responses without resampling",
-        },
         "primary_metric": "Round PER = persistent errors / actual submissions; problem MPE = arithmetic mean of attempted R2-R5 PERs; Total MPE = arithmetic mean of eligible problem MPEs. R1 excluded; destination error and previous success do not determine persistent error",
         "persistent_error_policy": "any_current_movement_restriction_violation_v1",
         "diagnostic_path_policy": "Follow the intended plan using basic Hanoi mechanics while ignoring additional restrictions for state updates; record all identifiable restriction violations up to and including the first basic-mechanics-invalid attempted move. Do not assess later unreachable moves. Count at most one persistent error per submission",
@@ -555,7 +545,7 @@ def prepare_protocol(directory, config, resume):
             problem_ids=[p.id for p in problems],
             problem_selection_policy="start_problem is a 1-based index in the selected dataset order; episodes is the number to run. The saved problem_ids list gives the exact execution order. Problem IDs and complete round contents are preserved from the selected source dataset; dataset_snapshot.metadata.selection records subset selection when present",
             dependency_sha256={name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                               for name in ("hanoi/rules.py", "hanoi/validation.py", "hanoi/prompts.py", "hanoi/reasoning_logs.py")},
+                               for name in ("hanoi/rules.py", "hanoi/validation.py", "hanoi/prompts.py")},
             condition_policy="One rule type per problem; one additional restriction in every round R1-R5. Five distinct rule variants and five initial-state families per problem",
             restriction_revision="Four-type schema version 1, dataset version 7; all selected round plans and witnesses independently validated before execution",
             initial_state_policy="Initial positions are ordered by disk 1,2,3. They change across rounds. Each attempt resets the board, previous-source memory, and visit memory to that round's initial state",
@@ -934,7 +924,6 @@ def summarize(records, episodes, required_successes=SUCCESS_STREAK, policies=Non
 def execute(directory, config, client, retry_pending=False):
     """Reconstruct the conversation by reading response checkpoints in order."""
     from .terminal import TerminalReporter
-    from .reasoning_logs import summary_artifact
     policies = round_policies(config)
     feedback_policy = config.get("feedback_policy", "binary_v1")
     prompt = task_prompt(feedback_policy)
@@ -943,7 +932,7 @@ def execute(directory, config, client, retry_pending=False):
     reporter = TerminalReporter(directory, config, problems[0].rules, config["max_attempts"], config["success_streak"],
                                 problems=problems, round_policies=policies)
     reporter.start()
-    records, generation_failures, reasoning_summaries = [], [], []
+    records, generation_failures = [], []
     call = 0
     def snapshot_result(finished=False):
         result = summarize(records, config["episodes"], required_successes=config["success_streak"], policies=policies, problems=problems)
@@ -1008,18 +997,6 @@ def execute(directory, config, client, retry_pending=False):
                     append_event(directory, "request_started", **fields, transport_attempt=transport_attempt)
                     reporter.waiting(attempt, transport_attempt)
                 envelope = obtain_response(trial, request, client, retry_pending, request_started)
-                # The native response is already checkpointed. Derived logs never cause resampling.
-                summary_text, summary_metadata = summary_artifact(
-                    envelope, provider=config["provider"], model=config["model"], call=call,
-                    episode=episode, problem_id=problem.id, condition=problem.condition,
-                    round_number=number, attempt=attempt, trial_path=trial.relative_to(directory).as_posix(),
-                )
-                summary_file = trial / "reasoning_summary.txt"
-                if not summary_file.exists() or summary_file.read_text(encoding="utf-8") != summary_text:
-                    save_text(summary_file, summary_text)
-                reasoning_summaries.append(summary_metadata)
-                save_text(directory / "reasoning_summaries.jsonl",
-                          "".join(canonical(item) + "\n" for item in reasoning_summaries))
                 try:
                     raw, refused = visible_response(envelope["response"])
                 except GenerationFailure as exc:
