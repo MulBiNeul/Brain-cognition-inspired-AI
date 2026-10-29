@@ -1,0 +1,9 @@
+# Matched task conditions: 3 types, 4/3/3 problems, T=10 and k=2 (including R1).
+# python3 build_human.py -> Hanoi_Human_Evaluation.html
+# No API access or API key is required.
+[experiment]
+dataset = "../data/human_10.json"
+T = 10
+k = 2
+r1_apply_k = true
+feedback_policy = "goal_rule_4way_v1"

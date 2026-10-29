@@ -1,0 +1,5 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>하노이탑 실험 기록</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><header><div><h1>하노이탑 실험 기록</h1><p>모델별 저장 기록 · 연구자용 읽기 전용 뷰어</p></div><button id="refresh">새로고침</button></header>
+<main><aside><h2>저장된 실험</h2><div id="runs"></div><p>실험 실행과 재개는 터미널에서 진행합니다. 이 화면은 API 키를 읽거나 API를 호출하지 않습니다.</p></aside>
+<section><p id="notice" role="status">실험 기록을 선택하세요.</p><nav id="downloads" hidden><a id="json" download>JSON</a><a id="csv" download>CSV</a><a id="html" download>HTML 보고서</a></nav><iframe id="report" title="선택한 실험의 전체 보고서" hidden></iframe>
+<details id="inspector" hidden><summary>제출 원본과 이동 재생</summary><label>제출 <select id="trial"></select></label><button id="load-trial">열기</button><div id="trace"></div><details><summary>API 요청 원본</summary><pre id="request"></pre></details><details><summary>API 응답 원본</summary><pre id="response"></pre></details><details><summary>채점 기록</summary><pre id="record"></pre></details></details></section></main></body></html>
