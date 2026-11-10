@@ -1,261 +1,1611 @@
 {
-  "version": "pilot-2",
+  "version": "pilot-3",
   "rounds_per_item": 5,
-  "rules_en": "Start from a string over A through E. An action names one letter and deletes its leftmost removable run in full. A removable run is two or more consecutive identical letters in the same segment. After deletion, the letters on either side become neighbors within that segment. If a run of the current priority letter is removable, you must choose it; otherwise you may choose any removable letter.",
-  "space_rule_en": "Some inputs contain one literal ASCII space. It is a permanent boundary: letters on opposite sides never form a run. Inputs without a space are a single segment. Ignore spaces only to count the letters remaining.",
-  "space_example_en": "With priority B and a target of zero, \"AABBAA\" clears in two moves: BA. With \"AABB AA\", deleting B leaves \"AA AA\". The two A runs stay separate, so clearing it takes three moves: BAA.",
-  "goal_en": "Stop as soon as exactly target_length letters remain. Their identities and order are unrestricted. For target_length 0, remove all letters; a remaining space still counts as zero. For example, \"AB A\" has length 3 and \"AA\" is already a success at target_length 2 even though it is removable.",
-  "reset": "Restart from the same original input and target_length in each round. Only the priority changes. Return the letters you delete, in order.",
+  "rules_en": "An action names one letter A through E. Find its leftmost run of at least two identical letters within one segment. In whole mode, delete this entire run. In pair mode, delete just two letters from it; any remainder stays on the tape. After deletion the neighbors in that segment meet. If the priority letter has a removable run, you must select it. Otherwise any removable letter is allowed.",
+  "space_rule_en": "A literal ASCII space is a permanent boundary. Letters on opposite sides cannot form a run. Ignore spaces only when counting or comparing the remaining letters for the goal.",
+  "space_example_en": "In whole mode with priority B and target zero, AABBAA clears with BA, while \"AABB AA\" needs BAA because the two A runs stay separate.",
+  "goal_en": "Stop as soon as the remaining letter count equals the round target. At target 2, the two remaining letters must differ: AB, BA or \"A B\" succeeds; AA or \"A A\" fails. At targets 0, 1 and 3 only the remaining count matters: even \"AB A\" counts as three. A remaining space alone counts as zero.",
+  "reset": "Reset to the original input each round. Deliver only the current round settings and priority to participants. Use round_settings for the active target_length and deletion_rule. The item-level target_length is the base goal shared by four rounds. Submit the sequence of deletion letters in order.",
   "items": [
     {
       "id": "SG-001",
-      "input": "AACCEEBBBAADD AAAEECCDDBBDCCD",
-      "target_length": 0
+      "input": "AACAEEADDCDDBCCCCBABBABDEEDBBBEE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-002",
-      "input": "DDBBCCDAAEEA EEDDCCCAABBAABEEBCCB",
-      "target_length": 1
+      "input": "BCEEEECEEBDDDDBBCCBABBAAABCBDDB",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-003",
-      "input": "EEDDBBCCBBEEAADDAAEECBBACCBEEB",
-      "target_length": 2
+      "input": "DDCEECCEAEEEEAADDACBBCCCAABCCB",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-004",
-      "input": "DDBBAACCBDDEECAABEECCCBBAACEE",
-      "target_length": 3
+      "input": "CBBAACEEEDDAAD CCEECDCCDABBABB",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-005",
-      "input": "ABBACCCAADDEECCCAABBEE BBAADDEECC",
-      "target_length": 0
+      "input": "ABEEDDBEEBBBBCCAEECCACCACCADDAAA",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-006",
-      "input": "BBAAEEBCEEBBEECCDDEEAACBAAEEACC",
-      "target_length": 1
+      "input": "AADDBBDCEECBBEAAEEEECCADDAAAECC",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-007",
-      "input": "CCAACCEEACCDDACCBBAE DDBBDDEEEAA",
-      "target_length": 2
+      "input": "ACBBCCCEAEEADDAAAAEEAAECDDBB",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-008",
-      "input": "EECCBBEECADDACCDDAABBEEDDEEAA",
-      "target_length": 3
+      "input": "EEEEEAADDAACBBEECCAADDBBCAACB",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-009",
-      "input": "CCDDDBEEBEEAADDD AABBAABBCCDDBBDD",
-      "target_length": 0
+      "input": "CCDDCBECCEBCCCAAAADDEEBBAAEE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-010",
-      "input": "BBCCBCCEEDDEAAEAAEE BBCCAADDC",
-      "target_length": 1
+      "input": "DBBDCCEECCBEEBBBEDDDDDAADAEEA",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-011",
-      "input": "DDAABAAEEBAABBEEBCCAAD EEDDCCBBE",
-      "target_length": 2
+      "input": "BBDDDAADCCBBECCCCAAEEBBEDDDA",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-012",
-      "input": "DDAAEBBEDDEEAADACC EECCDDBBCC",
-      "target_length": 3
+      "input": "EBBEEDDDDEEEAABBAAACCBBACCADE",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-013",
-      "input": "DDBDDDCCAAEEDDAACCBDEEBBEEBBD",
-      "target_length": 0
+      "input": "ADDDDACCAACCDCCCCDEEEEBEEBBB",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-014",
-      "input": "EECCDDAADBBECCAAE BBEECCDDAAA",
-      "target_length": 1
+      "input": "EACCDDBBCCABBEEAAAACCCCDCCDEE",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-015",
-      "input": "EECADDBBAABBBAABBEEBCCDDCCADDA",
-      "target_length": 2
+      "input": "EEDCDDCACCAAADDAAADDAABBBBACEEBB",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-016",
-      "input": "EEAACCDBAACCBBDAAEEDD BBDDCCCE",
-      "target_length": 3
+      "input": "DCDDCBEEEECBBBBAACCBBEEAAEEDAAD",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-017",
-      "input": "CDDEEAACCBBAACBBCCDDCC DDBBEEBBCC",
-      "target_length": 0
+      "input": "BBCCEEEEADDAAAAACDBBDAAC DDBBAAEE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-018",
-      "input": "BBDEEECCBBAADDCCA EEAACDDCCDDDC",
-      "target_length": 1
+      "input": "CEECCAAADDEEAADDDDBBACCEECABB",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-019",
-      "input": "DDBBEBCCDDBBDDDAAEAAEECCEEBBAAEE",
-      "target_length": 2
+      "input": "DDBBBDDEEDACCADBAADAADDDDCCDBDEE",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-020",
-      "input": "ACCCBBACCEEDAABDDAAEEDDBBAAEECCA",
-      "target_length": 3
+      "input": "AAAEEABBBBEEDCCEEEBAABCDDDDCCDD",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-021",
-      "input": "BCCCEEAABBDDBBDDABCCBBAAAEEA",
-      "target_length": 0
+      "input": "CCCCEADDAECEECCAACAAEBBDDDBBDE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-022",
-      "input": "EECCEECCAABBCDDAABBEEBBADDAB",
-      "target_length": 1
+      "input": "EEBAABBAAAEEAABEEBDDADDBBCCCC",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-023",
-      "input": "DAADDDEECEEEAABBCCDDAADDABBADD",
-      "target_length": 2
+      "input": "CCAAABBADDAD AAAEECCAEEADBBDA",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-024",
-      "input": "AADDAACCBBCCEEAABD AADDEEACEEBBC",
-      "target_length": 3
+      "input": "DDEEAAACBBBBCDDCDDEACCDDADDEE",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-025",
-      "input": "DDBBCCEEBEEBCCAADDAAABBAAACCAA",
-      "target_length": 0
+      "input": "CCAEEAAADDEEBEEBCCAA BBCCCCCCEEDD",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-026",
-      "input": "EEAABBDDCEEDDCCAADDAABAABCCBB",
-      "target_length": 1
+      "input": "AAEBBEEECAAACCDCCDACAABBCDDCC",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-027",
-      "input": "EEAADDAAECCDDBBAAEBBAAACEEDCCDD",
-      "target_length": 2
+      "input": "CCCDDCCAA CDCCDCCCDEEEBBBEAAEBE",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-028",
-      "input": "AABBCCEEDDEACCABBEEAADDCCDDCCAAC",
-      "target_length": 3
+      "input": "BCCBEEBBEDDEEDD BBACEEAAAEECCA",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-029",
-      "input": "EEDDEEDDAACCDDEEEABBACCEEAACCBB",
-      "target_length": 0
+      "input": "DDDCCAAAAAEEABAABBBAAEEACCCCADCC",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-030",
-      "input": "EEDDEEBBDDAAEEBBEAACCEDDCCBBA",
-      "target_length": 1
+      "input": "BBBABBDDCCADD AAADEEEECCDDDAADDA",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-031",
-      "input": "BBAADCCDDB AADDAABBBCCDCCDEECCA",
-      "target_length": 2
+      "input": "DDCCBBAAABBAAAAD EDDECCEEDDEE",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-032",
-      "input": "CBBBEECDDEECCAAEAACCDDB AABBDDBBA",
-      "target_length": 3
+      "input": "CCCEBBECCCCDDACCADEDDEBAABBBE",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-033",
-      "input": "CAABBCDDBBEECCEEADDAAEECCDDAAEEA",
-      "target_length": 0
+      "input": "BAAADDABBBEEAA BCCBDDCCCCEECCDD",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-034",
-      "input": "BEEEBBCCBBEAABDDEEDCCBBAADDCCEEA",
-      "target_length": 1
+      "input": "ECAACEEEBBDDDCDDDDC BBAACDDCEE",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-035",
-      "input": "EEDDAAADAACCDDBBBCCDBBEEDDDCEECC",
-      "target_length": 2
+      "input": "DBABBAAAACCDDDEEDBBACEEBBCCCCC",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-036",
-      "input": "EDDAAAEEBDDCCDDCCBBEEEDDBBCCBCE",
-      "target_length": 3
+      "input": "EECDDCABBCCCCBAA BBBBDDADDAAEEDD",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-037",
-      "input": "DDBBDDECCEEEBBEEBBAADDEAADDCC",
-      "target_length": 0
+      "input": "AEEEEACCAABBEECCBB CCDBBDDDAAEE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-038",
-      "input": "EECCDDAAEEAAEECEECAAD BBCCBBDD",
-      "target_length": 1
+      "input": "DCDDCDBDDBBBAAD AAEEEECCAACCBBEE",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-039",
-      "input": "CBBEEAAB AADDBEECBBCCEECBDDCCEECC",
-      "target_length": 2
+      "input": "EBCCBEDCCDDDEAAE AABAADDBBDDDDD",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-040",
-      "input": "EEBBDAACCDDAADDBBAAEEAABBCCDBBD",
-      "target_length": 3
+      "input": "DDCAACBBECCEEBBBEE CCEEAAADDDDAA",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-041",
-      "input": "CCDAADABBBDDBBEEBBEEDDCCBBAABBA",
-      "target_length": 0
+      "input": "DDEEEEDCEEEEDDAABBCDDAADCCADDBBA",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-042",
-      "input": "AACAACCCAACAAEEBBCCAABBDDCEECDDC",
-      "target_length": 1
+      "input": "EEDDAABDDDD AAEECCAAEEAAEECBBBBC",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-043",
-      "input": "EEBDDCCDDBBDDBBAADDB AABCCAAEEACC",
-      "target_length": 2
+      "input": "BBACCEEBEE DDCCAABBDBBDAACCCCAAAA",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-044",
-      "input": "DDAEAACCEEAADDEDDEECCAADDBBE",
-      "target_length": 3
+      "input": "EDDEDDEEEBCCBBAABBBBDDCAACCCCBB",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-045",
-      "input": "CDDEAABBDDEECCEEAAEAABBCCBBC",
-      "target_length": 0
+      "input": "BCCBCAACDDDDCEEAAABBACCBBCEEDD",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-046",
-      "input": "DDBBBDDCCBBAAEEDEEDBBCBBDDCCEEB",
-      "target_length": 1
+      "input": "EABBADDDD AADCEECEEBBDCEECCCCBBC",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-047",
-      "input": "EECCBDEECCBBDDBBAABEEBCCCAADD",
-      "target_length": 2
+      "input": "BDDBBBBBAADCEEEEDDDCCDCCCEAA",
+      "target_length": 2,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 2,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-048",
-      "input": "ABDDEEDDAACCBBEEECBBBEEC AACCBBBA",
-      "target_length": 3
+      "input": "CBBBBBCCDDAA EECEECEEEDCCCCAAD",
+      "target_length": 3,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 3,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 3,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-049",
-      "input": "BBCDDCEECCEEDDCCEEAA EECCAABBCCBB",
-      "target_length": 0
+      "input": "DDCCBBEEEBBEAADDAA CCBBBBEEEEEAAE",
+      "target_length": 0,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 3,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 0,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 5,
+          "target_length": 0,
+          "deletion_rule": "whole"
+        }
+      ]
     },
     {
       "id": "SG-050",
-      "input": "EEAACBBEEECEEAADDAACCDDBBEEBBCCA",
-      "target_length": 1
+      "input": "EECCDDDDEEEEDDCAACABBAAACCBBB",
+      "target_length": 1,
+      "round_settings": [
+        {
+          "round": 1,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 2,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 3,
+          "target_length": 1,
+          "deletion_rule": "pair"
+        },
+        {
+          "round": 4,
+          "target_length": 1,
+          "deletion_rule": "whole"
+        },
+        {
+          "round": 5,
+          "target_length": 2,
+          "deletion_rule": "whole"
+        }
+      ]
     }
   ]
 }
