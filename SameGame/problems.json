@@ -1,2108 +1,1507 @@
 {
-  "version": "pilot-4",
+  "version": "pilot-5",
   "rounds_per_item": 5,
-  "rules_en": "An action names one letter A through E. A run consists of two or more adjacent copies of that letter within the same segment. Delete the entire selected run, including all three letters of AAA. When the named letter has multiple eligible runs, select the leftmost or rightmost one as specified by selection_side for this round. The remaining neighbors in that segment meet. If the priority letter has an eligible run, you must select it. Otherwise choose any letter with an eligible run.",
-  "space_rule_en": "A literal ASCII space is a permanent boundary. Letters on opposite sides cannot form a run. Ignore spaces when counting the remaining letters and checking whether the last two letters differ.",
-  "space_example_en": "With priority B and target zero, AABBAA clears with BA, while \"AABB AA\" needs BAA because the two A runs stay separate.",
-  "goal_en": "Stop as soon as the remaining letter count equals the current target. At target 2 the two letters must differ: AB, BA and \"A B\" succeed, while AA and \"A A\" fail. At targets 0, 1 and 3 only the count matters. \"AB A\" and AAA each count as three. A remaining space alone counts as zero.",
-  "reset": "Reset to the original input at the start of each round. Give the participant the current round_settings entry only. Its target_length is the required residual letter count. The item-level target_length is the first-round value. Submit the sequence of deletion letters in order.",
+  "rules_en": "Each action names one letter from A to E. Choose any letter with a run of at least two identical adjacent letters. Delete its entire leftmost eligible run. Neighbors in that segment then meet. A newly formed run remains on the tape until you select its letter in a later action.",
+  "space_rule_en": "A literal ASCII space is a permanent boundary. Letters on opposite sides cannot form a run. Ignore spaces when counting and comparing the remaining letters for the goal.",
+  "goal_en": "Stop when the remaining letter count first equals the round target. For target 2 the two letters must differ: AB and \"A B\" succeed, while AA and \"A A\" fail. For targets 0, 1 and 3 only the count matters. \"AB A\" counts as three and a space alone counts as zero.",
+  "reset": "Each round starts from the new input in its own round_settings entry. Present only that entry for the current round. Submit the letters selected for deletion, in order.",
   "items": [
     {
       "id": "SG-001",
-      "input": "AAADEEAADCBBCCCCAADDADDDDBEEBBB",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EDABEAEACEECAEAEBADEDEDDEAAEDDE",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADADCDCEABBAECDCDABDDBADDABDAE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEBEBCCBEBCBEBDCCCDBCCCBEBAAABCA",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDCAACDCCCDEEECDDEEBBADDAAEB",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AEABBABBEAEAEDEEDEAACAAACEBBADAA",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-002",
-      "input": "AEEACEEECBBAABAAEEBCCAABBDDBAADD",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DEBAECEEAAEEACEABDDECCDABBADB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ABACDDABBADCABABAEDDEABDDBABA",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ECAEABACBDDBBCAEEAAABAEDAADCCAC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EDCCECDCAAABDACCADEDDEDBCDCED",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEECEEECCECDDCABABBABCABCCCB",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-003",
-      "input": "CCDDABBAAAEEDDACEEBBEEDDBBCCDDCC",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EADBBDDBDADAEEAECCEEBEEBDECEECB",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEBBEDBECDBADBABBAABDADDBDCEB",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CDADBBCDDCBEBDBBEEEBDBEDBEBBEBAD",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEACCCACDDCEECEAEAADDAEABABBE",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ABADEEDABADAECEECCEACCDBEEBD",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-004",
-      "input": "CDDDCCCCCCCCBBEEAADAAD CCBEEB",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AEDABADDABBACDDCADEA AACEECDCCD",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BCECAACECACCCA CCBABCBBCBABACCAD",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEBBBECE AAEDBEEBADBBDEEABDECCC",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBEBAAABBEBCEBBECAA CCDEEAAED",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBAEEAABEC CAEDBBBCCDEACCEEAAC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-005",
-      "input": "AAADDADEEEDEECCBBDDDAADCCBBC",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEECBDAAADBDCCDDAAABBDCEECDD",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CCDEBCCCBEDAACACCACDCEEBADDABC",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ADDADCBCCAACDEEDCDCDEEBBBDCDC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AECCDDCEACCCACBDDBCEBBECDEAAA",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDACEDDDEECDEAAEDCADDEEBAAEBBCC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-006",
-      "input": "AADDBBDCEECBBEAAEEEECCADDAAAECC",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EDCAACABBEBBDDEACBEEEBCABBEA",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CADEEACCEEAEBDDBEADADEEBBBDC",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACAACAEAADBACCABDBACCABEBCCBDB",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DCEAABDDBADDAECDEDDEDAEEEAEDB",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBDECCCAEDBDDBBDECADDACEDEAEDBDE",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-007",
-      "input": "EEEEDDBDDBECCAAECCBBDDABBAAAAAE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDACDDDCADBABAEEABADCBBCDABD",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDCBBCABBADECEBBECEBEEBCBDACCADC",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CABBEAEDCCCDEAEDBBEEDDADDCCABBC",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBBCBCCCBEACECDAADCCCDCBBECAEC",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BBBCAEAAEACBCBBDDCBCCCEDBBBD",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-008",
-      "input": "EEEEEAADDAACBBEECCAADDBBCAACB",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBEEDDDCEECBBCBACBBBCAEEBADDDAD",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DAADEAACCEECEEBADECBBCDCCDECCE",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CCADBDDABEAAEDBDAADDBDEBABDAEA",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBBDABBADEDECCCDDEDEDADDADEA",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CDBABBDDAEAAAECCBDCACCADCBBCCD",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-009",
-      "input": "CCDDCBECCEBCCCAAAADDEEBBAAEE",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ABDBCCBAADAABECCCEBADBADEEDABAB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ABCADAADACBABECCEDDBBDBDCEDDDE",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCAEEACBECCEBDCDBCCBDDAACAAACBDD",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DDDBEEEBECBAEEEAECCEBAEEABCE",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEDDCAACECACDDCCEDABBDDBADED",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-010",
-      "input": "EBDDBCCCCCEAAEDDEBAACCCABEEB",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DEBCDBECCCEBDBBEEBCBEABBAABADAD",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEBBBEBBEAACDBBCCBAAABDCDABCCB",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CADEDABBADEDAEABCEECDDBAEACBBCAE",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DAEEADECDCACCCACDCADBCCBCEECDAE",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBCCAAABCDBBABABBDDABAEAECCEA",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-011",
-      "input": "AACCBBBBAEEDDCCDDCCBAABECEECECCE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DBBDCEDCDECCEEDBEAAEBCAADBAAB",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ACCADBCECBBCECBDABADDDABACAA",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CACCACCAAEEADAEDDDEADEEDBCAACB",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CAACDCDDCDEEBCBBCBEDADCCDDACE",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DCDDBCECCECBCDBBADABBBAADCCCA",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-012",
-      "input": "EBBEEDDDDEEEAABBAAACCBBACCADE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CAECEAAEABAABACEEEBDCACEECACDBE",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BAECECBAAABCDDEBDBEEBDEAAAEBCEA",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CDCDABABCCBACEEECBDDBBCABABADCDC",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEABCCCBAEAABCEACBCCBCADCDDEECD",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DEABDCDDDCDADADDBBADDABCADDACB",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-013",
-      "input": "ADDDDACCAACCDCCCCDEEEEBEEBBB",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACADECBBCAACDACCCBBABDDBDEDAEECA",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DCEDADEBAABEBBBDBBDEEBBADECA",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBDCCDEBECBBBAACEBEABCCBDDABAAD",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCACCEECBEAEAAEDCCDABBAEBADDACDC",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADBBCBECCEABCCDDBDDBABABBAACD",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-014",
-      "input": "EACCDDBBCCABBEEAAAACCCCDCCDEE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDEDEDACCCACACEEAAECACAEEEADEDE",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AECBADAADABCEAEAAEEAECCCECEECCAE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBDEEDBEAAADBAABDAEEEADEEBADDC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEECBADBCCBBCBDDABCAACCAECCECAAD",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CDDDECDBDDDBDACCDDCACDCCCAEEADEC",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-015",
-      "input": "AACBBCCEEDDEDBBDAADDDCCDAAEEE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CDCCDCDDDEBAABBAAEDDCEEEAEEA",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDDBDDBBDAABCCCBACCCDEACCAEB",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADDDAAECBDDDAAECACCCACEECEEBCC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEBCCBAAEEDEBDEEEDDBBEDCBBCAECAA",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCDDCDDCDECAEEADEEDACEBBECCED",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-016",
-      "input": "BCBBBCEDDDEEECAAACDDAACCCDEBB",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEDDEBADEBCCBEDAEADEEEDAEAEDD",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBCEABBADBAABDECBADBDCCDBDEEAE",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EADDAEEACABBBEECCACDECCCAAEEDBB",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDDDEBACAACACADBAABDACEDDEEABAC",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDDBEABBEBECABBAABEEAACEBECCEAEB",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-017",
-      "input": "EEBEEBBBBACCAA DCCCEEDDBBCBBCAAD",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBACEECACAACABECBCEECBCB BDCCCDBB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EECADCAACDADCCDACAAC CDAEBBBEA",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AADBEECCCEBDEAAEABBAED DDEBCCBEA",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBABBABEACDDDCA EDDAAEEEBADCCDABA",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDBABBABDDBAAADBDDAAA AECDDDBBCEA",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-018",
-      "input": "CEECCAAADDEEAADDDDBBACCEECABB",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CACBEACDDCAEAEEEABCEBBEACCAECAC",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BAADBBDCDAEEEADCDDDCBEAAEEBD",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBAECCEDBCBBBCDEDCCCDDEDCBDAD",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CAEEACDCCDCBCAADDEBBBECAEEABBAB",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBDCACCACDBADAEEEDBBDAEBAABEADAE",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-019",
-      "input": "DDBBBDDEEDACCADBAADAADDDDCCDBDEE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEEBABDBBDBADCABBACDBDAAEDDEDBD",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ACBBCBCDACCADCBCDEEDACDECDDCED",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DAEAEEABCBBCBCBBCAECCCBACCAB",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EACCAECBEEEBCCABDDBABEEBBCCBA",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADBBDADABBDCDAADCDACCAEECCDACC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-020",
-      "input": "EEEDDEEEBCCBCCDDAADBBBBCCCEAAAAA",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDCCDAABADCCDEDEACCAAEDABBAEA",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECAACBEAAEADDABEECEDAADCBBCDE",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BECCCEAAEBACBBEECAACEEACDDCACA",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACECEECEACCACBEEBCACDCDBCCBDCDA",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ADAAADCACACCCACBBACDEBEDDEBEDAE",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-021",
-      "input": "CCCCEADDAECEECCAACAAEBBDDDBBDE",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADBEDCCCDEBDDACCCDCCDEEDDCDB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ACAEAEADBDEAAEDBDABACCCABAEAEACD",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEEABEDBDEBBEDBDEAACDDCABACBCE",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BBBEDCCDAABECCEEBECCEADDCAACEECA",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBBEAEADDAECDBEEBDCCCDBCCDCEAE",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-022",
-      "input": "CCCCBBDDBBAADDBBDDAAEEEECCDBDD",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBABABDDBACCCABABAAEDAADBCBBCAE",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DBAEACCAEACCABADDAACACCDAAADACD",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBEEACDBBDCCEEABEAAEAAEBCBBEB",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EDDCACBEEBBDDDCBBAAEEEABCACAE",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECDCCEDEEDDEDCADAAADACBBBEABBAC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-023",
-      "input": "AADDEEBAABDCCDBEEEE EECCCCDDCBB",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEDDECBBCEB BAEDBEEEBECCEDDDEDEAB",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCCAEAAEA ADABEAEDADDDADEAEBADACA",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CACACBBCACABBC CBBCCDDAEDBBDEAC",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DECCECEECEADBEAAEBD DEADDDAAED",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BECDECCEDADDADCDDC EEAADDABBAB",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-024",
-      "input": "ECCCEBBEAAAADAEEADEEBBBBBECCDD",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ABDDAADAACBEEEBCABDBDBBDBBEEDBBD",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEAAECABBACACDCAACDCACEBBECACA",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ACCCAEDABCECDCCDCECBADCCDEBCEE",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CCACEECBBAECAACCEAEDDBAAABDECA",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCEDBBDAEAAAEADEADABBBADAEDCCC",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-025",
-      "input": "AAADDAEEEAACCAECC CCBDDBDDBAAB",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CEBBADDA ECEBCAADDDCBCCEDCCCDEC",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DAECCEADEDDEBBE EBBEDCAACAADCCC",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACEECABADBBDAD DDCCDCDEDDEDCC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CAAEBEDBEAAEBDDEBBEBCC BEDDEEB",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CACCCDDA CADDAEADCCDDABAACCCABEC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-026",
-      "input": "AAEBCCBEDCCCBAABEEEDDADDABBDDE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACBAAABAEBCBDCCDBCBEABBBACACEEC",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DAEDBCCCBEAAAEBDEACCAEEBAEEAB",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AEECCDCDAADEBBDDBBBDEBBDDBEDCD",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CCBDAEEADECAADDACAEBDADDADDBEAEB",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BBADCDABBBADBDEEEBBDBBDCEEDBACCA",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-027",
-      "input": "BDDAABBB AEEECCABBCCEEDCCCAADD",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ECDBCCBBDCCAEEACCE EADDAEEAEBEE",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EABCAACBA ADAEBDDBCBCCBCEADAC",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CCDCCDECCE ADDDAEAAAEABBBAAEDDD",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DCCBBDDED DAEACCAEEEACDDDCEAD",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BBDDEAAE CABBCCCABBACBBCACCEEB",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-028",
-      "input": "BCCBEEBBEDDEEDD BBACEEAAAEECCA",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DABCCCBBAD DBEEBEBAEDBEEBBDEACCBE",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEEDEADCDDCDBEDDEAAEBAAD DECCED",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCBEEDDBCCD DEDEEAADABEEBCCBAEDC",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBADDADDEEDEEBDAADC CDDBEEBDC",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AEEAEEBCCCBA BBBABDDCDDCCBBEBB",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-029",
-      "input": "DDDCCAAAAAEEABAABBBAAEEACCCCADCC",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDCCDEABEEBAEDEBABDCCEEDDCDBABD",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AABAAABDAADCCDCDEEEDEDDEAADA",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCDBDBBCCDCCDBDCBACEBBECACCB",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBCCCBDCCAAACDEBCCCBDBEDDEBCD",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CEECEDBBCACCCAEBBECDEEDAADCD",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-030",
-      "input": "CCCBBCDDEBBEE BDDAAABDECCEDAAEEE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DBDDAABD DBEEAEAEACBBCDEEDAEAEABC",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBEEACCADDECCCEBCEAAEAA EBEAAEEBE",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DACCAACABE EAEDEEDDBCDDAADCBEAEBB",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DBEAAEB DCDDCDEDDEEEDEEDADDAD",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DDAEEBCCBCDCCDCBABBDDCC CBDBDDBDE",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-031",
-      "input": "DDCCBBAAABBAAAAD EDDECCEEDDEE",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AECAECCBBEBBEACE EACCEBBBEDDEAB",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EEAACCE EBBECCDACAEEEACADEBDDBE",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ADAADBBDBECCEBEEABD DEDDEDCDDCDD",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEEDEEDC EEBAACBBBCEEAACBCDDDC",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEDCCCDEDDBBAECC ECBCBCCBAAACBCE",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-032",
-      "input": "CCCEBBECCCCDDACCADEDDEBAABBBE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ADABBAEBDDADDABECCEBEDBCDDCC",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBBCBAACBAAEEABCAACBAABDAEEACCDE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBEDDECBEEBCBAABCEEBCEBEBBEB",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDBCDAADCBDEECCBABEBBECEEECBAB",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CADDDAEBBEBEEBEAEBDDBEACCACD",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-033",
-      "input": "BAAADDABBBEEAA BCCBDDCCCCEECCDD",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECACDDDCDABAEEEADDBADACEA ACDDCA",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBACBBCCABCC CAADABEDEEEDEBAD",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DAEEAABBDEDDED CCDAEEACDDCDAADAA",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDEDDEAADCDDBBBEEEDCE EDAADCDDC",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDDBCCBCECEECCEAA ADCBEEBCDDAE",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-034",
-      "input": "ECAACEEEBBDDDCDDDDC BBAACDDCEE",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCBBBCBEADEECCBBCDACBBC CDDAADCEE",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDAACBBBCADBDE EEACCCEBBEAAAE",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ABCBBEDDEBCBAE AACACCCACEEBDD",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EBEAAEBDDECDDCBCCCBE EADDDAECDDC",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BCBECDDCECCEBAACAAEEC BDEEDBD",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-035",
-      "input": "DDCCDBBEEECCEEEAADDAACCAAAEBBB",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EAAEECABBBABBACEDEADDCCDDADDDEDC",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBDBBAADBEAACECCEBBECACAAACACE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEAAAEBCCCDBBDCCDBEBBEDECCECCD",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DDCBDEBDDBEDCCCABBAAEEBADBDC",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DADBBCCCBDADDEDDEDDCCDEDAEEB",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-036",
-      "input": "ACCCCAAEEDDEEBBCCB ADDBBBCCABBAA",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBCCBBC AACADECCEDCDDDCDAADCAC",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACCBCDBBDDCEE EBAEEABDAAADECCA",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AAEABBDDCEECADADEEEDAD EECDDDC",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DBABDDBEECDDCCEAABA DDAEDDEEDD",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EAAEAEACAAEEACEECA ADACCADABCCB",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-037",
-      "input": "DEEEABBAEEEEDEEDBBDCC DADBBDCCAAD",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEBBECCCEA AAEEACCEAEBACCABDDBE",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECEEECEDBEADDDAEBDBCC CCBBCBB",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EADBDEECCECBBCDBDAEBE EBBBEAAA",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ABCCBAABCBADCCDD BBDBAEEEABDBECEE",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DEEDBDBBDEABDDBBDBBACCEEB BAABCC",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-038",
-      "input": "DCDDCDBDDBBBAAD AAEEEECCAACCBBEE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AECBCEABBAAECCECCBBCEA AAEBBEDD",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEEAEEA AEACAEEEBDBBBDBAEAAECAE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BBAAEAAADDEDBCCBDCCD ECAAACDDE",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "DDEECBAABBCAADBBE EBBECBADBBBDAB",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBCDDDCCBEDDED AAEBBBEDBCCBDE",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-039",
-      "input": "DDEEBBBAACEAAECCC EBBCCEAADDE",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EDBAECAACEEADDABB BDECAACEDCBBCD",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CCACEDDECDECDDBBCCEDC CAEAAEA",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AEDDBEEBDDE ABAABBADCCEBBBEDA",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BECECCECE EBEDADDADAADECAEEEACEBE",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CBBCABBA CAACADDCECAACECEEBBBECA",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-040",
-      "input": "BDDBCCCAACCBBC CCEAAEEDDAADEE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CCDBBD DDDCECEDDDEDBCCBDCAACEBBC",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BAABCEEECBA ABDEAEEAEDAABBDDBAB",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBCBADDABCBECBBEBBECD DAEBCCCBEAD",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ADADACCADEBDDDBEADC CEECEAAEDDAAD",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBECCABBBAECCBD CCDCADECEECEDAC",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-041",
-      "input": "DDEEEEDCEEEEDDAABBCDDAADCCADDBBA",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EEBADAABBBACEECDADBBDBEDDEDCA",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEABABACAACABABDDEEEDAECEECEAE",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BAAABCDEBDBBBDBEAEEAECDDDCDC",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CECEECEBEEBEDADEEDBBDDBEEDADA",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ABCAACBABDBECBBCCEDDBEECBBCBBDB",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-042",
-      "input": "EBBDDAABBDDBBAAAAEEAE ECCCCCEE",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EADACEBDDBBEECADAECCB BCAEEACB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DDAEEEABB AADCBBCDAEAAEBAABBE",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CECCCACDEEDDCAECDDEECE BDAADBE",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CAAADECEBBECE DBACEDCEECDECAB",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEEDCDBDDBDDCBBBD CCDAAAEBBED",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-043",
-      "input": "DDDDDBBDCAAAACC AACCCBBEBBEEE",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECAACCE EEDABBBADCCBAADDBCDBEEB",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BDEEDEDDEAAED CCDBECAACDEEDEBD",
           "target_length": 1
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BAEEDCCCDA BECEDEADDABBECCDECEBE",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CBBBDDBCCAA ACABBEDDEADDEEDAC",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDDAAADBB BCABCADDACABAABABAC",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-044",
-      "input": "EDDEDDEEEBCCBBAABBBBDDCAACCCCBB",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BECBCCBCCAEBAABEBBEADDCEBADBDAAD",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEDBBDAADBDCDEEDBEEEBACBCCBCABDC",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DACEECAEEADCCDCDDABEEAAABEBDDBEA",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "CCACCEAEBBEAEDDAADADDABCCBAD",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BCCEBDDBEEBCBDCCDDABACCEEABACCD",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-045",
-      "input": "BBEEAADADDADAAABBACCABBEEBACC",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDDECDDCEBDACBBCBBCADBEAEBBEA",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AEACBBBAAACEEAEDBDDDBDCEEECDC",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECEAAECEAEEAEDEEDEADCBADDDABCD",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CBCDDCBDADABEAAEBADADAABDDBCA",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ECEEECEAEDBBEBBEDCCDEBEEBEABABCC",
           "target_length": 3
         }
       ]
     },
     {
       "id": "SG-046",
-      "input": "DDBBEEEAA AADEEEDBBDBBBACCCEECC",
-      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ADABAAABADABBACCDE ADDEEDAEAAAEA",
           "target_length": 3
         },
         {
           "round": 2,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ABDACCDDADEEEDADBE EBBEBEEBCADDAC",
           "target_length": 2
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "ACDEBEEBAAAEDCACAAC CBCAAACBC",
           "target_length": 0
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EADEBBEDBBAADEED DBECEAAECAACEBD",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "AECDCAACDBDDBCCDC ECCDDCEBAABB",
           "target_length": 2
         }
       ]
     },
     {
       "id": "SG-047",
-      "input": "CEEEBBDDECAACBAABCCCBDDCCEECCEEE",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EEBDAADCDEEEDCBADDAEEBBEDEAEEA",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EBEEBBEDDBDACCBCEBAAABBEAACBAEBB",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "EADDCBDCDDCDBCDEEDCABEEEBECCE",
           "target_length": 1
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CECBEDDEBBBCAACBDCEECBBDBCED",
           "target_length": 2
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCEECDBBDDBEAAAEACADDCCBBACAEEA",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-048",
-      "input": "EAEEADDAEAADDE BBAABBAACCCCBBEE",
-      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BBAACCDEEDCE ECCEEBBABDDBABEEB",
           "target_length": 1
         },
         {
           "round": 2,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCAACBDDBCEDDDECB BCAEECCBCBBCBA",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "B",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACBADDDACDCCCDCEBBEBC CCECCECCAAC",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEADAACBCCBCDAE BDECCEDEBBCEECBEB",
           "target_length": 3
         },
         {
           "round": 5,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BDAEDBBDEAEAAEEDB BDEBCCEEBCCEDB",
           "target_length": 0
         }
       ]
     },
     {
       "id": "SG-049",
-      "input": "DDBBDEEDBBBBAEECCA BAAADDCCCCBDDB",
-      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "EDCBEBEEEBEBCCBC CCEBDEADDDAEDBE",
           "target_length": 2
         },
         {
           "round": 2,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "ACEECADD DEAAEBABBBABDDEEEBED",
           "target_length": 0
         },
         {
           "round": 3,
-          "priority": "C",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BCAECCEADAAADBEBBEBDAC CCBEEDAADB",
           "target_length": 3
         },
         {
           "round": 4,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CECCEBBCEDDDE EDDBADACCCADABEBBE",
           "target_length": 0
         },
         {
           "round": 5,
-          "priority": "A",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "CDAACDDDCDCCDCEBBEDC BABCCBBCBABC",
           "target_length": 1
         }
       ]
     },
     {
       "id": "SG-050",
-      "input": "EECCDDDDEEEEDDCAACABBAAACCBBB",
-      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "left",
+          "input": "BEEDDCAADDCACCCEEADBCCBDAEEBDEED",
           "target_length": 0
         },
         {
           "round": 2,
-          "priority": "D",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEBAABEEECBBEECCECDEBBEDEEBADD",
           "target_length": 3
         },
         {
           "round": 3,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "DEAABDEECCDBAAAEEBAEEAEDEBBECB",
           "target_length": 2
         },
         {
           "round": 4,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "AADDBBDBBADCCCEBEEBEDAEDEBBEBBDD",
           "target_length": 1
         },
         {
           "round": 5,
-          "priority": "E",
-          "deletion_rule": "whole",
-          "selection_side": "right",
+          "input": "BEDAAEEDDDEADEDCCDDEDAAECCBAA",
           "target_length": 0
         }
       ]

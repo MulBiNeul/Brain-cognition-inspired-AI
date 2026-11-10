@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import importlib
 import json
 import re
 from collections import Counter
@@ -364,14 +365,21 @@ def load_pilot(directory):
     public = json.loads((directory / "problems.json").read_text(encoding="utf-8"))
     key = json.loads((directory / "answer_key.json").read_text(encoding="utf-8"))
     expect(public["version"], key["version"], "public and key version")
-    require(public["version"] in ("pilot-2", "pilot-3", "pilot-4"),
+    require(public["version"] in ("pilot-2", "pilot-3", "pilot-4", "pilot-5"),
             f"unsupported version {public['version']!r}")
     return public, key, public["version"] == "pilot-2"
+
+
+def merge_validator():
+    # Older versions can still be checked with this script alone.
+    return importlib.import_module(".validate_merge", __package__) if __package__ else importlib.import_module("validate_merge")
 
 
 def validate(directory):
     public, key, legacy = load_pilot(directory)
     version = public["version"]
+    if version == "pilot-5":
+        return merge_validator().validate(public, key)
     items = public["items"]
     keys = {k["id"]: k for k in key["items"]}
     expect(len(items), 50, "public items")
@@ -441,6 +449,8 @@ def validate(directory):
 def grade(directory, item_id, round_number, answer):
     public, key, legacy = load_pilot(directory)
     number = int(round_number)
+    if public["version"] == "pilot-5":
+        return merge_validator().grade(public, item_id, number, answer)
     require(1 <= number <= 5, "round must be 1 through 5")
     items = {p["id"]: p for p in public["items"]}
     records = {k["id"]: k for k in key["items"]}
