@@ -1,393 +1,513 @@
 {
-  "version": "pilot-3",
+  "version": "pilot-4",
   "rounds_per_item": 5,
-  "rules_en": "An action names one letter A through E. Find its leftmost run of at least two identical letters within one segment. In whole mode, delete this entire run. In pair mode, delete just two letters from it; any remainder stays on the tape. After deletion the neighbors in that segment meet. If the priority letter has a removable run, you must select it. Otherwise any removable letter is allowed.",
-  "space_rule_en": "A literal ASCII space is a permanent boundary. Letters on opposite sides cannot form a run. Ignore spaces only when counting or comparing the remaining letters for the goal.",
-  "space_example_en": "In whole mode with priority B and target zero, AABBAA clears with BA, while \"AABB AA\" needs BAA because the two A runs stay separate.",
-  "goal_en": "Stop as soon as the remaining letter count equals the round target. At target 2, the two remaining letters must differ: AB, BA or \"A B\" succeeds; AA or \"A A\" fails. At targets 0, 1 and 3 only the remaining count matters: even \"AB A\" counts as three. A remaining space alone counts as zero.",
-  "reset": "Reset to the original input each round. Deliver only the current round settings and priority to participants. Use round_settings for the active target_length and deletion_rule. The item-level target_length is the base goal shared by four rounds. Submit the sequence of deletion letters in order.",
+  "rules_en": "An action names one letter A through E. A run consists of two or more adjacent copies of that letter within the same segment. Delete the entire selected run, including all three letters of AAA. When the named letter has multiple eligible runs, select the leftmost or rightmost one as specified by selection_side for this round. The remaining neighbors in that segment meet. If the priority letter has an eligible run, you must select it. Otherwise choose any letter with an eligible run.",
+  "space_rule_en": "A literal ASCII space is a permanent boundary. Letters on opposite sides cannot form a run. Ignore spaces when counting the remaining letters and checking whether the last two letters differ.",
+  "space_example_en": "With priority B and target zero, AABBAA clears with BA, while \"AABB AA\" needs BAA because the two A runs stay separate.",
+  "goal_en": "Stop as soon as the remaining letter count equals the current target. At target 2 the two letters must differ: AB, BA and \"A B\" succeed, while AA and \"A A\" fail. At targets 0, 1 and 3 only the count matters. \"AB A\" and AAA each count as three. A remaining space alone counts as zero.",
+  "reset": "Reset to the original input at the start of each round. Give the participant the current round_settings entry only. Its target_length is the required residual letter count. The item-level target_length is the first-round value. Submit the sequence of deletion letters in order.",
   "items": [
     {
       "id": "SG-001",
-      "input": "AACAEEADDCDDBCCCCBABBABDEEDBBBEE",
-      "target_length": 0,
+      "input": "AAADEEAADCBBCCCCAADDADDDDBEEBBB",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-002",
-      "input": "BCEEEECEEBDDDDBBCCBABBAAABCBDDB",
+      "input": "AEEACEEECBBAABAAEEBCCAABBDDBAADD",
       "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-003",
-      "input": "DDCEECCEAEEEEAADDACBBCCCAABCCB",
-      "target_length": 2,
+      "input": "CCDDABBAAAEEDDACEEBBEEDDBBCCDDCC",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-004",
-      "input": "CBBAACEEEDDAAD CCEECDCCDABBABB",
-      "target_length": 3,
+      "input": "CDDDCCCCCCCCBBEEAADAAD CCBEEB",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-005",
-      "input": "ABEEDDBEEBBBBCCAEECCACCACCADDAAA",
-      "target_length": 0,
+      "input": "AAADDADEEEDEECCBBDDDAADCCBBC",
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-006",
       "input": "AADDBBDCEECBBEAAEEEECCADDAAAECC",
-      "target_length": 1,
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-007",
-      "input": "ACBBCCCEAEEADDAAAAEEAAECDDBB",
+      "input": "EEEEDDBDDBECCAAECCBBDDABBAAAAAE",
       "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-008",
       "input": "EEEEEAADDAACBBEECCAADDBBCAACB",
-      "target_length": 3,
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-009",
       "input": "CCDDCBECCEBCCCAAAADDEEBBAAEE",
-      "target_length": 0,
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-010",
-      "input": "DBBDCCEECCBEEBBBEDDDDDAADAEEA",
-      "target_length": 1,
+      "input": "EBDDBCCCCCEAAEDDEBAACCCABEEB",
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-011",
-      "input": "BBDDDAADCCBBECCCCAAEEBBEDDDA",
+      "input": "AACCBBBBAEEDDCCDDCCBAABECEECECCE",
       "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-012",
       "input": "EBBEEDDDDEEEAABBAAACCBBACCADE",
-      "target_length": 3,
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
@@ -398,668 +518,878 @@
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-014",
       "input": "EACCDDBBCCABBEEAAAACCCCDCCDEE",
-      "target_length": 1,
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-015",
-      "input": "EEDCDDCACCAAADDAAADDAABBBBACEEBB",
-      "target_length": 2,
+      "input": "AACBBCCEEDDEDBBDAADDDCCDAAEEE",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-016",
-      "input": "DCDDCBEEEECBBBBAACCBBEEAAEEDAAD",
+      "input": "BCBBBCEDDDEEECAAACDDAACCCDEBB",
       "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-017",
-      "input": "BBCCEEEEADDAAAAACDBBDAAC DDBBAAEE",
-      "target_length": 0,
+      "input": "EEBEEBBBBACCAA DCCCEEDDBBCBBCAAD",
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-018",
       "input": "CEECCAAADDEEAADDDDBBACCEECABB",
-      "target_length": 1,
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-019",
       "input": "DDBBBDDEEDACCADBAADAADDDDCCDBDEE",
-      "target_length": 2,
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-020",
-      "input": "AAAEEABBBBEEDCCEEEBAABCDDDDCCDD",
-      "target_length": 3,
+      "input": "EEEDDEEEBCCBCCDDAADBBBBCCCEAAAAA",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-021",
       "input": "CCCCEADDAECEECCAACAAEBBDDDBBDE",
-      "target_length": 0,
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-022",
-      "input": "EEBAABBAAAEEAABEEBDDADDBBCCCC",
-      "target_length": 1,
+      "input": "CCCCBBDDBBAADDBBDDAAEEEECCDBDD",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-023",
-      "input": "CCAAABBADDAD AAAEECCAEEADBBDA",
-      "target_length": 2,
+      "input": "AADDEEBAABDCCDBEEEE EECCCCDDCBB",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-024",
-      "input": "DDEEAAACBBBBCDDCDDEACCDDADDEE",
-      "target_length": 3,
+      "input": "ECCCEBBEAAAADAEEADEEBBBBBECCDD",
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-025",
-      "input": "CCAEEAAADDEEBEEBCCAA BBCCCCCCEEDD",
-      "target_length": 0,
+      "input": "AAADDAEEEAACCAECC CCBDDBDDBAAB",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-026",
-      "input": "AAEBBEEECAAACCDCCDACAABBCDDCC",
-      "target_length": 1,
+      "input": "AAEBCCBEDCCCBAABEEEDDADDABBDDE",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-027",
-      "input": "CCCDDCCAA CDCCDCCCDEEEBBBEAAEBE",
-      "target_length": 2,
+      "input": "BDDAABBB AEEECCABBCCEEDCCCAADD",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-028",
       "input": "BCCBEEBBEDDEEDD BBACEEAAAEECCA",
-      "target_length": 3,
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-029",
       "input": "DDDCCAAAAAEEABAABBBAAEEACCCCADCC",
-      "target_length": 0,
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-030",
-      "input": "BBBABBDDCCADD AAADEEEECCDDDAADDA",
-      "target_length": 1,
+      "input": "CCCBBCDDEBBEE BDDAAABDECCEDAAEEE",
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-031",
       "input": "DDCCBBAAABBAAAAD EDDECCEEDDEE",
-      "target_length": 2,
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-032",
       "input": "CCCEBBECCCCDDACCADEDDEBAABBBE",
-      "target_length": 3,
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-033",
       "input": "BAAADDABBBEEAA BCCBDDCCCCEECCDD",
-      "target_length": 0,
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
@@ -1070,316 +1400,416 @@
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-035",
-      "input": "DBABBAAAACCDDDEEDBBACEEBBCCCCC",
+      "input": "DDCCDBBEEECCEEEAADDAACCAAAEBBB",
       "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-036",
-      "input": "EECDDCABBCCCCBAA BBBBDDADDAAEEDD",
-      "target_length": 3,
+      "input": "ACCCCAAEEDDEEBBCCB ADDBBBCCABBAA",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-037",
-      "input": "AEEEEACCAABBEECCBB CCDBBDDDAAEE",
-      "target_length": 0,
+      "input": "DEEEABBAEEEEDEEDBBDCC DADBBDCCAAD",
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-038",
       "input": "DCDDCDBDDBBBAAD AAEEEECCAACCBBEE",
-      "target_length": 1,
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-039",
-      "input": "EBCCBEDCCDDDEAAE AABAADDBBDDDDD",
-      "target_length": 2,
+      "input": "DDEEBBBAACEAAECCC EBBCCEAADDE",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-040",
-      "input": "DDCAACBBECCEEBBBEE CCEEAAADDDDAA",
-      "target_length": 3,
+      "input": "BDDBCCCAACCBBC CCEAAEEDDAADEE",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-041",
       "input": "DDEEEEDCEEEEDDAABBCDDAADCCADDBBA",
-      "target_length": 0,
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-042",
-      "input": "EEDDAABDDDD AAEECCAAEEAAEECBBBBC",
+      "input": "EBBDDAABBDDBBAAAAEEAE ECCCCCEE",
       "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-043",
-      "input": "BBACCEEBEE DDCCAABBDBBDAACCCCAAAA",
-      "target_length": 2,
+      "input": "DDDDDBBDCAAAACC AACCCBBEBBEEE",
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
@@ -1390,220 +1820,290 @@
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-045",
-      "input": "BCCBCAACDDDDCEEAAABBACCBBCEEDD",
-      "target_length": 0,
+      "input": "BBEEAADADDADAAABBACCABBEEBACC",
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         }
       ]
     },
     {
       "id": "SG-046",
-      "input": "EABBADDDD AADCEECEEBBDCEECCCCBBC",
-      "target_length": 1,
+      "input": "DDBBEEEAA AADEEEDBBDBBBACCCEECC",
+      "target_length": 3,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         }
       ]
     },
     {
       "id": "SG-047",
-      "input": "BDDBBBBBAADCEEEEDDDCCDCCCEAA",
+      "input": "CEEEBBDDECAACBAABCCCBDDCCEECCEEE",
       "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 4,
-          "target_length": 2,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-048",
-      "input": "CBBBBBCCDDAA EECEECEEEDCCCCAAD",
-      "target_length": 3,
+      "input": "EAEEADDAEAADDE BBAABBAACCCCBBEE",
+      "target_length": 1,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 2,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "B",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 3,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 3
         },
         {
           "round": 5,
-          "target_length": 3,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         }
       ]
     },
     {
       "id": "SG-049",
-      "input": "DDCCBBEEEBBEAADDAA CCBBBBEEEEEAAE",
-      "target_length": 0,
+      "input": "DDBBDEEDBBBBAEECCA BAAADDCCCCBDDB",
+      "target_length": 2,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 2
         },
         {
           "round": 2,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 3,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "C",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 4,
-          "target_length": 0,
-          "deletion_rule": "pair"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         },
         {
           "round": 5,
-          "target_length": 0,
-          "deletion_rule": "whole"
+          "priority": "A",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         }
       ]
     },
     {
       "id": "SG-050",
       "input": "EECCDDDDEEEEDDCAACABBAAACCBBB",
-      "target_length": 1,
+      "target_length": 0,
       "round_settings": [
         {
           "round": 1,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "left",
+          "target_length": 0
         },
         {
           "round": 2,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "D",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 3
         },
         {
           "round": 3,
-          "target_length": 1,
-          "deletion_rule": "pair"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 2
         },
         {
           "round": 4,
-          "target_length": 1,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 1
         },
         {
           "round": 5,
-          "target_length": 2,
-          "deletion_rule": "whole"
+          "priority": "E",
+          "deletion_rule": "whole",
+          "selection_side": "right",
+          "target_length": 0
         }
       ]
     }
