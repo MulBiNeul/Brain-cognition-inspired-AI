@@ -1,258 +1,261 @@
 {
-  "version": "pilot-1",
-  "rules_en": "ASCII letters A–E; a literal ASCII space is a permanent boundary. Only runs of at least two identical consecutive letters within a segment are removable. Name one letter to remove its entire leftmost eligible run across the tape. Empty segments never erase a boundary. After deletion, neighboring letters in the same segment can merge. Ignore spaces only when matching the target. Stop immediately when the target is reached. If the round's priority letter has an eligible run, you must choose it. Otherwise choose any removable letter.",
+  "version": "pilot-2",
   "rounds_per_item": 5,
-  "reset": "Restart from the item's original input at every round. Use the same target for all five rounds. Return the letters to delete, in order.",
+  "rules_en": "Start from a string over A through E. An action names one letter and deletes its leftmost removable run in full. A removable run is two or more consecutive identical letters in the same segment. After deletion, the letters on either side become neighbors within that segment. If a run of the current priority letter is removable, you must choose it; otherwise you may choose any removable letter.",
+  "space_rule_en": "Some inputs contain one literal ASCII space. It is a permanent boundary: letters on opposite sides never form a run. Inputs without a space are a single segment. Ignore spaces only to count the letters remaining.",
+  "space_example_en": "With priority B and a target of zero, \"AABBAA\" clears in two moves: BA. With \"AABB AA\", deleting B leaves \"AA AA\". The two A runs stay separate, so clearing it takes three moves: BAA.",
+  "goal_en": "Stop as soon as exactly target_length letters remain. Their identities and order are unrestricted. For target_length 0, remove all letters; a remaining space still counts as zero. For example, \"AB A\" has length 3 and \"AA\" is already a success at target_length 2 even though it is removable.",
+  "reset": "Restart from the same original input and target_length in each round. Only the priority changes. Return the letters you delete, in order.",
   "items": [
     {
       "id": "SG-001",
-      "input": "CDDEEBBC CCAABDDBC CCDDAABBCCBBE",
-      "target": "CCCE"
+      "input": "AACCEEBBBAADD AAAEECCDDBBDCCD",
+      "target_length": 0
     },
     {
       "id": "SG-002",
-      "input": "ADDBBAAB DDBBEEEAA CCBAACCCBDDBB",
-      "target": "AB"
+      "input": "DDBBCCDAAEEA EEDDCCCAABBAABEEBCCB",
+      "target_length": 1
     },
     {
       "id": "SG-003",
-      "input": "BBDEDDBBEEAADDEE EEADDAEDDCCEEDDB",
-      "target": "DEEB"
+      "input": "EEDDBBCCBBEEAADDAAEECBBACCBEEB",
+      "target_length": 2
     },
     {
       "id": "SG-004",
-      "input": "AADDECCDDCCAADCCEEEBBD EAAADBBD",
-      "target": "EEDD"
+      "input": "DDBBAACCBDDEECAABEECCCBBAACEE",
+      "target_length": 3
     },
     {
       "id": "SG-005",
-      "input": "DEEEAADDCCD AABBCCEECCAAE DDAAEDDC",
-      "target": "EEC"
+      "input": "ABBACCCAADDEECCCAABBEE BBAADDEECC",
+      "target_length": 0
     },
     {
       "id": "SG-006",
-      "input": "AAEEBBAADADD BBEECCEECCBBDDADDACB",
-      "target": "DACB"
+      "input": "BBAAEEBCEEBBEECCDDEEAACBAAEEACC",
+      "target_length": 1
     },
     {
       "id": "SG-007",
-      "input": "EEDDAACCBBEC BAADDBCA EEDDAABB",
-      "target": "ECCA"
+      "input": "CCAACCEEACCDDACCBBAE DDBBDDEEEAA",
+      "target_length": 2
     },
     {
       "id": "SG-008",
-      "input": "EEDEEAACC AABBCDDCBBD BBDDBBAAE",
-      "target": "DDE"
+      "input": "EECCBBEECADDACCDDAABBEEDDEEAA",
+      "target_length": 3
     },
     {
       "id": "SG-009",
-      "input": "AADDBBCCDDB AABBEECCB CCDDEECAACA",
-      "target": "BBA"
+      "input": "CCDDDBEEBEEAADDD AABBAABBCCDDBBDD",
+      "target_length": 0
     },
     {
       "id": "SG-010",
-      "input": "DDEEBBCCAAC EECDDAACCBBCAADDEEABB",
-      "target": "CA"
+      "input": "BBCCBCCEEDDEAAEAAEE BBCCAADDC",
+      "target_length": 1
     },
     {
       "id": "SG-011",
-      "input": "AABBDDECCAAEECC CCDBBDEE EDDAAEEB",
-      "target": "EEB"
+      "input": "DDAABAAEEBAABBEEBCCAAD EEDDCCBBE",
+      "target_length": 2
     },
     {
       "id": "SG-012",
-      "input": "EDEEAADDCCEDDEAACC BBDECCBBDDCC",
-      "target": "EDDE"
+      "input": "DDAAEBBEDDEEAADACC EECCDDBBCC",
+      "target_length": 3
     },
     {
       "id": "SG-013",
-      "input": "ADEECDDBBCCBBCAAD EEDAABBCCEEDDA",
-      "target": "ADA"
+      "input": "DDBDDDCCAAEEDDAACCBDEEBBEEBBD",
+      "target_length": 0
     },
     {
       "id": "SG-014",
-      "input": "CCAADEECCAACCDDC CEEECEEBBCCDDC",
-      "target": "DCC"
+      "input": "EECCDDAADBBECCAAE BBEECCDDAAA",
+      "target_length": 1
     },
     {
       "id": "SG-015",
-      "input": "CCEEBBCCEEA DDBDDCCBB BEEBCCAABAA",
-      "target": "ABB"
+      "input": "EECADDBBAABBBAABBEEBCCDDCCADDA",
+      "target_length": 2
     },
     {
       "id": "SG-016",
-      "input": "EEBAADDCBBDDDBEEBDCC EECCBBDAAA",
-      "target": "BCDD"
+      "input": "EEAACCDBAACCBBDAAEEDD BBDDCCCE",
+      "target_length": 3
     },
     {
       "id": "SG-017",
-      "input": "CCDDEEBBBCB BBDDEECCAA BAADCCAAD",
-      "target": "CBB"
+      "input": "CDDEEAACCBBAACBBCCDDCC DDBBEEBBCC",
+      "target_length": 0
     },
     {
       "id": "SG-018",
-      "input": "DDCCDDDAEEDCCD DEEAADDAABBCCC",
-      "target": "AD"
+      "input": "BBDEEECCBBAADDCCA EEAACDDCCDDDC",
+      "target_length": 1
     },
     {
       "id": "SG-019",
-      "input": "AAEEBBDDC CCCDBBCC CCDDCCEEDBBBD",
-      "target": "CD"
+      "input": "DDBBEBCCDDBBDDDAAEAAEECCEEBBAAEE",
+      "target_length": 2
     },
     {
       "id": "SG-020",
-      "input": "CCBDDEED DBBDAACCDDBBEEDDCCEEBEE",
-      "target": "BDB"
+      "input": "ACCCBBACCEEDAABDDAAEEDDBBAAEECCA",
+      "target_length": 3
     },
     {
       "id": "SG-021",
-      "input": "AACEEBBBD CCADDADBBCCDD AEEAABBA",
-      "target": "CDD"
+      "input": "BCCCEEAABBDDBBDDABCCBBAAAEEA",
+      "target_length": 0
     },
     {
       "id": "SG-022",
-      "input": "BEEAAACCDEED AADBBAADDEEB DDAABBEE",
-      "target": "BDB"
+      "input": "EECCEECCAABBCDDAABBEEBBADDAB",
+      "target_length": 1
     },
     {
       "id": "SG-023",
-      "input": "BBCBAAEAAC DDCCAACEEC EEBBAADDCC",
-      "target": "CBEC"
+      "input": "DAADDDEECEEEAABBCCDDAADDABBADD",
+      "target_length": 2
     },
     {
       "id": "SG-024",
-      "input": "DDBBEEEDDB CCDDBBDDAAEEAABAABE",
-      "target": "BE"
+      "input": "AADDAACCBBCCEEAABD AADDEEACEEBBC",
+      "target_length": 3
     },
     {
       "id": "SG-025",
-      "input": "DDCCADDECCE EECCBBEEAAD DBBEEAAAB",
-      "target": "ADDB"
+      "input": "DDBBCCEEBEEBCCAADDAAABBAAACCAA",
+      "target_length": 0
     },
     {
       "id": "SG-026",
-      "input": "EEAABBDDBBEBB EEDDDAABBECCCECCA",
-      "target": "EA"
+      "input": "EEAABBDDCEEDDCCAADDAABAABCCBB",
+      "target_length": 1
     },
     {
       "id": "SG-027",
-      "input": "EADDAADDCCEECCA DDBBDDCC AEEAAEED",
-      "target": "EAD"
+      "input": "EEAADDAAECCDDBBAAEBBAAACEEDCCDD",
+      "target_length": 2
     },
     {
       "id": "SG-028",
-      "input": "DDCCBBCCEA AAEDDEAD AAEECAAEEBBCAA",
-      "target": "EAAD"
+      "input": "AABBCCEEDDEACCABBEEAADDCCDDCCAAC",
+      "target_length": 3
     },
     {
       "id": "SG-029",
-      "input": "AACCBBEEBBCDD BBCCEEEB DDEEAABAAB",
-      "target": "CB"
+      "input": "EEDDEEDDAACCDDEEEABBACCEEAACCBB",
+      "target_length": 0
     },
     {
       "id": "SG-030",
-      "input": "EECCCBBDDEDCCD DDEEAADDAADDEABB",
-      "target": "EEA"
+      "input": "EEDDEEBBDDAAEEBBEAACCEDDCCBBA",
+      "target_length": 1
     },
     {
       "id": "SG-031",
-      "input": "AABDDEEABABBDDBBAACCA CCEEDDBDDEE",
-      "target": "BABB"
+      "input": "BBAADCCDDB AADDAABBBCCDCCDEECCA",
+      "target_length": 2
     },
     {
       "id": "SG-032",
-      "input": "BBADAABBBEEACCAAEEDDEEA CCDBBEECC",
-      "target": "ADD"
+      "input": "CBBBEECDDEECCAAEAACCDDB AABBDDBBA",
+      "target_length": 3
     },
     {
       "id": "SG-033",
-      "input": "EECBBCABB DDCCACCE AAEEAADDBBC",
-      "target": "AAEC"
+      "input": "CAABBCDDBBEECCEEADDAAEECCDDAAEEA",
+      "target_length": 0
     },
     {
       "id": "SG-034",
-      "input": "CCBBCCEEAADDC DDADCCEE BBCCDEEDA",
-      "target": "CADA"
+      "input": "BEEEBBCCBBEAABDDEEDCCBBAADDCCEEA",
+      "target_length": 1
     },
     {
       "id": "SG-035",
-      "input": "ACCDDACCAABBBE AAECCCDBBDEEBEE",
-      "target": "EEB"
+      "input": "EEDDAAADAACCDDBBBCCDBBEEDDDCEECC",
+      "target_length": 2
     },
     {
       "id": "SG-036",
-      "input": "BBEEECCEAAEDDE EBBBCCDD EEEBBAAC",
-      "target": "EEC"
+      "input": "EDDAAAEEBDDCCDDCCBBEEEDDBBCCBCE",
+      "target_length": 3
     },
     {
       "id": "SG-037",
-      "input": "CCEEDDCBB BBCEAABBAABBEEBBCCEA",
-      "target": "CCA"
+      "input": "DDBBDDECCEEEBBEEBBAADDEAADDCC",
+      "target_length": 0
     },
     {
       "id": "SG-038",
-      "input": "ECCBBAADDCCA BBDDBBDDEE AAEEADDA",
-      "target": "EA"
+      "input": "EECCDDAAEEAAEECEECAAD BBCCBBDD",
+      "target_length": 1
     },
     {
       "id": "SG-039",
-      "input": "BAADDBBCCAABCD EECCDBBD EEAACCDD",
-      "target": "CDDD"
+      "input": "CBBEEAAB AADDBEECBBCCEECBDDCCEECC",
+      "target_length": 2
     },
     {
       "id": "SG-040",
-      "input": "CDDDAABBCC BBCCEEDDCA AAEEABBA",
-      "target": "CCA"
+      "input": "EEBBDAACCDDAADDBBAAEEAABBCCDBBD",
+      "target_length": 3
     },
     {
       "id": "SG-041",
-      "input": "EEDDCBBC DDCAADCCAEEDDB BBDAACCD",
-      "target": "CDAB"
+      "input": "CCDAADABBBDDBBEEBBEEDDCCBBAABBA",
+      "target_length": 0
     },
     {
       "id": "SG-042",
-      "input": "EEDDAEDAADDBBDDEEDDAAD EBBEECCBBE",
-      "target": "AE"
+      "input": "AACAACCCAACAAEEBBCCAABBDDCEECDDC",
+      "target_length": 1
     },
     {
       "id": "SG-043",
-      "input": "DDAEEBCAAEECCCBBC BEEBDDCEEAAABB",
-      "target": "ABC"
+      "input": "EEBDDCCDDBBDDBBAADDB AABCCAAEEACC",
+      "target_length": 2
     },
     {
       "id": "SG-044",
-      "input": "CCBBEECEE BBAADDCEEC AACCAAEBBDDCC",
-      "target": "CE"
+      "input": "DDAEAACCEEAADDEDDEECCAADDBBE",
+      "target_length": 3
     },
     {
       "id": "SG-045",
-      "input": "BBCCEEBBAABCCB AADDDBEEC CBBAAEECC",
-      "target": "BCC"
+      "input": "CDDEAABBDDEECCEEAAEAABBCCBBC",
+      "target_length": 0
     },
     {
       "id": "SG-046",
-      "input": "CCACCEEADDA DDDAABBEEDDBBCCADEE",
-      "target": "AAD"
+      "input": "DDBBBDDCCBBAAEEDEEDBBCBBDDCCEEB",
+      "target_length": 1
     },
     {
       "id": "SG-047",
-      "input": "EEAABCCBBDDEEBBAACCB BAACCEED",
-      "target": "BD"
+      "input": "EECCBDEECCBBDDBBAABEEBCCCAADD",
+      "target_length": 2
     },
     {
       "id": "SG-048",
-      "input": "DDCCBBEECCABBDDAABEEE BBAACCBAAAB",
-      "target": "AB"
+      "input": "ABDDEEDDAACCBBEEECBBBEEC AACCBBBA",
+      "target_length": 3
     },
     {
       "id": "SG-049",
-      "input": "CEEBBDDEEC CBBAACCDDABBCC EEDDBBAA",
-      "target": "CA"
+      "input": "BBCDDCEECCEEDDCCEEAA EECCAABBCCBB",
+      "target_length": 0
     },
     {
       "id": "SG-050",
-      "input": "BBCCDDAAE DDBCCAAEEEBEE BCCAABAAD",
-      "target": "EBBD"
+      "input": "EEAACBBEEECEEAADDAACCDDBBEEBBCCA",
+      "target_length": 1
     }
   ]
 }
