@@ -1,0 +1,258 @@
+{
+  "version": "pilot-1",
+  "rules_en": "ASCII letters A–E; a literal ASCII space is a permanent boundary. Only runs of at least two identical consecutive letters within a segment are removable. Name one letter to remove its entire leftmost eligible run across the tape. Empty segments never erase a boundary. After deletion, neighboring letters in the same segment can merge. Ignore spaces only when matching the target. Stop immediately when the target is reached. If the round's priority letter has an eligible run, you must choose it. Otherwise choose any removable letter.",
+  "rounds_per_item": 5,
+  "reset": "Restart from the item's original input at every round. Use the same target for all five rounds. Return the letters to delete, in order.",
+  "items": [
+    {
+      "id": "SG-001",
+      "input": "CDDEEBBC CCAABDDBC CCDDAABBCCBBE",
+      "target": "CCCE"
+    },
+    {
+      "id": "SG-002",
+      "input": "ADDBBAAB DDBBEEEAA CCBAACCCBDDBB",
+      "target": "AB"
+    },
+    {
+      "id": "SG-003",
+      "input": "BBDEDDBBEEAADDEE EEADDAEDDCCEEDDB",
+      "target": "DEEB"
+    },
+    {
+      "id": "SG-004",
+      "input": "AADDECCDDCCAADCCEEEBBD EAAADBBD",
+      "target": "EEDD"
+    },
+    {
+      "id": "SG-005",
+      "input": "DEEEAADDCCD AABBCCEECCAAE DDAAEDDC",
+      "target": "EEC"
+    },
+    {
+      "id": "SG-006",
+      "input": "AAEEBBAADADD BBEECCEECCBBDDADDACB",
+      "target": "DACB"
+    },
+    {
+      "id": "SG-007",
+      "input": "EEDDAACCBBEC BAADDBCA EEDDAABB",
+      "target": "ECCA"
+    },
+    {
+      "id": "SG-008",
+      "input": "EEDEEAACC AABBCDDCBBD BBDDBBAAE",
+      "target": "DDE"
+    },
+    {
+      "id": "SG-009",
+      "input": "AADDBBCCDDB AABBEECCB CCDDEECAACA",
+      "target": "BBA"
+    },
+    {
+      "id": "SG-010",
+      "input": "DDEEBBCCAAC EECDDAACCBBCAADDEEABB",
+      "target": "CA"
+    },
+    {
+      "id": "SG-011",
+      "input": "AABBDDECCAAEECC CCDBBDEE EDDAAEEB",
+      "target": "EEB"
+    },
+    {
+      "id": "SG-012",
+      "input": "EDEEAADDCCEDDEAACC BBDECCBBDDCC",
+      "target": "EDDE"
+    },
+    {
+      "id": "SG-013",
+      "input": "ADEECDDBBCCBBCAAD EEDAABBCCEEDDA",
+      "target": "ADA"
+    },
+    {
+      "id": "SG-014",
+      "input": "CCAADEECCAACCDDC CEEECEEBBCCDDC",
+      "target": "DCC"
+    },
+    {
+      "id": "SG-015",
+      "input": "CCEEBBCCEEA DDBDDCCBB BEEBCCAABAA",
+      "target": "ABB"
+    },
+    {
+      "id": "SG-016",
+      "input": "EEBAADDCBBDDDBEEBDCC EECCBBDAAA",
+      "target": "BCDD"
+    },
+    {
+      "id": "SG-017",
+      "input": "CCDDEEBBBCB BBDDEECCAA BAADCCAAD",
+      "target": "CBB"
+    },
+    {
+      "id": "SG-018",
+      "input": "DDCCDDDAEEDCCD DEEAADDAABBCCC",
+      "target": "AD"
+    },
+    {
+      "id": "SG-019",
+      "input": "AAEEBBDDC CCCDBBCC CCDDCCEEDBBBD",
+      "target": "CD"
+    },
+    {
+      "id": "SG-020",
+      "input": "CCBDDEED DBBDAACCDDBBEEDDCCEEBEE",
+      "target": "BDB"
+    },
+    {
+      "id": "SG-021",
+      "input": "AACEEBBBD CCADDADBBCCDD AEEAABBA",
+      "target": "CDD"
+    },
+    {
+      "id": "SG-022",
+      "input": "BEEAAACCDEED AADBBAADDEEB DDAABBEE",
+      "target": "BDB"
+    },
+    {
+      "id": "SG-023",
+      "input": "BBCBAAEAAC DDCCAACEEC EEBBAADDCC",
+      "target": "CBEC"
+    },
+    {
+      "id": "SG-024",
+      "input": "DDBBEEEDDB CCDDBBDDAAEEAABAABE",
+      "target": "BE"
+    },
+    {
+      "id": "SG-025",
+      "input": "DDCCADDECCE EECCBBEEAAD DBBEEAAAB",
+      "target": "ADDB"
+    },
+    {
+      "id": "SG-026",
+      "input": "EEAABBDDBBEBB EEDDDAABBECCCECCA",
+      "target": "EA"
+    },
+    {
+      "id": "SG-027",
+      "input": "EADDAADDCCEECCA DDBBDDCC AEEAAEED",
+      "target": "EAD"
+    },
+    {
+      "id": "SG-028",
+      "input": "DDCCBBCCEA AAEDDEAD AAEECAAEEBBCAA",
+      "target": "EAAD"
+    },
+    {
+      "id": "SG-029",
+      "input": "AACCBBEEBBCDD BBCCEEEB DDEEAABAAB",
+      "target": "CB"
+    },
+    {
+      "id": "SG-030",
+      "input": "EECCCBBDDEDCCD DDEEAADDAADDEABB",
+      "target": "EEA"
+    },
+    {
+      "id": "SG-031",
+      "input": "AABDDEEABABBDDBBAACCA CCEEDDBDDEE",
+      "target": "BABB"
+    },
+    {
+      "id": "SG-032",
+      "input": "BBADAABBBEEACCAAEEDDEEA CCDBBEECC",
+      "target": "ADD"
+    },
+    {
+      "id": "SG-033",
+      "input": "EECBBCABB DDCCACCE AAEEAADDBBC",
+      "target": "AAEC"
+    },
+    {
+      "id": "SG-034",
+      "input": "CCBBCCEEAADDC DDADCCEE BBCCDEEDA",
+      "target": "CADA"
+    },
+    {
+      "id": "SG-035",
+      "input": "ACCDDACCAABBBE AAECCCDBBDEEBEE",
+      "target": "EEB"
+    },
+    {
+      "id": "SG-036",
+      "input": "BBEEECCEAAEDDE EBBBCCDD EEEBBAAC",
+      "target": "EEC"
+    },
+    {
+      "id": "SG-037",
+      "input": "CCEEDDCBB BBCEAABBAABBEEBBCCEA",
+      "target": "CCA"
+    },
+    {
+      "id": "SG-038",
+      "input": "ECCBBAADDCCA BBDDBBDDEE AAEEADDA",
+      "target": "EA"
+    },
+    {
+      "id": "SG-039",
+      "input": "BAADDBBCCAABCD EECCDBBD EEAACCDD",
+      "target": "CDDD"
+    },
+    {
+      "id": "SG-040",
+      "input": "CDDDAABBCC BBCCEEDDCA AAEEABBA",
+      "target": "CCA"
+    },
+    {
+      "id": "SG-041",
+      "input": "EEDDCBBC DDCAADCCAEEDDB BBDAACCD",
+      "target": "CDAB"
+    },
+    {
+      "id": "SG-042",
+      "input": "EEDDAEDAADDBBDDEEDDAAD EBBEECCBBE",
+      "target": "AE"
+    },
+    {
+      "id": "SG-043",
+      "input": "DDAEEBCAAEECCCBBC BEEBDDCEEAAABB",
+      "target": "ABC"
+    },
+    {
+      "id": "SG-044",
+      "input": "CCBBEECEE BBAADDCEEC AACCAAEBBDDCC",
+      "target": "CE"
+    },
+    {
+      "id": "SG-045",
+      "input": "BBCCEEBBAABCCB AADDDBEEC CBBAAEECC",
+      "target": "BCC"
+    },
+    {
+      "id": "SG-046",
+      "input": "CCACCEEADDA DDDAABBEEDDBBCCADEE",
+      "target": "AAD"
+    },
+    {
+      "id": "SG-047",
+      "input": "EEAABCCBBDDEEBBAACCB BAACCEED",
+      "target": "BD"
+    },
+    {
+      "id": "SG-048",
+      "input": "DDCCBBEECCABBDDAABEEE BBAACCBAAAB",
+      "target": "AB"
+    },
+    {
+      "id": "SG-049",
+      "input": "CEEBBDDEEC CBBAACCDDABBCC EEDDBBAA",
+      "target": "CA"
+    },
+    {
+      "id": "SG-050",
+      "input": "BBCCDDAAE DDBCCAAEEEBEE BCCAABAAD",
+      "target": "EBBD"
+    }
+  ]
+}

@@ -1,0 +1,4425 @@
+{
+  "version": "pilot-1",
+  "evaluator_notes": "Each action index is one-based. A previous-priority match requires the old and new priority letters to be simultaneously removable at the submitted state and the action to select the old letter. After a priority violation, continue replaying physically legal actions. Stop at the first physically illegal action or on reaching the target. Unique valid answers are not assumed. Deliver only the applicable round priority to the participant if the study discloses rules; this file is for the evaluator.",
+  "items": [
+    {
+      "id": "SG-001",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBDECCADBCDA",
+          "n_valid_answers": 3459
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCDBADBDABE",
+          "n_valid_answers": 448
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AADEBCCDBCDBB",
+          "n_valid_answers": 24935
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDDEBCCABCABB",
+          "n_valid_answers": 6843
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EDBCCADBCDABB",
+          "n_valid_answers": 142075
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            10
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-002",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCDABDBEADBA",
+          "n_valid_answers": 5932
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBBADDEACACBD",
+          "n_valid_answers": 2520
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDABBEACABC",
+          "n_valid_answers": 1386
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAADBDBECDBC",
+          "n_valid_answers": 630
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EDABDBACADBC",
+          "n_valid_answers": 30910
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            12
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-003",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEEEBDBADDADCD",
+          "n_valid_answers": 3702
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "ABDBDEDAEDCD",
+          "n_valid_answers": 15520
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDDDBBEAEAEC",
+          "n_valid_answers": 506
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBDEDAEDAEDCD",
+          "n_valid_answers": 6682
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CBDBEDAEDAEDD",
+          "n_valid_answers": 44708
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            8
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "min_over_all_previous_solutions": 5,
+          "max_over_all_previous_solutions": 5
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-004",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCCADDAEBDAB",
+          "n_valid_answers": 2403
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBADCDCACEDA",
+          "n_valid_answers": 4840
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDACACEBDAB",
+          "n_valid_answers": 420
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAADCDCCEBDB",
+          "n_valid_answers": 1095
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EADCDCACBDAB",
+          "n_valid_answers": 29215
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            9
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-005",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEACDABCADAD",
+          "n_valid_answers": 15378
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDEACDABCECAA",
+          "n_valid_answers": 6510
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAAAECDBCECDD",
+          "n_valid_answers": 2925
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCCEADABEADAD",
+          "n_valid_answers": 1611
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BEACDACECADAD",
+          "n_valid_answers": 217115
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            7
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-006",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCAEBADBEBDDA",
+          "n_valid_answers": 30851
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBBAEADECECDDA",
+          "n_valid_answers": 9364
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDAEBABECECBA",
+          "n_valid_answers": 23590
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAEBDBECCBDDAE",
+          "n_valid_answers": 29880
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEEABADBCBDDA",
+          "n_valid_answers": 3083
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            13
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-007",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEDACBADBDAB",
+          "n_valid_answers": 11600
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AAAEDCBDBEDB",
+          "n_valid_answers": 3098
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDEACBABEAB",
+          "n_valid_answers": 3098
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBEDAADBCEDA",
+          "n_valid_answers": 3892
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CEDABADBEDAB",
+          "n_valid_answers": 39556
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            8
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-008",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CEEAABDCBBDBA",
+          "n_valid_answers": 47460
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDEEACABCBBA",
+          "n_valid_answers": 23940
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBBBEEACADCDA",
+          "n_valid_answers": 6300
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEACABDCBBDBA",
+          "n_valid_answers": 45153
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AAAEECBDCBBDB",
+          "n_valid_answers": 12697
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            8
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-009",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDDABCABECCEAC",
+          "n_valid_answers": 5923
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCADBDABEDACE",
+          "n_valid_answers": 2040
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEADBCDABCCDAC",
+          "n_valid_answers": 22110
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBADCDAECCDEAC",
+          "n_valid_answers": 90599
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AAADBCDBECCDEC",
+          "n_valid_answers": 12795
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            13
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-010",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEEDBCADABCADB",
+          "n_valid_answers": 30524
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDEBCAEABCAEB",
+          "n_valid_answers": 31106
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAADEBCEDCBDEB",
+          "n_valid_answers": 18720
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCDEBAEDABCADEB",
+          "n_valid_answers": 241360
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBBDECAEDACADE",
+          "n_valid_answers": 17610
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-011",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEEABDCACCBDDA",
+          "n_valid_answers": 48888
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDABCEACCBDEEA",
+          "n_valid_answers": 39550
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAABDECCBDEED",
+          "n_valid_answers": 3781
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCCABDEABDEDEA",
+          "n_valid_answers": 29799
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBADCEACCDEDEA",
+          "n_valid_answers": 196020
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-012",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EDACDEACBCBDC",
+          "n_valid_answers": 27688
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDEACEACBCBC",
+          "n_valid_answers": 9849
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AADECDECBCBDC",
+          "n_valid_answers": 11095
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCCCEDADEABBD",
+          "n_valid_answers": 2520
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBEDACDEACCDC",
+          "n_valid_answers": 20312
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            6
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        }
+      ]
+    },
+    {
+      "id": "SG-013",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAEDBBCDEBCDE",
+          "n_valid_answers": 53380
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEEDBBCADABDC",
+          "n_valid_answers": 9059
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBBEDCADEACDE",
+          "n_valid_answers": 6752
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDEBBCADEABCE",
+          "n_valid_answers": 15848
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CCEDBCADEABDE",
+          "n_valid_answers": 10854
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            8
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-014",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDCAECACBCEE",
+          "n_valid_answers": 1752
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEECACCDACBCD",
+          "n_valid_answers": 471
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCCAEDECAEBD",
+          "n_valid_answers": 1432
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AACEDCBDCEE",
+          "n_valid_answers": 491
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BCAECADCDCEE",
+          "n_valid_answers": 14043
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4,
+            9
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 5
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-015",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBCECEDDCEBCAA",
+          "n_valid_answers": 39960
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCCEBEDBDEBAA",
+          "n_valid_answers": 4776
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AACEBCEDDBCEBC",
+          "n_valid_answers": 52809
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDCEBCEBCEBCAA",
+          "n_valid_answers": 37483
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEECBCDDBCBCAA",
+          "n_valid_answers": 25011
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-016",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCEADBDEBEBA",
+          "n_valid_answers": 8802
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDEAEBCECBA",
+          "n_valid_answers": 2268
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBEADDEBCECA",
+          "n_valid_answers": 2268
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEEADBDBCCBA",
+          "n_valid_answers": 1932
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AAEDBDEBCECB",
+          "n_valid_answers": 8802
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            8
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-017",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDCEBBCAACADE",
+          "n_valid_answers": 19440
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EECDBBDCAACAD",
+          "n_valid_answers": 24284
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCDEBBDEAAAD",
+          "n_valid_answers": 12600
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAACDEBBDECCD",
+          "n_valid_answers": 11040
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBCDEDECAACAD",
+          "n_valid_answers": 24284
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            12
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-018",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDDCECDEABC",
+          "n_valid_answers": 420
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEDCDCDDABC",
+          "n_valid_answers": 487
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCDEDEDAB",
+          "n_valid_answers": 657
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AADCDECDDEBC",
+          "n_valid_answers": 3595
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BDCDECDEDAC",
+          "n_valid_answers": 16822
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            7
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-019",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDAEBCBCEBDC",
+          "n_valid_answers": 5040
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCCAEBDBDEBD",
+          "n_valid_answers": 2055
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEABDCBCCDCBD",
+          "n_valid_answers": 15120
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBBAEDCCCDCED",
+          "n_valid_answers": 8607
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AEBDCBCCDCEBD",
+          "n_valid_answers": 93835
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-020",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCCDEBDADBEDEE",
+          "n_valid_answers": 6493
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDCEBDACBECEE",
+          "n_valid_answers": 6705
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBCDEDACDEDCEE",
+          "n_valid_answers": 34686
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEEECDACDDBC",
+          "n_valid_answers": 12
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "ACDEBDCDBEDCEE",
+          "n_valid_answers": 201925
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            7
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        }
+      ]
+    },
+    {
+      "id": "SG-021",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEABCDABDCBA",
+          "n_valid_answers": 5869
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AAEBCDABEBADC",
+          "n_valid_answers": 4320
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDAEBCABCEBA",
+          "n_valid_answers": 17920
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBBAECDADCEA",
+          "n_valid_answers": 1949
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CCAEBDADBEBA",
+          "n_valid_answers": 4798
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            7,
+            11
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-022",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAAAECEDDBEDBE",
+          "n_valid_answers": 4050
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEEEACDABDADAB",
+          "n_valid_answers": 6900
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBEACEDADAEDAE",
+          "n_valid_answers": 97368
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDEAEDCABAEABE",
+          "n_valid_answers": 31020
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CEAEDABDAEDABE",
+          "n_valid_answers": 581631
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            6
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-023",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAAABDECEBDC",
+          "n_valid_answers": 1260
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBAADCAECEADC",
+          "n_valid_answers": 57885
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEBAADCACBADC",
+          "n_valid_answers": 65160
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCBAADAECEBAD",
+          "n_valid_answers": 18900
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DDBAACAECEBAC",
+          "n_valid_answers": 57885
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            9
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-024",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAADBEDCDBDEB",
+          "n_valid_answers": 3407
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEDBDCDBDAAB",
+          "n_valid_answers": 2490
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBDEDCAEAABD",
+          "n_valid_answers": 2078
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDDDBECBAEAAB",
+          "n_valid_answers": 971
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CDBEDDBDAEAAB",
+          "n_valid_answers": 43133
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        }
+      ]
+    },
+    {
+      "id": "SG-025",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDCCEECBEABEA",
+          "n_valid_answers": 41808
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCDDEEBEABEA",
+          "n_valid_answers": 8937
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEEDCDCECBABA",
+          "n_valid_answers": 3780
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBDCDCEECEAEA",
+          "n_valid_answers": 57960
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AADCDCEECBEBE",
+          "n_valid_answers": 34580
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            8
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-026",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEABDBBABCEDC",
+          "n_valid_answers": 11550
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDEABBEABCEC",
+          "n_valid_answers": 12280
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAEBDBBEDBCEC",
+          "n_valid_answers": 39245
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCEABDBBEDABE",
+          "n_valid_answers": 36414
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBBBEADEDACEC",
+          "n_valid_answers": 3411
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-027",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDDDAECBCEAE",
+          "n_valid_answers": 855
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEEDADCDBDCA",
+          "n_valid_answers": 1037
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCDAEDDBDEAE",
+          "n_valid_answers": 2459
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AADCECADBDCE",
+          "n_valid_answers": 2814
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BDADECDCEAE",
+          "n_valid_answers": 19649
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            7
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-028",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAAADCBCDEEEBC",
+          "n_valid_answers": 4280
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBDCADEAEAECA",
+          "n_valid_answers": 16130
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEDCBCAAABDECA",
+          "n_valid_answers": 20987
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCDBAAEAEBCDEA",
+          "n_valid_answers": 40040
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DDCBCAEAEAEBCA",
+          "n_valid_answers": 32580
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            12
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-029",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCABEBDBEDEAAB",
+          "n_valid_answers": 42075
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBBACEDCEEAABD",
+          "n_valid_answers": 10080
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDACBEBBCEEAAB",
+          "n_valid_answers": 43443
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAACBEBDBCEDEB",
+          "n_valid_answers": 21735
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEEACBDBCDAAB",
+          "n_valid_answers": 2475
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            13
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-030",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCEBDDDEADADB",
+          "n_valid_answers": 12419
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDDECBCDEAB",
+          "n_valid_answers": 162
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBECDCDDEADAD",
+          "n_valid_answers": 8244
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EECBDCDDADADB",
+          "n_valid_answers": 14725
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AAECBDCDDEDB",
+          "n_valid_answers": 4287
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4,
+            9
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 5
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-031",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBADEDCACEDDE",
+          "n_valid_answers": 76725
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCADEBDBAEDDE",
+          "n_valid_answers": 25290
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AADEBDBCACEDDE",
+          "n_valid_answers": 49140
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDDDAEBCACEE",
+          "n_valid_answers": 1428
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEEADBDBCACDD",
+          "n_valid_answers": 11541
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            9
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        }
+      ]
+    },
+    {
+      "id": "SG-032",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBAECEDEACEC",
+          "n_valid_answers": 3970
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AABBECEDEACBEC",
+          "n_valid_answers": 36120
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCBABEEDEABE",
+          "n_valid_answers": 3605
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEEEBABCDACBC",
+          "n_valid_answers": 3572
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DBABECEACBEC",
+          "n_valid_answers": 78285
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            10
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        }
+      ]
+    },
+    {
+      "id": "SG-033",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAEBCBDCCEDB",
+          "n_valid_answers": 23940
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBBECDCCAEAD",
+          "n_valid_answers": 6860
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEBCBDCCADB",
+          "n_valid_answers": 4788
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCEBCBDAEADB",
+          "n_valid_answers": 6860
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DDEBCBCCAEAB",
+          "n_valid_answers": 21546
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            5
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-034",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDCBCEACEBEDC",
+          "n_valid_answers": 7450
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCCBEADDEBED",
+          "n_valid_answers": 2520
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEECBCADDCBCD",
+          "n_valid_answers": 7450
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBCEADDCECED",
+          "n_valid_answers": 7220
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "ACBCEDDCEBCED",
+          "n_valid_answers": 54950
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            12
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-035",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AACDACBCBEDE",
+          "n_valid_answers": 3675
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBCDACAACEDE",
+          "n_valid_answers": 17934
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EECDACABACBD",
+          "n_valid_answers": 8918
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCCDABABEDE",
+          "n_valid_answers": 486
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DCACABACEBDE",
+          "n_valid_answers": 20211
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            5
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-036",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDBECEABCEBA",
+          "n_valid_answers": 5400
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCBAEDBDEBA",
+          "n_valid_answers": 1260
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEBCAEDBCDBA",
+          "n_valid_answers": 7560
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBBECAEDCDEA",
+          "n_valid_answers": 1994
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AABECEDBCDEB",
+          "n_valid_answers": 6660
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            6
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-037",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBBBCEDACE",
+          "n_valid_answers": 97
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AACEDBBBBCE",
+          "n_valid_answers": 1681
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCEDBBABABBE",
+          "n_valid_answers": 3898
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EECBBABABCED",
+          "n_valid_answers": 1904
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DCEBBABABBCE",
+          "n_valid_answers": 9164
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "min_over_all_previous_solutions": 5,
+          "max_over_all_previous_solutions": 5
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            11
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-038",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBCADCDEAEDA",
+          "n_valid_answers": 5874
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AACBDBDBDEEDAC",
+          "n_valid_answers": 25137
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCBADBDBDEAEDA",
+          "n_valid_answers": 23674
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EECBADCBDBDDA",
+          "n_valid_answers": 9527
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DDDDCBACBEAEA",
+          "n_valid_answers": 4213
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            13
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-039",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBADCABECDEAC",
+          "n_valid_answers": 21186
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCADABEBDEA",
+          "n_valid_answers": 10656
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAADCBECBDEC",
+          "n_valid_answers": 10296
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDACABECEACB",
+          "n_valid_answers": 5715
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEADCABCBDAC",
+          "n_valid_answers": 40615
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            7
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-040",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBDCACEDAEA",
+          "n_valid_answers": 2633
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AADCBBEEBACD",
+          "n_valid_answers": 3019
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCDABBEDAEBA",
+          "n_valid_answers": 10035
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEDACBBCDBA",
+          "n_valid_answers": 1296
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DDACBBCEAEBA",
+          "n_valid_answers": 1433
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            10
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-041",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCEDBCDAEDBAD",
+          "n_valid_answers": 12600
+        },
+        {
+          "round": 2,
+          "priority": "D",
+          "one_valid_answer": "DDDEBCACEACDB",
+          "n_valid_answers": 6804
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBEDCDACEDACD",
+          "n_valid_answers": 30800
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEDBCDACDBACD",
+          "n_valid_answers": 29260
+        },
+        {
+          "round": 5,
+          "priority": "A",
+          "one_valid_answer": "AAEDBCDCEDBCD",
+          "n_valid_answers": 38720
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            6
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            12
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-042",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAEDDBDEDBECB",
+          "n_valid_answers": 8628
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEEDADBADBCBE",
+          "n_valid_answers": 1329
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBBEDADEADEC",
+          "n_valid_answers": 1590
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDDDEABEADBCBE",
+          "n_valid_answers": 2750
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CEDADBDEADBEB",
+          "n_valid_answers": 46906
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4,
+            10
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 5
+        }
+      ]
+    },
+    {
+      "id": "SG-043",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AADEEBCEBDEB",
+          "n_valid_answers": 15415
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEEEDABCBDAB",
+          "n_valid_answers": 2240
+        },
+        {
+          "round": 3,
+          "priority": "B",
+          "one_valid_answer": "BBDEAECEBDEA",
+          "n_valid_answers": 1908
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDEAEBCEBEAB",
+          "n_valid_answers": 14680
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CDEAEBCEBDEAB",
+          "n_valid_answers": 49500
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            9
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-044",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "D",
+          "one_valid_answer": "DDCBEEBAECACABC",
+          "n_valid_answers": 266784
+        },
+        {
+          "round": 2,
+          "priority": "E",
+          "one_valid_answer": "EEECBBADCACABDC",
+          "n_valid_answers": 117282
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCBEEBADECABD",
+          "n_valid_answers": 25200
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAACBEEBDECCBDC",
+          "n_valid_answers": 109626
+        },
+        {
+          "round": 5,
+          "priority": "B",
+          "one_valid_answer": "BBBCEEADECACADC",
+          "n_valid_answers": 44011
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            11
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-045",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBCEACBADEACE",
+          "n_valid_answers": 11200
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AAABCECBDEBCE",
+          "n_valid_answers": 4427
+        },
+        {
+          "round": 3,
+          "priority": "C",
+          "one_valid_answer": "CCCBEBABADEBAE",
+          "n_valid_answers": 20468
+        },
+        {
+          "round": 4,
+          "priority": "E",
+          "one_valid_answer": "EEEBCBACBADBCA",
+          "n_valid_answers": 9379
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DBCEBACBAEBACE",
+          "n_valid_answers": 292397
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            8
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "C",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "E",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-046",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEECCADDABDBC",
+          "n_valid_answers": 8037
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "ACCEADDBEDBCE",
+          "n_valid_answers": 67200
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDCCAEABEBCE",
+          "n_valid_answers": 12022
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BBCCEADDAEDCE",
+          "n_valid_answers": 34142
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CCCEADDABEDBE",
+          "n_valid_answers": 6359
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            5
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-047",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "A",
+          "one_valid_answer": "AAAECBDECBCE",
+          "n_valid_answers": 4540
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBEACDEACBACE",
+          "n_valid_answers": 16500
+        },
+        {
+          "round": 3,
+          "priority": "E",
+          "one_valid_answer": "EEEACBDACBAC",
+          "n_valid_answers": 3623
+        },
+        {
+          "round": 4,
+          "priority": "C",
+          "one_valid_answer": "CCCEABDEABAE",
+          "n_valid_answers": 2935
+        },
+        {
+          "round": 5,
+          "priority": "D",
+          "one_valid_answer": "DEACBEACBACE",
+          "n_valid_answers": 75112
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "A",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            10
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "E",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "C",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        }
+      ]
+    },
+    {
+      "id": "SG-048",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "B",
+          "one_valid_answer": "BBBDCECADEAABC",
+          "n_valid_answers": 17010
+        },
+        {
+          "round": 2,
+          "priority": "C",
+          "one_valid_answer": "CCCDBEBADEBAAB",
+          "n_valid_answers": 16010
+        },
+        {
+          "round": 3,
+          "priority": "A",
+          "one_valid_answer": "AAADCBECBDEBCB",
+          "n_valid_answers": 38544
+        },
+        {
+          "round": 4,
+          "priority": "D",
+          "one_valid_answer": "DDCBECABEACBA",
+          "n_valid_answers": 8786
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEDCBCBADBACAB",
+          "n_valid_answers": 60488
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            13
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "C",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "D",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-049",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "C",
+          "one_valid_answer": "CCEBDECBADBEDBA",
+          "n_valid_answers": 150385
+        },
+        {
+          "round": 2,
+          "priority": "B",
+          "one_valid_answer": "BBBBEDECCADCEDA",
+          "n_valid_answers": 16650
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDDEBECACBBCEBA",
+          "n_valid_answers": 29505
+        },
+        {
+          "round": 4,
+          "priority": "A",
+          "one_valid_answer": "AAEBDECCBDBCEDB",
+          "n_valid_answers": 479769
+        },
+        {
+          "round": 5,
+          "priority": "E",
+          "one_valid_answer": "EEEBDCBCADBCDBA",
+          "n_valid_answers": 120382
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "C",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            7
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "B",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3
+          ],
+          "min_over_all_previous_solutions": 3,
+          "max_over_all_previous_solutions": 3
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "A",
+          "new_priority": "E",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    },
+    {
+      "id": "SG-050",
+      "rounds": [
+        {
+          "round": 1,
+          "priority": "E",
+          "one_valid_answer": "EEBCDADCABCAA",
+          "n_valid_answers": 43725
+        },
+        {
+          "round": 2,
+          "priority": "A",
+          "one_valid_answer": "AAAABCDDCEBEC",
+          "n_valid_answers": 4968
+        },
+        {
+          "round": 3,
+          "priority": "D",
+          "one_valid_answer": "DDBCACAEBECAA",
+          "n_valid_answers": 41430
+        },
+        {
+          "round": 4,
+          "priority": "B",
+          "one_valid_answer": "BCDADCAEBEAAC",
+          "n_valid_answers": 18900
+        },
+        {
+          "round": 5,
+          "priority": "C",
+          "one_valid_answer": "CCCBDADAEBEAA",
+          "n_valid_answers": 14310
+        }
+      ],
+      "transitions": [
+        {
+          "from_round": 1,
+          "to_round": 2,
+          "old_priority": "E",
+          "new_priority": "A",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 2,
+          "to_round": 3,
+          "old_priority": "A",
+          "new_priority": "D",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "min_over_all_previous_solutions": 4,
+          "max_over_all_previous_solutions": 4
+        },
+        {
+          "from_round": 3,
+          "to_round": 4,
+          "old_priority": "D",
+          "new_priority": "B",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            2
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        },
+        {
+          "from_round": 4,
+          "to_round": 5,
+          "old_priority": "B",
+          "new_priority": "C",
+          "old_priority_matches_on_replayed_reference": [
+            1,
+            9
+          ],
+          "min_over_all_previous_solutions": 2,
+          "max_over_all_previous_solutions": 2
+        }
+      ]
+    }
+  ]
+}
