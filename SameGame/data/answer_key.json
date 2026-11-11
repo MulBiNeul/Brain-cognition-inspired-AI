@@ -1,0 +1,1254 @@
+{
+  "items": [
+    {
+      "id": "SG-001",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "B"
+        },
+        {
+          "round": 2,
+          "answer": "BC"
+        },
+        {
+          "round": 3,
+          "answer": "BCE"
+        },
+        {
+          "round": 4,
+          "answer": "AD"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-002",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "DC"
+        },
+        {
+          "round": 2,
+          "answer": "B"
+        },
+        {
+          "round": 3,
+          "answer": "DEA"
+        },
+        {
+          "round": 4,
+          "answer": "AC"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-003",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "E"
+        },
+        {
+          "round": 2,
+          "answer": "EBA"
+        },
+        {
+          "round": 3,
+          "answer": "CA"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "DB"
+        }
+      ]
+    },
+    {
+      "id": "SG-004",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "CDC"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "C"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "BE"
+        }
+      ]
+    },
+    {
+      "id": "SG-005",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "BCA"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "A"
+        },
+        {
+          "round": 5,
+          "answer": "D B"
+        }
+      ]
+    },
+    {
+      "id": "SG-006",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A"
+        },
+        {
+          "round": 2,
+          "answer": "EB"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "BDB"
+        },
+        {
+          "round": 5,
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "id": "SG-007",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "D B"
+        },
+        {
+          "round": 3,
+          "answer": "EB D"
+        },
+        {
+          "round": 4,
+          "answer": "B C"
+        },
+        {
+          "round": 5,
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "id": "SG-008",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A A"
+        },
+        {
+          "round": 2,
+          "answer": "AEA"
+        },
+        {
+          "round": 3,
+          "answer": "B"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "AD"
+        }
+      ]
+    },
+    {
+      "id": "SG-009",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "DE"
+        },
+        {
+          "round": 4,
+          "answer": "A"
+        },
+        {
+          "round": 5,
+          "answer": "ADC"
+        }
+      ]
+    },
+    {
+      "id": "SG-010",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "AB A"
+        },
+        {
+          "round": 2,
+          "answer": "B D"
+        },
+        {
+          "round": 3,
+          "answer": "B CD"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "id": "SG-011",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "C C"
+        },
+        {
+          "round": 2,
+          "answer": "B"
+        },
+        {
+          "round": 3,
+          "answer": "CA"
+        },
+        {
+          "round": 4,
+          "answer": "A AE"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-012",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "C"
+        },
+        {
+          "round": 3,
+          "answer": "BCA"
+        },
+        {
+          "round": 4,
+          "answer": "BA"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-013",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "AD"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "A"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "EBA"
+        }
+      ]
+    },
+    {
+      "id": "SG-014",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A A"
+        },
+        {
+          "round": 2,
+          "answer": "CD C"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "CE C"
+        },
+        {
+          "round": 5,
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "id": "SG-015",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "B"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "C"
+        },
+        {
+          "round": 4,
+          "answer": "BA"
+        },
+        {
+          "round": 5,
+          "answer": "ED E"
+        }
+      ]
+    },
+    {
+      "id": "SG-016",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "DAE"
+        },
+        {
+          "round": 2,
+          "answer": "A"
+        },
+        {
+          "round": 3,
+          "answer": "CB"
+        },
+        {
+          "round": 4,
+          "answer": "D"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-017",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "D"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "BDE"
+        },
+        {
+          "round": 4,
+          "answer": "CB"
+        },
+        {
+          "round": 5,
+          "answer": "EAE"
+        }
+      ]
+    },
+    {
+      "id": "SG-018",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "EA"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "DBA"
+        },
+        {
+          "round": 4,
+          "answer": "A"
+        },
+        {
+          "round": 5,
+          "answer": "DAC"
+        }
+      ]
+    },
+    {
+      "id": "SG-019",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "ECB"
+        },
+        {
+          "round": 2,
+          "answer": "B"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "AC"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-020",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "ECB"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "EB"
+        },
+        {
+          "round": 4,
+          "answer": "B"
+        },
+        {
+          "round": 5,
+          "answer": "EAC"
+        }
+      ]
+    },
+    {
+      "id": "SG-021",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "C"
+        },
+        {
+          "round": 3,
+          "answer": "CB"
+        },
+        {
+          "round": 4,
+          "answer": "A"
+        },
+        {
+          "round": 5,
+          "answer": "ECE"
+        }
+      ]
+    },
+    {
+      "id": "SG-022",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "B"
+        },
+        {
+          "round": 2,
+          "answer": "DEA"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "BED"
+        },
+        {
+          "round": 5,
+          "answer": "AB"
+        }
+      ]
+    },
+    {
+      "id": "SG-023",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "B E"
+        },
+        {
+          "round": 3,
+          "answer": "C"
+        },
+        {
+          "round": 4,
+          "answer": "AEC"
+        },
+        {
+          "round": 5,
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "id": "SG-024",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "BCD"
+        },
+        {
+          "round": 3,
+          "answer": "D"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "B E"
+        }
+      ]
+    },
+    {
+      "id": "SG-025",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "BCB"
+        },
+        {
+          "round": 2,
+          "answer": "BC"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "AC C"
+        },
+        {
+          "round": 5,
+          "answer": "D"
+        }
+      ]
+    },
+    {
+      "id": "SG-026",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "D C"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "D A"
+        },
+        {
+          "round": 4,
+          "answer": "B"
+        },
+        {
+          "round": 5,
+          "answer": "D EA"
+        }
+      ]
+    },
+    {
+      "id": "SG-027",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "BCE"
+        },
+        {
+          "round": 2,
+          "answer": "AC"
+        },
+        {
+          "round": 3,
+          "answer": "D"
+        },
+        {
+          "round": 4,
+          "answer": "CB"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-028",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "B"
+        },
+        {
+          "round": 2,
+          "answer": "E EC"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "D C"
+        },
+        {
+          "round": 5,
+          "answer": "D AE"
+        }
+      ]
+    },
+    {
+      "id": "SG-029",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "BD"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "E"
+        },
+        {
+          "round": 4,
+          "answer": "DEB"
+        },
+        {
+          "round": 5,
+          "answer": "CA"
+        }
+      ]
+    },
+    {
+      "id": "SG-030",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "DB"
+        },
+        {
+          "round": 2,
+          "answer": "A"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "A"
+        },
+        {
+          "round": 5,
+          "answer": "BDE"
+        }
+      ]
+    },
+    {
+      "id": "SG-031",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "CA D"
+        },
+        {
+          "round": 3,
+          "answer": "E E"
+        },
+        {
+          "round": 4,
+          "answer": "CE E"
+        },
+        {
+          "round": 5,
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "id": "SG-032",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "EA"
+        },
+        {
+          "round": 2,
+          "answer": "B"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "EBC"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-033",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "AE"
+        },
+        {
+          "round": 4,
+          "answer": "CBA"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-034",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "CD"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "ACE"
+        },
+        {
+          "round": 5,
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "id": "SG-035",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "DAB"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "EC"
+        }
+      ]
+    },
+    {
+      "id": "SG-036",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "CB"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "B"
+        },
+        {
+          "round": 4,
+          "answer": "DCB"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-037",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "EC B"
+        },
+        {
+          "round": 2,
+          "answer": "A"
+        },
+        {
+          "round": 3,
+          "answer": "E D"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "id": "SG-038",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "AB B"
+        },
+        {
+          "round": 2,
+          "answer": "B"
+        },
+        {
+          "round": 3,
+          "answer": "D DC"
+        },
+        {
+          "round": 4,
+          "answer": "D D"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-039",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "EBC"
+        },
+        {
+          "round": 2,
+          "answer": "E"
+        },
+        {
+          "round": 3,
+          "answer": "C C"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "C DB"
+        }
+      ]
+    },
+    {
+      "id": "SG-040",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "AD"
+        },
+        {
+          "round": 3,
+          "answer": "CAD"
+        },
+        {
+          "round": 4,
+          "answer": "D"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-041",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "C"
+        },
+        {
+          "round": 2,
+          "answer": "ABC"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "AD"
+        },
+        {
+          "round": 5,
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "id": "SG-042",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "C"
+        },
+        {
+          "round": 2,
+          "answer": "DA B"
+        },
+        {
+          "round": 3,
+          "answer": "B"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "B B"
+        }
+      ]
+    },
+    {
+      "id": "SG-043",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "E"
+        },
+        {
+          "round": 2,
+          "answer": ""
+        },
+        {
+          "round": 3,
+          "answer": "D A"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "A BC"
+        }
+      ]
+    },
+    {
+      "id": "SG-044",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "CB A"
+        },
+        {
+          "round": 3,
+          "answer": "D"
+        },
+        {
+          "round": 4,
+          "answer": "A A"
+        },
+        {
+          "round": 5,
+          "answer": "D EA"
+        }
+      ]
+    },
+    {
+      "id": "SG-045",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "AB"
+        },
+        {
+          "round": 2,
+          "answer": "A"
+        },
+        {
+          "round": 3,
+          "answer": "CEB"
+        },
+        {
+          "round": 4,
+          "answer": "B"
+        },
+        {
+          "round": 5,
+          "answer": ""
+        }
+      ]
+    },
+    {
+      "id": "SG-046",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "A DE"
+        },
+        {
+          "round": 2,
+          "answer": "C E"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "BE"
+        },
+        {
+          "round": 5,
+          "answer": "E"
+        }
+      ]
+    },
+    {
+      "id": "SG-047",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "DE"
+        },
+        {
+          "round": 3,
+          "answer": "EAC"
+        },
+        {
+          "round": 4,
+          "answer": "D"
+        },
+        {
+          "round": 5,
+          "answer": "AD"
+        }
+      ]
+    },
+    {
+      "id": "SG-048",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": ""
+        },
+        {
+          "round": 2,
+          "answer": "ABD"
+        },
+        {
+          "round": 3,
+          "answer": "B"
+        },
+        {
+          "round": 4,
+          "answer": "BDA"
+        },
+        {
+          "round": 5,
+          "answer": "AB"
+        }
+      ]
+    },
+    {
+      "id": "SG-049",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "EAC"
+        },
+        {
+          "round": 2,
+          "answer": "BE"
+        },
+        {
+          "round": 3,
+          "answer": ""
+        },
+        {
+          "round": 4,
+          "answer": "E"
+        },
+        {
+          "round": 5,
+          "answer": "AE"
+        }
+      ]
+    },
+    {
+      "id": "SG-050",
+      "rounds": [
+        {
+          "round": 1,
+          "answer": "BC"
+        },
+        {
+          "round": 2,
+          "answer": "C"
+        },
+        {
+          "round": 3,
+          "answer": "CDC"
+        },
+        {
+          "round": 4,
+          "answer": ""
+        },
+        {
+          "round": 5,
+          "answer": "D"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>SameGame · Participant session</title>
+  <style>
+    :root {
+      --ink: #172b2b;
+      --muted: #526966;
+      --line: #d1dcd6;
+      --page: #f4f6f2;
+      --accent: #13775c;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, "Apple SD Gothic Neo", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.5 var(--sans); }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: default; opacity: .45; }
+    button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    [hidden] { display: none !important; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: clamp(27px, 4vw, 36px); letter-spacing: -.04em; line-height: 1.2; }
+    h2 { font-size: 19px; letter-spacing: -.025em; }
+    h3 { font-size: 14px; }
+    code { font: 13px/1.6 var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
+    .top { background: #142e2e; color: white; padding: 18px max(20px, calc((100vw - 1080px) / 2)); }
+    .brand { font-size: 23px; font-weight: 700; letter-spacing: -.05em; }
+    main { max-width: 1120px; margin: auto; padding: 32px 20px 60px; }
+    .title { margin-bottom: 24px; }
+    .title p { margin-top: 8px; color: var(--muted); }
+    .card { background: white; border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+    .card-head { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+    .card-body { padding: 20px; }
+    .instructions { margin-bottom: 20px; }
+    .instructions summary { padding: 15px 20px; font-weight: 650; cursor: pointer; }
+    #instructions { padding: 0 20px 20px; white-space: pre-wrap; max-width: 900px; }
+    .start-form { display: flex; align-items: end; flex-wrap: wrap; gap: 14px; }
+    label { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+    input { width: min(280px, 100%); border: 1px solid #bbccc1; border-radius: 6px; padding: 9px 10px; color: var(--ink); background: white; }
+    .primary, .secondary { border-radius: 6px; padding: 9px 14px; font-size: 14px; font-weight: 600; min-height: 40px; }
+    .primary { border: 1px solid var(--accent); background: var(--accent); color: white; }
+    .primary:hover:not(:disabled) { background: #106048; }
+    .secondary { border: 1px solid #c3d1c7; background: white; color: var(--ink); }
+    .secondary:hover:not(:disabled) { background: #edf4ee; }
+    .small { color: var(--muted); font-size: 13px; }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .workspace { display: grid; gap: 20px; }
+    .board-frame { padding: 14px 12px; background: #f7f9f6; border: 1px solid #dbe4dc; border-radius: 7px; overflow-x: auto; overscroll-behavior-x: contain; }
+    .tape { display: flex; flex-wrap: wrap; gap: 8px 4px; align-items: center; padding: 3px; min-height: 38px; }
+    .run { display: inline-flex; flex: none; gap: 4px; padding: 0; border: 0; background: transparent; border-radius: 4px; }
+    .tile { display: inline-grid; place-items: center; flex: 0 0 28px; width: 28px; height: 32px; border-radius: 4px; background: var(--bg); color: var(--fg); font: 650 16px/1 var(--mono); }
+    .letter-A { --fg: #1e634d; --bg: #ccebd9; }
+    .letter-B { --fg: #804f13; --bg: #fae3ae; }
+    .letter-C { --fg: #385a84; --bg: #dae7f8; }
+    .letter-D { --fg: #804657; --bg: #f5d9de; }
+    .letter-E { --fg: #605182; --bg: #e8dff6; }
+    .pick-run { outline: 1px solid transparent; outline-offset: 2px; touch-action: manipulation; }
+    @media (hover: hover) { .pick-run:hover:not(:disabled) { outline-color: var(--fg); } }
+    .pick-run:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+    .pick-run:active { outline-color: var(--fg); }
+    .boundary { display: inline-block; position: relative; flex: 0 0 12px; height: 32px; }
+    .boundary::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; border-left: 2px dashed #607367; }
+    .empty { padding: 5px 0; color: var(--muted); font-size: 14px; }
+    .board-heading { margin-bottom: 10px; }
+    .help { margin-top: 10px; }
+    .play-actions { margin-top: 18px; }
+    .submission { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+    .submission > div { display: grid; grid-template-columns: 125px minmax(0, 1fr); gap: 12px; }
+    .submission span { color: var(--muted); font-size: 13px; }
+    #initial-box { margin-top: 12px; }
+    #initial-box code { display: block; margin-top: 4px; }
+    .result { border: 1px solid #d7d9c9; border-radius: 8px; padding: 18px 20px; background: #faf8ef; }
+    .result.correct { border-color: #bbd8c4; background: #edf7ef; }
+    #feedback { display: block; font-size: 18px; line-height: 1.4; overflow-wrap: anywhere; }
+    .result .actions { margin-top: 14px; }
+    #finished { padding: 20px; background: #edf7ef; border: 1px solid #bbd8c4; border-radius: 8px; }
+    #finished p { margin-top: 6px; }
+    #history-empty { padding: 20px; }
+    #history { display: grid; gap: 0; }
+    .attempt + .attempt { border-top: 1px solid var(--line); }
+    .attempt > summary { padding: 15px 20px; cursor: pointer; }
+    .attempt-title { font-weight: 650; }
+    .attempt-feedback { display: block; margin: 5px 0 0 19px; color: var(--muted); font-size: 13px; }
+    .attempt-body { padding: 0 20px 20px; }
+    .attempt-body .submission { margin-top: 0; padding-top: 8px; border: 0; }
+    .trace-list { list-style: none; display: grid; gap: 8px; margin: 16px 0 0; padding: 0; }
+    .trace-step { border: 1px solid #dbe4dc; border-radius: 7px; padding: 10px; background: #fafcf9; min-width: 0; overflow-x: auto; }
+    .trace-step h3 { margin-bottom: 7px; font-size: 12px; }
+    .trace-step .tile { width: 24px; height: 28px; flex-basis: 24px; font-size: 14px; }
+    .trace-step .boundary { height: 28px; }
+    #error { margin-bottom: 18px; border: 1px solid #d8b7ac; background: #fcf2ee; border-radius: 8px; padding: 14px 16px; }
+    #error .actions { margin-top: 10px; }
+    #connection { min-height: 20px; margin-top: 16px; }
+    @media (max-width: 600px) {
+      main { padding: 24px 12px 40px; }
+      .card-head, .card-body { padding: 15px; }
+      .instructions summary { padding: 14px 15px; }
+      #instructions { padding: 0 15px 15px; font-size: 14px; }
+      .submission > div { grid-template-columns: 1fr; gap: 3px; }
+      .attempt > summary { padding: 14px 15px; }
+      .attempt-body { padding: 0 15px 15px; }
+      .result { padding: 15px; }
+      #feedback { font-size: 16px; }
+      .start-form label { width: 100%; }
+      input { width: 100%; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top"><div class="brand">SameGame</div></header>
+  <main>
+    <div class="title"><h1>Letter-deletion task</h1></div>
+    <div id="error" role="alert" hidden>
+      <p id="error-message"></p>
+      <div class="actions"><button id="retry" class="secondary" type="button">Retry</button><button id="new-session" class="secondary" type="button" hidden>Start a new session</button></div>
+    </div>
+    <details id="instruction-panel" class="card instructions" open>
+      <summary>Instructions</summary>
+      <div id="instructions">Loading instructions…</div>
+    </details>
+    <section id="welcome" class="card">
+      <div class="card-body">
+        <form id="start-form" class="start-form">
+          <label>Participant code (optional)<input id="participant-id" maxlength="80" autocomplete="off" spellcheck="false"></label>
+          <button id="start" class="primary" type="submit" disabled>Start</button>
+        </form>
+      </div>
+    </section>
+    <div id="task" class="workspace" hidden>
+      <section id="feedback-box" class="result" aria-live="polite" hidden>
+        <strong id="feedback"></strong>
+        <div class="actions"><button id="continue" class="primary" type="button">Continue</button></div>
+      </section>
+      <section id="finished" hidden tabindex="-1">
+        <h2>Session complete</h2>
+        <p>Your responses have been saved. You can close this page.</p>
+      </section>
+      <section id="play-area" class="card">
+        <div class="card-head row"><h2>Your attempt</h2><span id="board-status" class="small" aria-live="polite"></span></div>
+        <div class="card-body">
+          <div class="board-heading"><h3 id="board-heading">Initial string</h3></div>
+          <div id="board" class="board-frame" tabindex="-1"></div>
+          <p class="small help">Select a group to delete it. A dashed line marks a space.</p>
+          <div id="initial-box" hidden><span class="small">Initial string</span><code id="initial"></code></div>
+          <div class="row play-actions">
+            <div class="actions"><button id="undo" class="secondary" type="button">Undo</button><button id="reset" class="secondary" type="button">Restart attempt</button></div>
+            <button id="submit" class="primary" type="button" disabled>Submit answer</button>
+          </div>
+          <div class="submission">
+            <div><span>Moves</span><code id="moves">None yet</code></div>
+            <div><span>Remaining string</span><code id="answer"></code></div>
+          </div>
+        </div>
+      </section>
+      <section id="history-panel" class="card">
+        <div class="card-head"><h2>Previous attempts</h2></div>
+        <p id="history-empty" class="small">Your submitted attempts will appear here.</p>
+        <div id="history"></div>
+      </section>
+    </div>
+    <p id="connection" class="small" role="status"></p>
+    <noscript>This task requires JavaScript.</noscript>
+  </main>
+  <script>
+    'use strict';
+
+    const storageKey = 'samegame.participant.v1';
+    const $ = id => document.getElementById(id);
+    let session = null;
+    let draft = null;
+    let pending = null;
+    let history = [];
+    let waitingForContinue = false;
+    let busy = false;
+    let feedback = null;
+    let retryAction = null;
+
+    function node(tag, className, text) {
+      const result = document.createElement(tag);
+      if (className) result.className = className;
+      if (text !== undefined) result.textContent = text;
+      return result;
+    }
+
+    function groups(text) {
+      const counts = Object.create(null);
+      return Array.from(text.matchAll(/([A-E])\1*| /g), match => {
+        const chars = match[0];
+        const token = chars.length >= 2 ? chars[0] + (counts[chars[0]] = (counts[chars[0]] || 0) + 1) : null;
+        return {chars, token, start: match.index};
+      });
+    }
+
+    function replay(input, moves, strict = true) {
+      const states = [{text: input, action: null, removed: ''}];
+      let text = input;
+      for (const token of moves) {
+        const group = groups(text).find(candidate => candidate.token === token);
+        if (!group) {
+          if (strict) throw new Error('The saved moves do not match this string.');
+          states.push({text, action: token, removed: '', unavailable: true});
+          break;
+        }
+        text = text.slice(0, group.start) + text.slice(group.start + group.chars.length);
+        states.push({text, action: token, removed: group.chars});
+      }
+      return states;
+    }
+
+    function showString(text) {
+      return text.trim() || 'Empty string';
+    }
+
+    function tape(text, selectable = false) {
+      const row = node('div', 'tape');
+      row.setAttribute('role', selectable ? 'group' : 'img');
+      row.setAttribute('aria-label', selectable ? 'Choose a group to delete' : 'String ' + showString(text));
+      for (const group of groups(text)) {
+        if (group.chars === ' ') {
+          const boundary = node('span', 'boundary');
+          boundary.setAttribute('aria-label', 'Space boundary');
+          boundary.title = 'Space boundary';
+          row.append(boundary);
+          continue;
+        }
+        const clickable = selectable && group.token;
+        const block = node(clickable ? 'button' : 'span', 'run letter-' + group.chars[0]);
+        if (clickable) {
+          block.type = 'button';
+          block.classList.add('pick-run');
+          block.dataset.move = group.token;
+          block.dataset.start = group.start;
+          block.title = group.token + ' · delete ' + group.chars;
+          block.setAttribute('aria-label', 'Delete ' + group.token + ', ' + group.chars);
+          block.disabled = busy || pending !== null || waitingForContinue || session.complete;
+          block.addEventListener('click', event => choose(group.token, group.start, event.detail === 0));
+        } else {
+          block.setAttribute('aria-hidden', 'true');
+        }
+        for (const letter of group.chars) block.append(node('span', 'tile', letter));
+        row.append(block);
+      }
+      if (!text.replaceAll(' ', '')) row.append(node('span', 'empty', 'Empty string'));
+      return row;
+    }
+
+    function renderBoard() {
+      if (!draft) {
+        $('play-area').hidden = true;
+        return;
+      }
+      $('play-area').hidden = false;
+      const states = replay(draft.input, draft.moves);
+      const text = states[states.length - 1].text;
+      const finished = !groups(text).some(group => group.token);
+      $('board').replaceChildren(tape(text, true));
+      $('board-heading').textContent = draft.moves.length ? 'Current string' : 'Initial string';
+      $('board-status').textContent = waitingForContinue ? 'Submitted' : finished ? 'Ready to submit' : 'In progress';
+      $('initial-box').hidden = draft.moves.length === 0;
+      $('initial').textContent = draft.input;
+      $('moves').textContent = draft.moves.join(' ') || 'None yet';
+      $('answer').textContent = showString(text);
+      $('undo').disabled = busy || pending !== null || waitingForContinue || session.complete || !draft.moves.length;
+      $('reset').disabled = $('undo').disabled;
+      $('submit').hidden = waitingForContinue || session.complete;
+      $('submit').disabled = busy || pending !== null || !finished || !draft.moves.length;
+      $('submit').textContent = busy && pending ? 'Submitting…' : 'Submit answer';
+    }
+
+    function renderHistory() {
+      $('history-empty').hidden = history.length > 0;
+      const entries = history.map(entry => {
+        const details = node('details', 'attempt');
+        const summary = node('summary');
+        summary.append(node('span', 'attempt-title', 'Attempt ' + entry.attempt), node('span', 'attempt-feedback', entry.feedback));
+        const body = node('div', 'attempt-body');
+        const description = node('div', 'submission');
+        for (const [label, value] of [['Moves', entry.moves], ['Submitted answer', showString(entry.answer)]]) {
+          const row = node('div');
+          row.append(node('span', '', label), node('code', '', value));
+          description.append(row);
+        }
+        const sequence = node('ol', 'trace-list');
+        sequence.setAttribute('aria-label', 'Deletion steps for attempt ' + entry.attempt);
+        const input = draft?.input ?? session.history_input;
+        const moves = /^[A-E]+$/.test(entry.moves) ? Array.from(entry.moves, letter => letter + '1') : entry.moves.split(' ');
+        const states = typeof input === 'string' ? replay(input, moves, false) : [];
+        states.forEach((state, index) => {
+          const step = node('li', 'trace-step');
+          const title = index === 0 ? 'Initial string' : 'Step ' + index + ' · ' + state.action +
+            (state.unavailable ? ' · group unavailable' : ' · deleted ' + state.removed);
+          step.append(node('h3', '', title), tape(state.text));
+          sequence.append(step);
+        });
+        body.append(description, sequence);
+        details.append(summary, body);
+        return details;
+      });
+      $('history').replaceChildren(...entries);
+    }
+
+    function render() {
+      $('welcome').hidden = session !== null;
+      $('task').hidden = session === null;
+      $('start').disabled = busy || !$('instructions').dataset.ready;
+      if (!session) return;
+      $('instructions').textContent = session.instructions;
+      $('feedback-box').hidden = !feedback;
+      $('feedback-box').classList.toggle('correct', feedback === 'Correct');
+      $('feedback').textContent = feedback || '';
+      $('continue').hidden = !waitingForContinue || session.complete;
+      $('continue').disabled = busy;
+      $('finished').hidden = !session.complete;
+      renderBoard();
+      renderHistory();
+    }
+
+    function save() {
+      if (!session) return;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({
+          token: session.token, nextTurnId: session.turn_id, draft, pending,
+          waitingForContinue, history: waitingForContinue || pending ? history : null, feedback
+        }));
+        $('connection').textContent = 'Your session is saved automatically.';
+      } catch {
+        $('connection').textContent = 'Keep this tab open. This browser could not save the session link.';
+      }
+    }
+
+    function choose(token, position, fromKeyboard) {
+      if (busy || pending || waitingForContinue || session.complete) return;
+      draft.moves.push(token);
+      renderBoard();
+      save();
+      if (fromKeyboard) {
+        const buttons = [...$('board').querySelectorAll('button')];
+        const next = buttons.find(button => Number(button.dataset.start) >= position) || buttons.at(-1);
+        (next || $('submit')).focus();
+      }
+    }
+
+    function showError(message, retry, canRestart = false) {
+      $('error-message').textContent = message;
+      $('error').hidden = false;
+      $('retry').hidden = !retry;
+      $('new-session').hidden = !canRestart;
+      retryAction = retry;
+    }
+
+    function clearError() {
+      $('error').hidden = true;
+      retryAction = null;
+    }
+
+    async function api(path, body) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      try {
+        const response = await fetch(path, {
+          method: body === undefined ? 'GET' : 'POST',
+          headers: body === undefined ? {} : {'Content-Type': 'application/json'},
+          body: body === undefined ? undefined : JSON.stringify(body),
+          cache: 'no-store', signal: controller.signal
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          const error = new Error(data.error || 'The request could not be completed.');
+          error.status = response.status;
+          error.session = data.session;
+          throw error;
+        }
+        return data;
+      } catch (error) {
+        if (!error.status) error.message = 'Could not connect. Check that the evaluation server is running, then retry.';
+        throw error;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    function nextAttempt() {
+      waitingForContinue = false;
+      feedback = null;
+      draft = session.complete ? null : {turn_id: session.turn_id, input: session.input, moves: []};
+      history = session.history;
+      clearError();
+      save();
+      render();
+      if (draft) $('board').focus();
+    }
+
+    async function sendPending() {
+      if (!pending || busy) return;
+      busy = true;
+      clearError();
+      renderBoard();
+      const sent = pending;
+      try {
+        const updated = await api('/api/submit', sent);
+        const submitted = {attempt: history.length + 1, moves: sent.moves, answer: sent.answer, feedback: updated.last_feedback};
+        history = updated.input === draft.input ? updated.history : [...history, submitted];
+        session = updated;
+        feedback = updated.last_feedback;
+        pending = null;
+        waitingForContinue = true;
+        save();
+      } catch (error) {
+        if (error.status === 409 && error.session) {
+          session = error.session;
+          pending = null;
+          nextAttempt();
+          showError('This session was updated in another tab. Continue from the current string.');
+        } else if (error.status >= 400 && error.status < 500 && error.status !== 404) {
+          pending = null;
+          save();
+          showError(error.message, null, error.status === 409);
+        } else {
+          showError(error.message, sendPending, error.status === 404);
+        }
+      } finally {
+        busy = false;
+        render();
+      }
+      if (waitingForContinue) $('feedback-box').scrollIntoView({block: 'nearest'});
+    }
+
+    async function startSession(event) {
+      event.preventDefault();
+      if (busy) return;
+      busy = true;
+      clearError();
+      render();
+      try {
+        session = await api('/api/session', {participant_id: $('participant-id').value.trim()});
+        $('instruction-panel').open = false;
+        nextAttempt();
+      } catch (error) {
+        showError(error.message, () => $('start-form').requestSubmit());
+      } finally {
+        busy = false;
+        render();
+      }
+    }
+
+    async function initialize() {
+      busy = true;
+      clearError();
+      try {
+        const info = await api('/api/info');
+        $('instructions').textContent = info.instructions;
+        $('instructions').dataset.ready = 'true';
+        let saved = null;
+        try { saved = JSON.parse(localStorage.getItem(storageKey)); } catch {}
+        if (saved && typeof saved.token === 'string') {
+          session = await api('/api/session?token=' + encodeURIComponent(saved.token));
+          $('instruction-panel').open = false;
+          pending = saved.pending || null;
+          waitingForContinue = Boolean(saved.waitingForContinue && saved.nextTurnId === session.turn_id);
+          const reusable = saved.draft && (pending || waitingForContinue || saved.draft.turn_id === session.turn_id);
+          draft = reusable ? saved.draft : session.complete ? null : {turn_id: session.turn_id, input: session.input, moves: []};
+          if (draft) {
+            try { replay(draft.input, draft.moves); } catch { draft.moves = []; }
+          }
+          history = waitingForContinue || pending ? saved.history || [] : session.history;
+          feedback = waitingForContinue || session.complete ? session.last_feedback : null;
+          save();
+        }
+      } catch (error) {
+        showError(error.message, initialize, error.status === 404 || error.status === 409);
+      } finally {
+        busy = false;
+        render();
+      }
+      if (pending) await sendPending();
+    }
+
+    $('start-form').addEventListener('submit', startSession);
+    $('undo').addEventListener('click', () => {
+      if (busy || pending || waitingForContinue || !draft.moves.length) return;
+      draft.moves.pop(); renderBoard(); save();
+    });
+    $('reset').addEventListener('click', () => {
+      if (busy || pending || waitingForContinue) return;
+      draft.moves = []; renderBoard(); save();
+    });
+    $('submit').addEventListener('click', () => {
+      if (busy || waitingForContinue || $('submit').disabled) return;
+      const states = replay(draft.input, draft.moves);
+      pending = {
+        token: session.token, turn_id: session.turn_id, request_id: crypto.randomUUID(),
+        moves: draft.moves.join(' '), answer: states[states.length - 1].text.trim()
+      };
+      save(); sendPending();
+    });
+    $('continue').addEventListener('click', nextAttempt);
+    $('retry').addEventListener('click', () => { if (retryAction && !busy) retryAction(); });
+    $('new-session').addEventListener('click', () => {
+      try { localStorage.removeItem(storageKey); } catch {}
+      session = draft = pending = null;
+      waitingForContinue = false;
+      history = [];
+      feedback = null;
+      initialize();
+    });
+    initialize();
+  </script>
+</body>
+</html>

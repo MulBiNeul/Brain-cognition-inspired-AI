@@ -1,0 +1,16 @@
+# Other task kept outside the SameGame branch
+/tower-of-hanoi/
+
+# Local experiment outputs
+runs/
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# macOS metadata
+.DS_Store

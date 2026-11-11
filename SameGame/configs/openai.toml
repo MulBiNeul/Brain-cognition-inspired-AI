@@ -1,0 +1,16 @@
+# Same model and reasoning settings as the Tower-of-Hanoi evaluation.
+config_version = 1
+default_profile = "sol"
+
+[experiment]
+dataset = "../data/problems.json"
+max_attempts = 10
+required_streak = 2
+max_output_tokens = 25000
+timeout = 180.0
+
+[profiles.sol]
+label = "GPT-6.1 Sol · medium"
+provider = "openai"
+model = "gpt-6.1-sol"
+effort = "medium"

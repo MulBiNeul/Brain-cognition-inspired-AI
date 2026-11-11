@@ -1,0 +1,22 @@
+# Both Claude profiles use the Tower-of-Hanoi evaluation settings.
+config_version = 1
+default_profile = "opus"
+
+[experiment]
+dataset = "../data/problems.json"
+max_attempts = 10
+required_streak = 2
+max_output_tokens = 25000
+timeout = 180.0
+
+[profiles.opus]
+label = "Claude Opus 5.5 · medium"
+provider = "anthropic"
+model = "claude-opus-5-5"
+effort = "medium"
+
+[profiles.sonnet]
+label = "Claude Sonnet 5.5 · medium"
+provider = "anthropic"
+model = "claude-sonnet-5-5"
+effort = "medium"
