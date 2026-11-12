@@ -1,0 +1,3492 @@
+{
+  "version": 1,
+  "seed": 112268,
+  "inverse_candidates": 500000,
+  "canonical_current": "CC",
+  "canonical_previous": "BB",
+  "items": [
+    {
+      "input": "DBACAACABEACAACAEAABDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADDBAAEACCABAABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACBDAADAACAACBAACAACBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CABACAACABAABAEEADAACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACAACBAABAABAEAAEACD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACACAACDABAAEAAEB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACEAAEAACABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EADAADABAABACAACACAACBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEAAEABAABCAACACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CEADABAABAABADAECAACAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCADAADACAEAAEABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACBAABCAACBAADAACAACDE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABAABAACAACAABAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACAABADAADABAAEACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADEAABACAACABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BECADAADACAAEAABCAACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAACAACBCACAACACAABAADE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABAABACAACABACCADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CADAADACEAABAABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABAABAABDCAACAACE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACBAABACADAADACAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEDCBAABACAACABCDEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AECAACEABAABACAACABADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CADAADACEACAACAEBAABAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABADACAACADABACAACAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECDBAABAABDCACAACACAACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAAEAAECACBAABDAADAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAAEAAECAABAACADAADACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAABAACAACBAACAAEAAECBAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECABDAADACAACABACAACABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABACAACABAEAAEABADCAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAACADAADACBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACAABADAADACAACBAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABAEACCAEABCAACADAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAEADAADAEACABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEABAACAACDAADBAAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADAAEACAACABAABACCABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABACAACABCADAADACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACECAABAABACAACABCECAACAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACEAAECABAABAADAABCAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAADAEACAACAEADBACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAEAAEABAABACAACADACCA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABACAACABCADAADACAABAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABEAABACAACABACDAADCABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAEAAEACACDBAABAABDCA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABACAACABAEADAADA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBADACAACADABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEABACADDACABAABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAACEAAEAACBD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBCAACAABAEAACAACEABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEACAACAEABCAACAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABAABADACAACAEACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDAADBACAACABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAADAADBCACAAEAAECA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACCABAACAACBADAADABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACADAADACABCAACAACEB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAEAAEAACDBAABAABDC",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABACAACABEAAECDAACAACD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACBAABAABDCACAACACEAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACCABACAACABAADAABAEEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACBAABACDAADAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACAABCAACADAADABCAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACADAADACABAACAACBAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABADAACAACDABAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACADAACBAABAEAAEABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADACAACADAECBAABAABCEA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADCAACAADABACAACABEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBCAACAABAEAAEABCAACDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEEABAABACAACABADBACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAAEAAECBAABAAECAACDAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAADAADCACEAAEBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAECAACAAEBCADAADACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAEAAEACADAADABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDCABAABAABACDCAEAAEAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAABADCAACDABACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CCAACBAEAAEABAABDAACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABAACAEAAEACBADB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACCADEAAEABACAACABAABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADAADCAACAEAABAABACCABAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACADACEBAABAABECADA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACADAADABAAEACAACAEB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAABACAACABADACAACADABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABACAACEAAEABAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABAEACAACAEABACAACABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACACCACADACCAEABAABAABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAECBAABADAADABCEACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAAEAAEAACDBAABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBEACAACAEAABAACAACAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACBAABAACAACBAADAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADACCABAEAAEABAABACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADACAEAAEACADACBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAEACAACAEABDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABADACAACADACAACBEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABACAACABAABDCAACEAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADCCDABACAACABAAEAABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABAEAACAACEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEACAACAEABAADACAACADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACABAEAAEABACCABAADACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADAADABAABACAACAECAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAACAACBEADAADA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABAABADAADABAEACCACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAADECAABAABAABCEDA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADAADABACAACABEACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCECAACACAADAADCAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADBACAACABAEAAEABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACDEABAABAABAEDCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAAEAAEBACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEACAACAEABAABCAACBADAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAEAAEABCAACADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAAEAAECABACAACABAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADACAACABACAEEACABAABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BDAADAAEACAACAEBACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDAADBAACAACBAACAACBAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAACAACBACAEAAEACABAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AECAACAAEADABACAACABAAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABBCADDAEAACAACACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAADABACAACABAABACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABACADAAEAAEDACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAAEDBACAACABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDBAACAACBACAEAAEACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAEAAEACABAABACAACABAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCAEADAADAEACAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDACAACECBAABAABAACECAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABACCABAEAAEABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACADEBCAACAABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACAABADACAACADABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBACADAADACABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEBAABACAADAADCABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCADAADACAABEAACAACEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEAACBAABADAADABCCACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBACADAEAAEADACABACAACABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAAEABAABCCAABADAACAACDA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABCAACAABACCABADAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAEAAEACABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABCAACAABAADACCEEACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBAADACAACEAAEADBAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACADAADACABACAACABAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBAABDAADAABEACAACAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABBACCABADACAACADADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBAACAACBAADAACAACDBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAADACAACADBACAACABAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACADABAABADDABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADAABAABACCABADAEACCAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACDAEBAABAABEADCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABACAACABEAAEDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABAECAACAAEABAADCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABACAEAAEACABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAABAABCAACAAECAACEBDAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACCADAEAAEABAABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABACAACABABACAACADE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABEAAEAABCACADAADACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACEAAEADBAABAABDACAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACADAADACBEACAACAEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEABDAADBAACAACBACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEAAEABCAACACAACABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADAADABACAACABECAACAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACCABACAACABAEAAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACCEAADABAABAABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABEAAEAADACAACADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACACEDBAABCAACAABDECACAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACCACBAEAAEABAACAACBAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CACAACACECBAABADAADABCECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABAABBADAACAACAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAACAAEAAECBACAACABAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABACAEAAEACABDAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABADAADABACAACABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAABADAADABACAACABACE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAACDCAEABAABAABAEACDC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAABACAACABECADAADAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACAEACBAABAABCAEACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCBAABAABCAEACAACAEACAACD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAADAADBAAEACAACACAACEB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAABACAACABDAADACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACAABAACADAADACBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACACAACAADEAABAABAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAAEABCAACAABAABCAACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BDACAACADCAEAAEACAABAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABAEAACAACEABDBCAACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAEAAEABCDACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEBAABACDAADAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DEABAABACAACABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACCADACAACAABAABAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACADEBACAACABAABEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABCAACAABAADAADBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABEAAEBCAACAABAADACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACAADACAACAEBAABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACACAACAEBAABAABEAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEACAACAEBDAADAABCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACADAADACABACAEAAEACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAABCAEAAEACBCAACAABDAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABACAACABAEAAEABADAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABAADACAACADBACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DEAABABCAACAABAABACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DEAAEBAABACAACABDCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACADAABAABAEAAECAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACAACBADAADACAEAAEACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABACAACABADAADABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACABACAACABAEAAEABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACEACBAABADAADABCAECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADACCACAABAABAECAACEABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACABACAACABACAAEAAECABD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACABAEAAEABACCABAADCAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADAABACAEAAEACABAABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABACADAADACABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAECAACDABAABEACCAEAABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADACAACADABCAACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEACAACADAADBAABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACBACAACAEAAEBAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAAEABAABAABAACDACCAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABCCACCABAABADAAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACACAACACABAACADAADACBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADAACAACDABEACAACAEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAEAAEADACCABAABACCABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAAEACAACAEBDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABADAACAACDABEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABCEAAEAACAABCAACAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACDACAACADABAABAABAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAAEACDAADCABAABACCABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACACADEBAABAABEDACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAAEDAADABCAACACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAACADAAEBAABAABEDAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAACEABAABAABAECACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBCAACAABAABDAEACAACAEA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAEACAACAEABAABCAACAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEBDAADAABCAACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBDACAACADBACAACABDAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECBADAADABACAACACAACB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACADAADACABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACAABEAAEACDAADAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABACADAADACACAACBE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACABAEACAACAEABAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBDAEACAACAEADAABACAACABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACDBAABAABDCAECAACAAEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBAEAAEACAACBADAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACACADAADACBAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAACAACBAABACCAEACCADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADCECBAABAABCECDCAACAACAAC",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBDACACAACACADAABCAACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACACAACADACAACADBAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAACADAADACBACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADABACAACABEAAEAAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABEAABACAACABAADDBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBACAACABACAEAAEACABDAADC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAAEAAECABCADAADACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABDAADBCCACAACABAADAAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABDAEAAEADACAACACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADAABAACAACABBBAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAAEABCAACDAADACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABACAEAAEACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACACEDBAABAABAADECA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABAABAEEABACAACAEACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACAABECAACADAADAEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADBAABACAEAAEACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABACDAAEAAEDAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACABAABACCABAADEACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAACAACBACCABAEAAEADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEACAACAEABAACDAADAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBEADAADAEAABACAACACAACB",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAEACAACAEABADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAEADAADAEABCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBDACAACADAABAACAACBEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADAADAEABACCABAABAADACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAAEACAACAEBACAACABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CACAACACABAABACCABAADAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEACAACAEABAABACAACABADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADAADABACAACACAACBAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADABACAACABAEACAACAEABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAEACAACAEACABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABACAACABAABACAECAACEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABACAACABADAADABACAACAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAEAACAACEABAABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAACAACAABAACAACBCDAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAAECAACABADACAACADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAEAAEACABCAACAABDAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABDAADAABACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAACABCDAADAACBACAACABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACACADAADACABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACEDBAABAABDECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADAEAAEABAACAACBAABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABACAACAEAACAACEBADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADAACAACBAABAAEACCAEBA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABADAADABACCACAACBAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABADACCADABAABAECAACAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACDBAABAABDCAEAAECAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAAEBAABAADACAACADBCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABAACAAEAAECBACAACAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABAABADAADABCAACACAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABAABACAACDEACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABADAACAACDABACAACAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAAEAAECABAABACCABADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEEADAABAACAACBACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACAACABAABACCABAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACACDAEBAABAABEADCA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACACEAAECABAABAADAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAAEABADACAACADCAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAAEDAACBAABAABCACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACAEAAEAACABAABAABACD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACBAABDACAACADAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACABAABACAEAAEACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAEACCAEABAABAADACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACBAEAAEABCAACAABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAACAACBAEAAEABADACCA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBDAEAAEADCAACAABAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABAACAACBDAADAABC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACADAADACACEBAABAABECA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACABAABAABAECAACAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABEACAACAEAABCADAADAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAACAACDEAAEAADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABCAEAAEACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDEACACAACACABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CABDAACAACDAABAABACAACAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEABCAACAABACAACABADAADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABADAEAAEACAACDAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABACAACABDEACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECBACAACABAACADAADACB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCEADAADAEAACAABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACACAACBEDAADAAEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCACAEADAADAEACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEBAACADAADACBAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACAABAABAEACAACAEABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAADBCAACACAACABAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABAABCAACAECADDA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABCAACAABAAEACAACAEBAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABDACAACADAABACCAEBAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABACAACABACAACABADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAECCAAEABACAACABAADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAADAACAACDBCAACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACBCAACAABADAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAACAACEDAADCAACABAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACBAABACAEEACACCBAADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABACAACACAEAAEACBAADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACEBCAACAABADACAACADABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBDACAACADAABAACAEAAEACBC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACBACAACABAADAADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAECABAABAABACEAACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABACCABACAACABADAADA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAAEACCABADDABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BDACAACADAABCAEAAEACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABCAACAABAEECAACABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAACAACEABDCAACAADAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCDAADAACAABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAABDACEAAEAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADBAABAABDEACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADACAEAAEACABAACAACBAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBACAADAADCABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBEACAACAEACAACABAABDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACADAEAAEADACABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCACAACACADACAACADABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABCAEAAEACADAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADBACAACABECAACAAEAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAABCAACAABAABCBCACAACACD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABAABAABACAACECAACAAEA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACEAAEABAACAACBD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADDAEABAABACAACABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABAACAACBAEACAACAEAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABCAACACAACABAAEDAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDAACBAABAABCAACACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAAEBACAACABACDAADAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACBAABAADACAACADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABACAACABACADAADACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAADACAACADBACACAACACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABAABAABACAACACAEAAEAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BDAADAABAABEACAACAECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACABACCABAACAACBAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABDACAACADCAACBAAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABACCABAADBAEAAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAADAADCBAEACAACAEABAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACAEAAEAABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADCBAABAABCDAACAEAAEACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAEAAEADBACAACABCAACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADACCADABCAACAABAAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEAAEABACAACABDCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDABACACAACACABAACAACBAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABADAADABACAACABAEC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABACAACABEEACAACABAADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAACBCAACAABCADAADACB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAABEACADAADACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABEAACADAADACEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EABACCACAACBCAACAABAADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCEACAADAADCAEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEAAEACAACAABAACAACBD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACAACADAEACAACAEADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABAACDAADAACBAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAACAACAAECBADAADABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACDCBAABAABCDCACAACACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBCAACAABCAEAAEACADAADABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABECAACAAEACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACADAAEAAEDACACBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABAACAACBACDAADAACACE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAEAAEAECBAABCAACAABCAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAEAAEACABACACAACACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADAADABAACAACBACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEADACAACADAEAABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABAEAAEABACAACABADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAACBAABADAADABEACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEADAADAEABCAACAABCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACADAEAAEADABAACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEBAABAABACAACADACCA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABAABADACCAEACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEACAACAEABADACAACADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAADACAACABAABCAACBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEDAACAACDBAABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAEAACAACEABAABCCAADAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADACEAAEAACABAABBA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAADACAACADACAACBAABBC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBEACAACAEAABAABDCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACADAADACECBAABAABCECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAAEACCABADDABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEAAECAACAABADAADACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAACCACAACBAABAABDAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAABDAACAACDE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABAABAABADAACACCEEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACAEAAEACAACABAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBADAEAAEADABAABCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBAABCADAADACAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBDAADAEAAEABAABCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAABEAACADAADACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAEBAABAABEACACAACAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAACAACEABACADAADACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABACAACABAAEAAEBADA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACACEABAABAABACDDAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADABAABACAACAEAAEB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CACEAAEAACAADCBAABAABCDAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADABACCABAABEAAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EADCABAABAABACDACAACAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACADAADACACBAABAABCEAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABACCABAABADACAACADA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACCADABAABACCABEAAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAAEACAACAEBD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAABCAEAAEADAADC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCADAADACACAACABAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAAEBADCAACAADABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADAADABAEACAACAEABCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEAACADAADACEAABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACCABAEAAEABADACAACAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABACAACABADAAEACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABACAACABAEAACAACEAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAAEAAECBAABAACADAADACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABCAACBAABCAEACAACAEA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAADAADBCAAEAAEC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAEAAEACBACAACABAABADB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CADAADACBAABAEAAEACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACADAADACBAABCAEAAEAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEDAADBCAACBACAACABCAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBACAACABAABCDAACEAAEAACD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDACAACADBCAACAABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAEAAEABAACAACBAACACCAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACEADAADACBAABCCBAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADBAABACAACAEAAEBD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAAEACAACBADCAACAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABCCAADACAACADBAABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACAEBAABADAADABEACAACB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACCABAABAAEACAACADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAEABADAADABAABAEACCA",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAAEBACAACABAABEACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEABACAACABACAACABAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABAACDAADEACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACAACABAABCCBADAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACAECAACAAEBADAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACAACAEACDBAABAABDCA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEABACADAADACABAAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAEADCAACAADAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADAEAAECAACBAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BDACAACADAABAEACAACAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADCAACEAABAABAACAACBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEACAACADAADEAABCAACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABDEAAEACAACADAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEAACAADAADCEBACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACACBAABAABCADAADAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BBAABACAACADAACAEAAEACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAABACAACABEAACADAADAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACAACABADACCADABAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABAABEAAEBADAACAAC",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDAACAABCAACBAABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEADBACAACABACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABCAACBACEAAEAACABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEADCAACAADAEBACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEDAACAACBAABAAEACCAEBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCDAADAACAABAACAACBAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAEADAADAEABACAACACAACBC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACAEAAEACBADCAACAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAEAAEACABADCAACAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACCABEAAEAACAACBAADAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABACAACABACAACABAAEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACADAADAEAAECACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAACAACECAABADAADABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CACAACECBAABAABCEAACAACAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACDACAACABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAADAADBCAACBACAACABC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCDACAACADEAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAAEDAABACAACABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABECAACAAEAABDCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEADDACAABAABCAACB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADACAACBAABAACAACBAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACADAADACABAEAAEABCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADEAAEBAABCAACAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABADAEACAACAEADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAEAAEABCACAADAADCA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADAAEAABAABCCAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAADACAACADBACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCAEACCACADAADABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABADAADABACAACAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABADCAEAAEACAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABACADAADACABCAACBAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCAEABDAADAABACAACABAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCACAACDACAACADACAABAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAEAAEACADCBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEAACAACEAABADCAACAADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADCAEAAEACBAABAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABEAACAACEACADAADACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABAABACADAADACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABACCADAADBACAACABAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACDAADAACAEAAEBAACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBACAACABACAACDAADABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACAABAEAAECAACABCD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABAEDAADACAACACAACEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACAEAAEAABACAACABE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACDCEABAABAABAECDCACAACAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACABAABACAACABDACAEEACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCADAADACAABCAACAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABAABACAACABACAACAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADAABACEAAECABACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACCEAABAABDCAACAADBACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADACAACAEACADDACABAABBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAEAAEACABCAACAABDAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABACAEAAEACABAABAADACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABAACAACBCADAADACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCADAADACBCAACAABAACAAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBACAACABAAEAAEDACAACADBC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABACAACABAEAAEAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACBAABACAEAAEACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABEAACAACEBAACAACBAADAAB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDAABAEAAEABAACAACBA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACADAADEBAACAACBAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAEAAEABAABCADACAACADA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAEAAEACAACBACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACDAACBAABCAACBAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAABCAACBAABCAACAADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAACAABDAADCAAEAAECAABC",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABACAACACAACBEADAADA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAADAADBACCABAEACCABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABCAADCAEAAEACAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAADABAABACAACABACCA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACCAEABAADAADBACAACABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACAACECDCABAABAABACDCEC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAACAAECBAABAABCEACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAEADACAACADAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAADAADCABAAEACAACAEB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDCEBAABAABEAACDCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBCAAEAAECAABAADAADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EADDACACAACABACAACABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAEACAACAEADAACBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACDBAABAEAAEABDCACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAADAECAACAAEADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABCAAEAAECADAADCAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DABCAACAABAABAADAECAACEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCAEABAABACAACABAAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACAACEAAEABADAACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBCAACAABCADAADACAABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACBAABAADACAACADBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CADAADACBACAACABEAAEAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACDAAEAAEDAACABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABACAACABACAACABAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACEDBAABAABDECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADAECCEABAABAABAEACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEACCADACCABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EDACAACADAAEBAABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACCABAABAADEACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABACACAACACABAAED",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACBAABACAACADAADBE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADDAEAABCAACAABACAACABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABCADAADACAABAABCECAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACAACBAEEABDACAACAABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABACAACEAAEABAADCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAACECDCBAABAABCDCECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABAABDCAACAEACAACAEAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABADAADABCAACAABACAACAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABACAEAAEACABAADCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEADACCABAABACCABADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAABCDAADAACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCADACAACABAABAABAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADAADAEABACAACABACAACAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABADACCADABACAACACAAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAACAACEABACAADAADCAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADCAACBCAACBACAACABAACE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACABAABACADDACABAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBDAADCAACAEACAACAEABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAACAACAABAABDCAAEAAEC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADACAACADABACAACABEAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEABAABACDAADCABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCAEAAEACBACAACABAABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAADAAEACAACAEDBAACAACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEBAABACAACABCADAADACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CADCAEBAABAABEACDAACAACAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAEAACAACEABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABBACAACABAECAACAAEACAAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACEAAEAACBACADAADACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADAADABCAACAABEAACAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBCAACAABAEAAEABDACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BCAEAAEADAADCAABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACADEAABAABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABACAACABEACAACAEAABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACACAACAEBAABAABEAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACAACABACCABDAADAABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADACAACBAEAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADCCDABAAEACAACABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABAABEDACAACAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABCAACAABEAAED",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAADBACAEAAEACABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAABACAACABAABDCAEAAEAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACDBAABACAACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBACAACABACADAADACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEACAACABAABBADACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABAABECAACACADAADACAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADAADAEABAABACCABAACAAC",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACADAADACABACAACAEAAEB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAECAADAADCAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABACAACABAAEACCADAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACAECAACDBAABAABAAD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABAEACAACAEABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACBAEAAEABCDAADAACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABEDACAACADAAEAABCAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADDAEAABACAACABACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABACCABAEDAACAACDBAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABAADAABAABEACAACAEBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABACAEAAEACABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAADAABACAACABCCAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAABAABADAADACEACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADACCADAEABAABAABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACAACADAADABACAACABCAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADAADBAABCAACBCAACAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABADACAACADCAEAAEACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABADAADABACAACABA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACACAACAEDBAABAABDEAC",
+      "target": 1,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAACAACBAABADDAEBACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CBAEACAACAEABCAACAABAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABAABCAACAEACAACAEAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAEAACADAADACEABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABACAAEAAECAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABAABACAACACAACBAAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBDAADAABACAACABEACAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADCAAEAAECAADABACAACAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADAADAAEBACAACABACAACAB",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AACAAECADDACACCABAABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACCABADAADABACAACAEAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACDEAAEBACAACABAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAEAAEACDCAACBAABAABDAA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADDACACAACAEAABACCABAABA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBACAACABEACAACAEAABD",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABAABAABACCAEACCADACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABAABEAACAACAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABADAADABAACAACEB",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABAABACAEEACABACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAAEACAACAEBAACADAADACB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACDAADAACABCAEAAEAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BEACAACAEAABADACAACADAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAABACAACADAECAACAAEADB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACACAACACDBACAACABAABDCE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEADCAACDABCAACBAABCAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BACAACABDAECAACAAEADAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACAACAEACAACABAABAABAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBAABAADAACAACDBCAACE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAADACAACADBCAEAAEACAAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EACAACABADAADABACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CACAEEACADABAABAABACAACA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAEEADABACAACABACCABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DBAABAABCAACDAEAAECAACA",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABAEACAACAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DACAACADEBAABACAACABAAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EBADAADABACAACABACAACAE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AADABCAACBCAACBAEAAEACAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DCBACAACABCAEAAEACAABAA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACAAEACAACAEBAABAAD",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BAACADAADACBAEACAACAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEACAACAEACBAABADAADABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABACAACABAEEABAADACAACA",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "BADACAACADABAECAACAAEAB",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEAADAADBCAACAABACCABAE",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEABACAACABCAACBADEAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ADABACAEAAEACABACAACABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AABAABAABADCAACEACAACAE",
+      "target": 2,
+      "forbidden": "CC"
+    },
+    {
+      "input": "EAABADAADACAACBACAACABE",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAADAADCAAECBAABAABC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ECAACDCBAABAABCDCAACECAAC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAADCAAC CBAABAAEAAEBC",
+      "target": 0,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CAACACAACAAEBAABAAB AAD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "CCAAECAACECDBAABAAB AABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ABCAACBAEAAEABAA ACAACABD",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "DAA CCAACEBAABACAACABAA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAEABADACCADABACAACABAA A",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AAD DABACAACABACCABAEAAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "ACCABAABADAACAACDABA AAEA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AEAAEAADAA ACAACABAABCCBA",
+      "target": 3,
+      "forbidden": "CC"
+    },
+    {
+      "input": "AA ACCAEADAADABACCABAABA",
+      "target": 2,
+      "forbidden": "CC"
+    }
+  ],
+  "additional_spaced_search": {
+    "seed": 202611125501,
+    "inverse_candidates": 100000,
+    "found_at": 77932
+  },
+  "additional_spaced_goal3_search": {
+    "seed": 202611125503,
+    "inverse_candidates": 13795
+  },
+  "additional_spaced_goal2_search": {
+    "seed": 202611120752,
+    "inverse_candidates": 925
+  }
+}

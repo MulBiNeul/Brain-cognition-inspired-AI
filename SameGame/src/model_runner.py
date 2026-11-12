@@ -9,14 +9,15 @@ import json
 import math
 import os
 from pathlib import Path
+import random
 import sys
 from threading import Event, Thread
 import time
 import tomllib
 
-from .evaluate import EvaluationSession, INSTRUCTIONS, load_items
+from .evaluate import EvaluationSession, INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS, load_items
 from .grade import Game, successful_paths
-from . import diagnostics, providers
+from . import diagnostics, error_log, providers
 from ._paths import PACKAGE_DIR, PROJECT_DIR
 
 
@@ -117,23 +118,123 @@ def implementation_fingerprint(settings=None):
     return digest(sources)
 
 
+def compatible_fingerprint(frozen, settings):
+    """Accept only explicitly reviewed transport-only upgrades, never arbitrary code drift."""
+    current = implementation_fingerprint(settings)
+    if frozen == current:
+        return True
+    path = PROJECT_DIR / "configs" / "resume_compatibility.json"
+    if not path.exists():
+        return False
+    return any(entry.get("from") == frozen and entry.get("to") == current
+               for entry in read_json(path).get("transport_only_upgrades", []))
+
+
+def transport_options(settings, retries=10, delay=5.0, timeout=None):
+    timeout = settings["timeout"] if timeout is None else timeout
+    if type(retries) is not int or retries < 0:
+        raise ValueError("통신 재시도 횟수는 0 이상의 정수여야 합니다.")
+    if type(delay) not in (int, float) or not math.isfinite(delay) or delay < 0:
+        raise ValueError("통신 재시도 대기는 0 이상의 유한한 숫자여야 합니다.")
+    if type(timeout) not in (int, float) or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("timeout은 양수여야 합니다.")
+    return {"max_retries": retries, "retry_delay": delay, "timeout": timeout}
+
+
+def append_run_event(directory, event):
+    with (directory / "run_events.jsonl").open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps({"at": timestamp(), **event}, ensure_ascii=False) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def evaluation_context(session):
+    if session.complete:
+        return {"submission": len(session.responses), "id": None, "round": None, "attempt": None}
+    return {"submission": len(session.responses) + 1, "id": session.current_item["id"],
+            "round": session.current_record["round"], "attempt": session.attempt}
+
+
+def record_error(directory, event, error=None):
+    """Persist a readable error without letting logging mask the original failure."""
+    details = error_log.exception_details(error) if error is not None else {}
+    diagnostic = {"at": timestamp(), **event, **details}
+    try:
+        append_run_event(directory, diagnostic)
+        error_log.append_error(directory, diagnostic)
+    except OSError as logging_error:
+        print(f"오류 기록 저장 실패 · {type(logging_error).__name__}", file=sys.stderr, flush=True)
+    return diagnostic
+
+
 class Terminal:
-    """Readable research logs, with a timer only on an interactive terminal."""
+    """Compact evaluator logs with separate correctness and persistence results."""
 
     def __init__(self, settings, items, directory):
+        from shutil import get_terminal_size
+
         self.settings = settings
         self.total = len(items)
         self._possible_answers = {}
+        self.width = min(100, max(40, get_terminal_size(fallback=(96, 24)).columns))
         self.color = sys.stderr.isatty() and "NO_COLOR" not in os.environ and os.environ.get("TERM") != "dumb"
-        print(f"\n╭─ SameGame · {settings['label']}", file=sys.stderr)
-        print(f"│  {self.total}문제 · 최대 {settings['max_attempts']}회 · 연속 정답 {settings['required_streak']}회", file=sys.stderr)
+        self.pe_rule = "이전 규칙 준수 + 현재 오답"
+        self._heading("SameGame · 모델 평가")
+        self._line("모델", settings["label"])
+        self._line("진행 설정", f"{self.total}문제 · 최대 {settings['max_attempts']}회 · 연속 정답 {settings['required_streak']}회")
+        self._line("지속 오류 기준", f"{self.pe_rule} · R1 집계 제외")
+        self._line("PER 분모", f"최대 시도 수 T={settings['max_attempts']} · 미진입 라운드는 미측정")
+        self._line("토큰 안내", "입력은 요청 문맥, 출력은 모델 생성량(추론 포함)")
         if diagnostics.mode(settings) != "off":
-            print(f"│  추론 요약 {diagnostics.mode(settings)} · {directory / 'reasoning_log.txt'}", file=sys.stderr)
-        print(f"╰─ {directory}\n", file=sys.stderr)
+            self._line("추론 요약", f"{diagnostics.mode(settings)} · reasoning_log.txt")
+        self._line("저장 위치", directory)
 
     @staticmethod
     def clean(value):
         return "".join(char for char in str(value) if char.isprintable())
+
+    @staticmethod
+    def display_width(value):
+        """Count Hangul as two terminal cells and combining marks as zero."""
+        from unicodedata import combining, east_asian_width
+
+        return sum(0 if combining(char) else 2 if east_asian_width(char) in {"W", "F"} else 1
+                   for char in value)
+
+    @classmethod
+    def wrapped(cls, value, width):
+        remaining = cls.clean(value)
+        lines = []
+        while cls.display_width(remaining) > width:
+            used = cut = 0
+            for index, char in enumerate(remaining):
+                size = cls.display_width(char)
+                if used + size > width:
+                    break
+                used += size
+                cut = index + 1
+            split = remaining.rfind(" ", 0, cut + 1)
+            cut = split if split > 0 else max(cut, 1)
+            lines.append(remaining[:cut].rstrip())
+            remaining = remaining[cut:].lstrip()
+        return lines + [remaining]
+
+    def _styled(self, text, tone):
+        return f"\033[{tone}m{text}\033[0m" if self.color and tone else text
+
+    def _heading(self, title):
+        title = self.clean(title)
+        print(file=sys.stderr)
+        for line in self.wrapped("── " + title + " ", self.width):
+            tail = "─" * max(0, self.width - self.display_width(line))
+            print(self._styled(line + tail, "1;36"), file=sys.stderr, flush=True)
+
+    def _line(self, label, value, tone=None):
+        prefix = "  " + label + " " * max(2, 18 - self.display_width(label))
+        indent = self.display_width(prefix)
+        for index, line in enumerate(self.wrapped(value, max(10, self.width - indent))):
+            lead = " " * indent if index else prefix
+            print(lead + self._styled(line, tone), file=sys.stderr, flush=True)
 
     def attempt_label(self, session):
         return (f"[{session.item_index+1:02d}/{self.total:02d}] {session.current_item['id']} "
@@ -160,16 +261,16 @@ class Terminal:
                     if session.round_index else None)
         previous_label = (f"{previous[0]} → {previous[1]} 연속 삭제 금지"
                           if previous else "없음 (첫 라운드)")
-        print(self.attempt_label(session), file=sys.stderr)
-        print(f"  이전 규칙  {previous_label}", file=sys.stderr)
-        print(f"  현재 규칙  {current[0]} → {current[1]} 연속 삭제 금지", file=sys.stderr, flush=True)
+        self._heading(self.attempt_label(session))
+        self._line("현재 문자열", self.format_answer(session.current_record["input"]))
+        self._line("이전 규칙", previous_label)
+        self._line("현재 규칙", f"{current[0]} → {current[1]} 연속 삭제 금지")
         answers = self.possible_answers(session.current_record)
         finals = ", ".join(self.format_answer(answer) for answer in answers) or "없음"
-        print(f"  현재 가능 정답 ({len(answers)}개)  {finals}", file=sys.stderr, flush=True)
+        self._line("현재 가능 정답", f"{len(answers)}개 · {finals}")
 
     @contextmanager
     def waiting(self, session):
-        label = self.attempt_label(session)
         stop = Event()
         begin = time.monotonic()
 
@@ -178,7 +279,7 @@ class Terminal:
             index = 0
             while not stop.wait(0.15):
                 elapsed = int(time.monotonic() - begin)
-                print(f"\r\033[2K{label}  {frames[index % 4]} 응답 대기 {elapsed//60:02d}:{elapsed%60:02d}",
+                print(f"\r\033[2K  {frames[index % 4]} 응답 대기  {elapsed//60:02d}:{elapsed%60:02d}",
                       file=sys.stderr, end="", flush=True)
                 index += 1
 
@@ -195,26 +296,46 @@ class Terminal:
 
     def submission(self, row, elapsed, usage, failure=None):
         if failure:
-            print(f"  생성 미완료 · {self.clean(failure)} · 미채점, 다음 문제로 이동", file=sys.stderr)
+            self._line("결과", "생성 미완료 · 미채점, 다음 문제로 이동", "33")
+            self._line("원인", failure)
+            self._line("지속 오류", "집계 제외 · 채점 가능한 응답 없음", "2")
             return
-        feedback = row["feedback"]
-        color = "\033[32m" if row["correct"] else "\033[33m"
-        label = f"{color}{feedback}\033[0m" if self.color else feedback
-        final = self.format_answer(row.get("answer"))
-        print(f"  {label}  ·  {elapsed:.1f}s  ·  토큰 {usage['input_tokens']:,} → {usage['output_tokens']:,}", file=sys.stderr)
-        print(f"  제출한 삭제  {self.clean(row.get('moves') or '해석 불가')}", file=sys.stderr)
-        print(f"  제출한 답안  {final}  ·  연속 정답 {row['success_streak']}/{self.settings['required_streak']}", file=sys.stderr)
-        if row["violation_steps"]:
-            print("  위반  " + ", ".join(map(str, row["violation_steps"])) + "번째 행동", file=sys.stderr)
+        self._line("정답 판정", "정답" if row["correct"] else "오답", "1;32" if row["correct"] else "1;33")
+        persistent = row.get("persistent_error")
+        if persistent is None:
+            self._line("지속 오류", "집계 제외 · R1 (직전 규칙 없음)", "2")
+        else:
+            self._line("지속 오류", f"{'발생' if persistent else '없음'} · PE={int(persistent)} ({self.pe_rule} 기준)",
+                       "1;31" if persistent else "32")
+        self._line("피드백", row["feedback"])
+        self._line("제출한 삭제", row.get("moves") or "해석 불가")
+        self._line("제출한 답안", self.format_answer(row.get("answer")))
+        current = row.get("violation_steps") or []
+        previous = row.get("previous_violation_steps")
+        self._line("현재 규칙 위반", ", ".join(map(str, current)) + "번째 행동" if current else "없음")
+        self._line("이전 규칙 위반", "해당 없음 (R1)" if previous is None else
+                   ", ".join(map(str, previous)) + "번째 행동" if previous else "없음")
+        compliant = row.get("previous_rule_compliant")
+        self._line("이전 기준 조작", "해당 없음 (R1)" if compliant is None else
+                   "완결·답안 일치·이전 규칙 준수" if compliant else "이전 규칙 또는 기본 조작 미충족")
+        self._line("진행", f"연속 정답 {row['success_streak']}/{self.settings['required_streak']} · 응답 {elapsed:.1f}초")
+        self._line("토큰 · API 집계", f"입력 {usage['input_tokens']:,} / 출력 {usage['output_tokens']:,}")
         print(file=sys.stderr, flush=True)
+
+    def retry(self, error, number, limit, delay):
+        self._line("통신 오류", error, "33")
+        self._line("자동 재시도", f"{number}/{limit} · {delay:.1f}초 후 · 같은 요청 유지 · 풀이 시도 미차감")
 
     def summary(self, report):
         summary = report.get("summary", {})
-        print("\n─ 평가 완료 ─" if report.get("complete") else "\n─ 진행 기록 저장 ─", file=sys.stderr)
-        print(f"제출 {len(report.get('submissions', [])):,}건", file=sys.stderr)
+        self._heading("평가 완료" if report.get("complete") else "진행 기록 저장")
+        self._line("전체 제출", f"{len(report.get('submissions', [])):,}건")
+        eligible = [row for row in report.get("submissions", []) if row.get("persistent_error") is not None]
+        self._line("지속 오류", f"{sum(bool(row['persistent_error']) for row in eligible):,}건 / 집계 제출 {len(eligible):,}건")
         mpe = summary.get("mpe")
-        if mpe is not None:
-            print(f"MPE {100*mpe:.2f}%", file=sys.stderr)
+        self._line("MPE", f"{100*mpe:.2f}% · 고정 T 기준 · 문제별 평균" if mpe is not None else "집계 대상 없음")
+        if "observed_transition_rounds" in summary:
+            self._line("측정 라운드", f"{summary['observed_transition_rounds']}/{summary['scheduled_transition_rounds']} · R2 이후")
 
 
 @contextmanager
@@ -258,14 +379,69 @@ def recover_stream_response(trials, number, request, provider):
     return None
 
 
-def execute(items, settings, directory, *, resume=False, client=None, receive=providers.receive):
+def receive_with_retries(client, settings, request, trials, number, terminal, session, receive, options):
+    """Retry a transport failure without submitting, advancing, or adding partial context."""
+    for retry in range(options["max_retries"] + 1):
+        existing = trials.glob(f"{number:05d}_transport_*_started.json")
+        index = max((int(path.name.split("_")[-2]) for path in existing), default=0) + 1
+        transport = trials / f"{number:05d}_transport_{index:03d}"
+        context = {**evaluation_context(session), "provider": settings["provider"], "model": settings["model"],
+                   "transport_attempt": index, "retry_number": retry, "retry_limit": options["max_retries"]}
+        write_json(Path(str(transport) + "_started.json"), {
+            "at": timestamp(), "request_sha256": digest(request), "transport": options, **context,
+        })
+        begin = time.monotonic()
+        try:
+            with terminal.waiting(session):
+                raw = receive(client, settings["provider"], request, Path(str(transport) + "_stream.jsonl"))
+        except providers.ProviderError as error:
+            # A full terminal event may already have arrived before a trailing
+            # network failure. Reuse it before issuing a potentially billable request.
+            recovered = recover_stream_response(trials, number, request, settings["provider"])
+            will_retry = recovered is None and error.retryable and retry < options["max_retries"]
+            delay = max(error.retry_after or 0, options["retry_delay"] * 2**min(retry, 8)
+                        + random.uniform(0, 1)) if will_retry else 0
+            diagnostic = {
+                "at": timestamp(), "request_sha256": digest(request), **context,
+                "kind": error.kind, "message": str(error), "status_code": error.status_code,
+                "retryable": error.retryable, "retry_after": error.retry_after,
+                "elapsed_seconds": time.monotonic() - begin, "will_retry": will_retry,
+                "retry_delay_seconds": delay, "recovered_from_stream": recovered is not None,
+                "timeout_seconds": options["timeout"], **error_log.exception_details(error),
+            }
+            write_json(Path(str(transport) + "_error.json"), diagnostic)
+            record_error(trials.parent, {"event": "transport_error", **diagnostic})
+            if recovered is not None:
+                print(f"완료된 스트림에서 응답 복구 · {number:05d}", file=sys.stderr)
+                event = {"at": timestamp(), "event": "transport_success", **context,
+                         "recovered_from_stream": recovered["recovered_from_stream"]}
+                append_run_event(trials.parent, event)
+                error_log.append_error(trials.parent, event)
+                return recovered
+            if not will_retry:
+                raise
+            terminal.retry(error, retry + 1, options["max_retries"], delay)
+            time.sleep(delay)
+            continue
+        event = {"at": timestamp(), "event": "transport_success", **context,
+                 "elapsed_seconds": time.monotonic() - begin, "recovered_from_stream": False}
+        append_run_event(trials.parent, event)
+        if index > 1:
+            error_log.append_error(trials.parent, event)
+        return {"response": raw, "elapsed_seconds": event["elapsed_seconds"],
+                "request_sha256": digest(request), "received_at": timestamp()}
+
+
+def execute(items, settings, directory, *, resume=False, client=None, receive=providers.receive,
+            transport_retries=10, retry_delay=5.0, timeout=None):
     """Every saved response is reused before another provider request is made."""
     summary_mode = diagnostics.mode(settings)
+    options = transport_options(settings, transport_retries, retry_delay, timeout)
     owned_client = client is None
     with lock_directory(directory):
         if resume:
             frozen = read_json(directory / "protocol.json")
-            if frozen["fingerprint"] != implementation_fingerprint(settings):
+            if not compatible_fingerprint(frozen["fingerprint"], settings):
                 raise ValueError("실행 중 지시문·채점기·API 코드가 변경되었습니다. 원래 코드로 재개하세요.")
             if frozen["items"] != items or frozen["settings"] != settings:
                 raise ValueError("저장된 실행의 문제·모델 설정과 일치하지 않습니다.")
@@ -280,10 +456,16 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
             native_item, native_history = None, []
             write_json(directory / "protocol.json", {
                 "version": 1, "created_at": timestamp(), "settings": settings, "items": items,
+                "persistent_error_basis": PERSISTENT_ERROR_BASIS,
+                "per_denominator": PER_DENOMINATOR,
                 "fingerprint": implementation_fingerprint(settings),
             })
             save_progress(directory, session, native_item, native_history)
         terminal = Terminal(settings, items, directory)
+        append_run_event(directory, {"event": "resume" if resume else "start", "transport": options,
+                                     "implementation_fingerprint": implementation_fingerprint(settings)})
+        print(f"통신 설정 · timeout {options['timeout']:g}초 · 자동 재시도 최대 {options['max_retries']}회\n",
+              file=sys.stderr, flush=True)
         trials = directory / "submissions"
         trials.mkdir(exist_ok=True)
         summaries = {}
@@ -292,8 +474,12 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
                 saved_summary = read_json(path)
                 summaries[saved_summary["submission"]] = saved_summary
             write_text(directory / "reasoning_log.txt", diagnostics.render_log(summaries.values()))
+        context = evaluation_context(session)
+        phase = "prepare_request"
         try:
             while not session.complete:
+                context = evaluation_context(session)
+                phase = "prepare_request"
                 current_id = session.current_item["id"]
                 if summary_mode != "off":
                     current = session.current_record
@@ -328,20 +514,24 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
                     if envelope is not None:
                         print(f"완료된 스트림에서 응답 복구 · {number:05d}", file=sys.stderr)
                     else:
+                        phase = "receive"
                         if client is None:
-                            client = providers.make_client(settings)
-                        attempts = len(list(trials.glob(f"{number:05d}_transport_*_started.json"))) + 1
-                        transport = Path(str(stem) + f"_transport_{attempts:03d}")
-                        write_json(Path(str(transport) + "_started.json"), {"at": timestamp(), "request_sha256": digest(request)})
-                        begin = time.monotonic()
-                        with terminal.waiting(session):
-                            raw = receive(client, settings["provider"], request, Path(str(transport) + "_stream.jsonl"))
-                        envelope = {"response": raw, "elapsed_seconds": time.monotonic()-begin,
-                                    "request_sha256": digest(request), "received_at": timestamp()}
+                            client = providers.make_client({**settings, "timeout": options["timeout"]})
+                        envelope = receive_with_retries(client, settings, request, trials, number,
+                                                        terminal, session, receive, options)
                     write_json(response_path, envelope)
+                phase = "grade"
                 raw = envelope["response"]
                 text, failure = providers.visible_text(raw, settings["provider"])
                 continuation = [] if failure else providers.continuation_items(raw, settings["provider"])
+                if failure:
+                    reason = (raw.get("incomplete_details") or {}).get("reason")
+                    if reason not in {"max_output_tokens", "content_filter"}:
+                        reason = None
+                    record_error(directory, {"event": "generation_failure", **context,
+                                            "kind": "generation_failure", "failure": failure,
+                                            "generation_reason": reason,
+                                            "message": "응답 생성이 미완료되어 채점 없이 다음 문제로 이동합니다."})
                 row = session.submit(text)
                 if failure:
                     native_item, native_history = None, []
@@ -349,6 +539,7 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
                     native_item = current_id
                     native_history = submitted_history + continuation + [{"role": "user", "content": row["feedback"]}]
                 usage = providers.token_usage(raw, settings["provider"])
+                phase = "save_progress"
                 write_json(Path(str(stem) + "_record.json"), {
                     "submission": number, "generation_failure": failure,
                     "usage": usage, "elapsed_seconds": envelope["elapsed_seconds"], "score": row,
@@ -361,20 +552,50 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
                         "summary": summary_text, "raw_output": text,
                         "feedback": row["feedback"] if row else None,
                         "violation_steps": row["violation_steps"] if row else [],
+                        "previous_violation_steps": row["previous_violation_steps"] if row else None,
+                        "previous_rule_compliant": row["previous_rule_compliant"] if row else None,
+                        "persistent_error": row["persistent_error"] if row else None,
+                        "persistent_error_basis": PERSISTENT_ERROR_BASIS,
                         "generation_failure": failure,
                     }
                     write_json(Path(str(stem) + "_reasoning_summary.json"), diagnostic)
                     summaries[number] = diagnostic
                     write_text(directory / "reasoning_log.txt", diagnostics.render_log(summaries.values()))
                 save_progress(directory, session, native_item, native_history)
+                append_run_event(directory, {"event": "submission_graded", **context,
+                                             "generation_failure": failure, "correct": row["correct"] if row else None})
                 terminal.submission(row, envelope["elapsed_seconds"], usage, failure)
                 if summary_mode != "off" and not summary_text:
                     print("  추론 요약 없음 · API가 요약 텍스트를 반환하지 않았습니다.\n", file=sys.stderr)
+        except KeyboardInterrupt as error:
+            record_error(directory, {"event": "interrupted", "kind": "KeyboardInterrupt", **context,
+                                     "phase": phase, "message": "사용자 중단 신호(Ctrl+C)를 받았습니다."}, error)
+            raise
+        except Exception as error:
+            record_error(directory, {"event": "stopped", **context, "phase": phase,
+                                     "kind": error.kind if isinstance(error, providers.ProviderError) else "local_error",
+                                     "message": str(error) if isinstance(error, providers.ProviderError)
+                                     else "실행 코드에서 오류가 발생했습니다. 예외 유형과 코드 위치를 확인하세요."}, error)
+            print(f"재개 명령 · python run.py --resume {directory} --timeout {options['timeout']:g}",
+                  file=sys.stderr, flush=True)
+            raise
         finally:
+            unwinding = sys.exc_info()[0] is not None
+            cleanup_failure = None
+            cleanup = [("save_report", lambda: write_json(directory / "report.json", session.report())),
+                       ("terminal_summary", lambda: terminal.summary(session.report()))]
             if owned_client and client is not None:
-                client.close()
-            write_json(directory / "report.json", session.report())
-            terminal.summary(session.report())
+                cleanup.insert(0, ("close_client", client.close))
+            for cleanup_phase, action in cleanup:
+                try:
+                    action()
+                except Exception as error:
+                    record_error(directory, {"event": "stopped", **context, "phase": cleanup_phase,
+                                             "kind": "local_error", "message": "종료 정리 중 오류가 발생했습니다."}, error)
+                    cleanup_failure = cleanup_failure or error
+            if cleanup_failure is not None and not unwinding:
+                raise cleanup_failure
+        append_run_event(directory, {"event": "complete", "submissions": len(session.responses)})
     return session.report()
 
 
@@ -388,6 +609,9 @@ def main(argv=None):
     destination.add_argument("--output", type=Path, help="새 결과 폴더")
     destination.add_argument("--resume", type=Path, help="이전 결과 폴더에서 재개")
     parser.add_argument("--dry-run", action="store_true", help="API 호출 없이 첫 요청 확인")
+    parser.add_argument("--timeout", type=float, help="이번 실행의 통신 timeout(초), 재개 시에도 지정 가능")
+    parser.add_argument("--transport-retries", type=int, default=10, help="일시적 통신 실패 자동 재시도 횟수(기본 10)")
+    parser.add_argument("--retry-delay", type=float, default=5.0, help="재시도 기본 대기 초(기본 5, 이후 지수 증가)")
     parser.add_argument("--reasoning-summary", nargs="?", const="auto", choices=diagnostics.SUMMARY_MODES,
                         help="OpenAI 추론 요약 저장 (값 생략 시 auto, 기본 off)")
     args = parser.parse_args(argv)
@@ -406,6 +630,9 @@ def main(argv=None):
             default = PROJECT_DIR / "runs" / f"{settings['profile']}_{datetime.now():%Y%m%d_%H%M%S}"
             directory = (args.output or default).expanduser().resolve()
         diagnostics.mode(settings)
+        options = transport_options(settings, args.transport_retries, args.retry_delay, args.timeout)
+        if args.resume and not compatible_fingerprint(frozen["fingerprint"], settings):
+            raise ValueError("실행 중 지시문·채점기·API 코드가 변경되었습니다. 원래 코드로 재개하세요.")
         if args.dry_run:
             session = make_session(items, settings)
             if args.resume:
@@ -419,10 +646,13 @@ def main(argv=None):
             if args.resume and saved["native_item"] == session.current_item["id"]:
                 history = saved["native_history"]
             request = diagnostics.make_request(settings, messages[0]["content"], history + [messages[-1]])
-            print(json.dumps({"profile": settings["profile"], "problems": len(items),
+            print(json.dumps({"profile": settings["profile"], "problems": len(items), "transport": options,
+                              "persistent_error_basis": PERSISTENT_ERROR_BASIS,
+                              "per_denominator": PER_DENOMINATOR,
                               "request": request}, ensure_ascii=False, indent=2))
             return 0
-        execute(items, settings, directory, resume=bool(args.resume))
+        execute(items, settings, directory, resume=bool(args.resume), transport_retries=args.transport_retries,
+                retry_delay=args.retry_delay, timeout=args.timeout)
         print(f"결과 저장 · {directory / 'report.json'}")
         return 0
     except KeyboardInterrupt:
@@ -430,6 +660,9 @@ def main(argv=None):
         return 130
     except (providers.ProviderError, ValueError, OSError, KeyError) as exc:
         print(f"실행 중단 · {exc}", file=sys.stderr)
+        return 1
+    except Exception as exc:
+        print(f"실행 중단 · {type(exc).__name__}. 실행 폴더의 errors.log를 확인하세요.", file=sys.stderr)
         return 1
 
 

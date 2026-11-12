@@ -266,8 +266,10 @@ class Game:
         completed = stop_reason == "target_reached"
         valid = completed and not violations
         previous_valid = old_allowed_steps = previous_only = None
+        previous_violations = None
         if previous is not None:
-            previous_valid = completed and previous not in pairs
+            previous_violations = [step for step, pair in enumerate(pairs, 2) if pair == previous]
+            previous_valid = completed and not previous_violations
             old_allowed_steps = [step for step in violations if pairs[step - 2] != previous]
             previous_only = previous_valid and not valid
 
@@ -282,6 +284,7 @@ class Game:
             "remaining_length": len(board.text.replace(" ", "")),
             "merged_steps": merged, "singleton_merge_steps": singleton,
             "violation_steps": violations,
+            "previous_violation_steps": previous_violations,
             "recoverable_violation_steps": [
                 step for step in violations if not self.board(masks[step - 1]).terminal
                 and self.can_finish(masks[step - 1], letters[step - 2], forbidden)

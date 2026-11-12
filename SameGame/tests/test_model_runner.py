@@ -108,11 +108,63 @@ class ModelExecutionTests(unittest.TestCase):
                                  + [{"role": "user", "content": "Correct"}, initial])
                 self.assertEqual(requests[2][history_key], [initial])
 
-    def test_first_violation_feedback_reaches_both_providers_with_native_history(self):
+    def test_previous_rule_compliant_error_is_private_and_persisted(self):
+        item = {"id": "one", "type": "same_letter", "rounds": [
+            {"round": 1, "input": "AABB", "target": 0, "forbidden": "AA"},
+            {"round": 2, "input": "AABBAABB", "target": 0, "forbidden": "BB"},
+            {"round": 3, "input": "AABB", "target": 0, "forbidden": "CC"},
+        ]}
+        self.settings["reasoning_summary"] = "auto"
+        self.settings["max_attempts"] = 10
+        requests = []
+
+        def receive(client, provider, request, path):
+            requests.append(request)
+            moves = {2: "B1 B1 A1", 3: "A1 A1 B1"}.get(len(requests), "A1 B1")
+            return response(json.dumps({"moves": moves, "answer": ""}))
+
+        with TemporaryDirectory() as temporary, redirect_stderr(StringIO()) as terminal:
+            directory = Path(temporary)
+            report = model_runner.execute([item], self.settings, directory, client=object(), receive=receive)
+            second = report["submissions"][1]
+            self.assertTrue(report["complete"])
+            self.assertEqual(second["feedback"], "Correct, but rule violation. Rule violation: move 2.")
+            self.assertFalse(second["correct"])
+            self.assertEqual(second["success_streak"], 0)
+            self.assertTrue(second["persistent_error"])
+            self.assertTrue(second["previous_rule_compliant"])
+            self.assertEqual(second["previous_violation_steps"], [])
+            self.assertEqual(second["violation_steps"], [2])
+            third = report["submissions"][2]
+            self.assertTrue(third["correct"])
+            self.assertFalse(third["persistent_error"])
+            self.assertEqual(third["previous_violation_steps"], [2])
+            self.assertEqual(report["summary"]["mpe"], .05)
+            self.assertEqual(report["summary"]["observed_mpe"], .25)
+            self.assertEqual(report["summary"]["persistent_error_basis"], "previous_rule_compliant_current_incorrect")
+            self.assertEqual(report["summary"]["per_denominator"], "max_attempts")
+            protocol = model_runner.read_json(directory / "protocol.json")
+            self.assertEqual(protocol["persistent_error_basis"], "previous_rule_compliant_current_incorrect")
+            self.assertEqual(protocol["per_denominator"], "max_attempts")
+            saved = model_runner.read_json(directory / "submissions" / "00002_record.json")["score"]
+            self.assertEqual(saved, second)
+            diagnostic = model_runner.read_json(directory / "submissions" / "00002_reasoning_summary.json")
+            self.assertTrue(diagnostic["persistent_error"])
+            self.assertEqual(diagnostic["previous_violation_steps"], [])
+            self.assertIn("이전 규칙 위반 행동: 2", (directory / "reasoning_log.txt").read_text())
+            for label in ("이전 규칙 위반", "2번째 행동", "지속 오류", "발생", "PE=1"):
+                self.assertIn(label, terminal.getvalue())
+            self.assertEqual(requests[2]["input"][-2], {"role": "user", "content": second["feedback"]})
+            self.assertEqual(requests[3]["input"][-2], {"role": "user", "content": "Correct"})
+            self.assertNotIn("previous_violation_steps", json.dumps(requests))
+            self.assertNotIn("previous_rule_violation", json.dumps(requests))
+            self.assertNotIn("previous_rule_compliant_current_incorrect", json.dumps(requests))
+
+    def test_all_violation_positions_reach_both_providers_with_native_history(self):
         item = {"id": "one", "type": "same_letter", "rounds": [
             {"round": 1, "input": "AABBAABBAA", "target": 0, "forbidden": "AA"},
         ]}
-        feedback = "Correct, but rule violation. Rule violation: move 2."
+        feedback = "Correct, but rule violation. Rule violation: moves 2, 3."
         initial = {"role": "user", "content": 'Initial string: "AABBAABBAA"'}
         for profile, history_key in (("sol", "input"), ("opus", "messages")):
             with self.subTest(profile=profile), TemporaryDirectory() as temporary:

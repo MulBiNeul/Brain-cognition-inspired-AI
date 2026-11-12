@@ -1,0 +1,906 @@
+{
+  "rules_en": "Each item has five consecutive rounds. Each round has one input. Every submission in that round starts from the same input with an empty action log. A move names a letter A through E and the ordinal of one of its current maximal runs of two or more identical letters. Number only that letter's removable runs from left to right, starting at 1, across the entire string. On AABAA, A2 deletes the right-hand AA. Remove the selected whole run, join its neighbors within that segment, and renumber runs for the next move. A newly joined run remains until selected. A literal ASCII space is a permanent boundary. Letters cannot join across it. Ignore spaces when counting letters, but keep the boundary when checking adjacency. The two letters in forbidden specify one prohibited pair of consecutive deletion letters. Ignore the run ordinals when checking this pair. AC prohibits C immediately after A, but permits A after C. BB prohibits selecting B twice in succession. Deleting BBB once is one action. The first action is unrestricted by this rule. Replay the submitted commands in order. Continue deleting even after reaching or passing the target length. Record each forbidden pair and execute the deletion if it is physically possible. If the named run does not exist, check the attempted letter pair, stop at that command and mark the plan invalid. Judge the final board after replay. For success, all submitted commands must execute, the action log must obey the forbidden pair, exactly target letters must remain, and no removable run may remain in any segment. At target 2, \"A A\" succeeds and AA fails. At target 3, ABA, \"AB A\" and \"A AB\" succeed; AAB, ABB and \"AA B\" fail. The evaluator keeps the exact target and forbidden pair in private round metadata. Submit one JSON object {\"moves\":\"...\",\"answer\":\"...\"}: moves is a string of 1 to 30 commands such as \"A2 B1 C1\", separated by one ASCII space. Use positive decimal ordinals without leading zeros. A plain letter string such as \"ABC\" selects ordinal 1 on every move. The answer is the final string produced by those moves. Keep internal spaces, omit leading and trailing spaces, and use the empty string when no letters remain.",
+  "rounds_per_item": 5,
+  "items": [
+    {
+      "id": "SG-026",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AEAAEADDDAEABAAAABACADDDA AAAAAA",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 2,
+          "input": "BBBABBACAEADBBDBBDAEACABBA BBB",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 3,
+          "input": "CEBEEBEEEDBAEEEAEEEABDBEEBEB EE",
+          "target": 2,
+          "forbidden": "BB"
+        },
+        {
+          "round": 4,
+          "input": "CDBAAAABAAAABDCAAAEAAEACAAC AAA",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 5,
+          "input": "ADDDBDCEEECDDCDEDDDEDDDDEDD DD",
+          "target": 3,
+          "forbidden": "EE"
+        }
+      ]
+    },
+    {
+      "id": "SG-027",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "DAAEACBBBCAAAACABAAAABAABAAAA",
+          "target": 3,
+          "forbidden": "BB"
+        },
+        {
+          "round": 2,
+          "input": "EABCACCCCCADCCCCDCBCCCCCACCCCAB",
+          "target": 2,
+          "forbidden": "AA"
+        },
+        {
+          "round": 3,
+          "input": "CDAEEAEEEEADCEEEEEBEEEEEEBECEEEC",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 4,
+          "input": "BCDEEEEEEEEDEDEAEEEAEDECEECD",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 5,
+          "input": "BECCEAEDCCDCCCCCDEAECCCEBECCE",
+          "target": 0,
+          "forbidden": "EE"
+        }
+      ]
+    },
+    {
+      "id": "SG-028",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "BEEEBECEEEECEEEBDAEEEAEEEADB EE",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 2,
+          "input": "EEEE EEEDEEDEEDEBEEBDDBEAEEEEEC",
+          "target": 3,
+          "forbidden": "DD"
+        },
+        {
+          "round": 3,
+          "input": "CCCECBCCCBCEAEDCCCCDCCDEAECCE CC",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 4,
+          "input": "BB ABABBADAEBBEBBBEADBBABBABC",
+          "target": 2,
+          "forbidden": "AA"
+        },
+        {
+          "round": 5,
+          "input": "DDD ACDDDCDEDDEDDDCDADDADDADCB",
+          "target": 3,
+          "forbidden": "CC"
+        }
+      ]
+    },
+    {
+      "id": "SG-029",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "EABDBBBBBDBABBBBBEBABBBBABEAC",
+          "target": 2,
+          "forbidden": "AA"
+        },
+        {
+          "round": 2,
+          "input": "ECCEBECCCEDEACCCACCCCCAEDECCCCEB",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 3,
+          "input": "DCCCDCBCCCCBCCCDAECCCECCCCEAD",
+          "target": 1,
+          "forbidden": "DD"
+        },
+        {
+          "round": 4,
+          "input": "EEEEECEECEEECEDEEEDCCCDEAEEEEB",
+          "target": 3,
+          "forbidden": "CC"
+        },
+        {
+          "round": 5,
+          "input": "CBDDDDBDBDDDDDBDCDADDDDDADCBE",
+          "target": 2,
+          "forbidden": "BB"
+        }
+      ]
+    },
+    {
+      "id": "SG-030",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "BEDDDEDDDDBDADDDDDDDDAEDDDDEDBEC",
+          "target": 2,
+          "forbidden": "EE"
+        },
+        {
+          "round": 2,
+          "input": "DBACEBBBEBBBECABDBBBBDBDBBDB",
+          "target": 1,
+          "forbidden": "DD"
+        },
+        {
+          "round": 3,
+          "input": "BAEEEEEEAEAEEEAEACDEEEDEEDCAB",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 4,
+          "input": "DBDDDDBDBDDDBDCEADDDDADDDDAECDB",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 5,
+          "input": "DCABAAABAAAABACAAEAAAEACAACB",
+          "target": 3,
+          "forbidden": "CC"
+        }
+      ]
+    },
+    {
+      "id": "SG-031",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CBBBBBCDBBBBD DEBBBEBBBBBBABBBAED",
+          "target": 0,
+          "forbidden": "DD"
+        },
+        {
+          "round": 2,
+          "input": "ABEDEEDEEEDEBEECEEECEBEEEBD EEEE",
+          "target": 3,
+          "forbidden": "BB"
+        },
+        {
+          "round": 3,
+          "input": "DD DEEEEDCDADDDADBDEEEDBDDDDDDBD",
+          "target": 2,
+          "forbidden": "EE"
+        },
+        {
+          "round": 4,
+          "input": "DBCBBCBEBBEDBBBBDEBABBCBBBBC BBBB",
+          "target": 3,
+          "forbidden": "CC"
+        },
+        {
+          "round": 5,
+          "input": "EE AEEAEBEEBEEEADCEEECEEEECDA",
+          "target": 1,
+          "forbidden": "AA"
+        }
+      ]
+    },
+    {
+      "id": "SG-032",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "EACCCCCACECDCCDCECECCCCCCEAB",
+          "target": 2,
+          "forbidden": "EE"
+        },
+        {
+          "round": 2,
+          "input": "BEDDDDDBADDDDDADDDBCDDCEDDDBDDBE",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 3,
+          "input": "CDDDDCACEBDDDBDDDDBEDDDCACDDDC",
+          "target": 0,
+          "forbidden": "CC"
+        },
+        {
+          "round": 4,
+          "input": "CDBBBDBEBBBBEBBDBCBBCBBBCBDA",
+          "target": 3,
+          "forbidden": "DD"
+        },
+        {
+          "round": 5,
+          "input": "CAEDBBBBDBBBDEABABBBABABBBBBBBAC",
+          "target": 0,
+          "forbidden": "AA"
+        }
+      ]
+    },
+    {
+      "id": "SG-033",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "ABBBBABEBBBBBEBBBBACDBBBDBBBDCA",
+          "target": 1,
+          "forbidden": "AA"
+        },
+        {
+          "round": 2,
+          "input": "CDDCBCDDDDEADDDADDDDDDAECBCDDDC",
+          "target": 0,
+          "forbidden": "CC"
+        },
+        {
+          "round": 3,
+          "input": "BDCEDEEEEEEDECEEEEEEDEAEEEEEAEDC",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 4,
+          "input": "DCCCCECCCCCECACCACDCECCECDECB",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 5,
+          "input": "ABDDBDDDDCBEDDDDEDDEBCDBDDDBDA",
+          "target": 0,
+          "forbidden": "BB"
+        }
+      ]
+    },
+    {
+      "id": "SG-034",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CAAAAAACBEDAAAADAAAADEBCAAAAAAC",
+          "target": 0,
+          "forbidden": "CC"
+        },
+        {
+          "round": 2,
+          "input": "EACDBDDDDBDCDADDDDDDADADDDDDAC",
+          "target": 2,
+          "forbidden": "AA"
+        },
+        {
+          "round": 3,
+          "input": "DCCDBDACCCACCADBDCECCCCECDCC",
+          "target": 0,
+          "forbidden": "DD"
+        },
+        {
+          "round": 4,
+          "input": "BEEEEDEEBEEEBDEEEBEEEEEEAEEABDEC",
+          "target": 3,
+          "forbidden": "BB"
+        },
+        {
+          "round": 5,
+          "input": "BEDDDDEDDDBADDDDAEDDCDDCEDDBE",
+          "target": 1,
+          "forbidden": "EE"
+        }
+      ]
+    },
+    {
+      "id": "SG-035",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CADBBDBBBDACBBBBEBBBBBEBCBBC",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 2,
+          "input": "BDAADAEADAAAADAEADCAAACAAACDB",
+          "target": 0,
+          "forbidden": "DD"
+        },
+        {
+          "round": 3,
+          "input": "ACDEBCCCBCCECCDECCCCECCCDCCE",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 4,
+          "input": "CBEAAAAAEAAAAEBADABAAAABADABAABC",
+          "target": 0,
+          "forbidden": "BB"
+        },
+        {
+          "round": 5,
+          "input": "CEEEEECABAEEEAEEBEEEEAEEAEEEBD",
+          "target": 2,
+          "forbidden": "AA"
+        }
+      ]
+    },
+    {
+      "id": "SG-036",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "DACBCCCBCECCCCECCCCCACBCCCBCAE",
+          "target": 2,
+          "forbidden": "BB"
+        },
+        {
+          "round": 2,
+          "input": "DDEDCDDCDEAEBDDBDDDDBEAEDDDE",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 3,
+          "input": "ECDDDCDCDDDCDEDDDDDDBDADDDADBEC",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 4,
+          "input": "DBACBABBBBABCBEBBBBEBABBBBABBBC",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 5,
+          "input": "DBCBBCBDEDBABBABBBBABDEDBBBD",
+          "target": 0,
+          "forbidden": "DD"
+        }
+      ]
+    },
+    {
+      "id": "SG-037",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CAAA EEEEAAAEDBAAAABAEAAAEABAAAA",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 2,
+          "input": "CCC DBECCCECCEBDCCCCCACCACDCCD",
+          "target": 1,
+          "forbidden": "DD"
+        },
+        {
+          "round": 3,
+          "input": "EEEEEEE AEECEEECEACEDEEEDEEDECAEB",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 4,
+          "input": "BAABEBDBCAACAAAACBDBEBAABAA AA",
+          "target": 0,
+          "forbidden": "BB"
+        },
+        {
+          "round": 5,
+          "input": "EAEEEAEAEEAEDCBEEEEBEEEEBCDEA EEE",
+          "target": 1,
+          "forbidden": "AA"
+        }
+      ]
+    },
+    {
+      "id": "SG-038",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "DDEDADDDADEDDDDECADDDAAAA DDDDB",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 2,
+          "input": "EEE DEBCAEEEAEEEACBEDEEDEDEEDE",
+          "target": 1,
+          "forbidden": "DD"
+        },
+        {
+          "round": 3,
+          "input": "ECBCCCBCACDCCDCAAACDCBCCCCBC CCC",
+          "target": 3,
+          "forbidden": "BB"
+        },
+        {
+          "round": 4,
+          "input": "ACECCCECECCECDBCCBCCBDCE CCCCCC",
+          "target": 2,
+          "forbidden": "EE"
+        },
+        {
+          "round": 5,
+          "input": "BB BBCBABBABCDCEBBEBBBECDCBBBC",
+          "target": 0,
+          "forbidden": "CC"
+        }
+      ]
+    },
+    {
+      "id": "SG-039",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "ECCCBCDCACCCACDCAACDCCC CCCCC",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 2,
+          "input": "BBBBBB BEBBEBEBBEBCDABBABBADCBE",
+          "target": 1,
+          "forbidden": "EE"
+        },
+        {
+          "round": 3,
+          "input": "CCC AECBCCCCBCECCACCACBCCCBCED",
+          "target": 2,
+          "forbidden": "BB"
+        },
+        {
+          "round": 4,
+          "input": "CEECACBEEEEBEEBCACEDEEDECEEE EE",
+          "target": 0,
+          "forbidden": "CC"
+        },
+        {
+          "round": 5,
+          "input": "BBBB BBBCBDBBDBCDBBBEBBEDCBDBBBA",
+          "target": 3,
+          "forbidden": "DD"
+        }
+      ]
+    },
+    {
+      "id": "SG-040",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AEEACDBEEEEEBEEEEBDCAEEAEEEEEE",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 2,
+          "input": "EACBCCBCACCCECCCCCCECBCCBCAD",
+          "target": 2,
+          "forbidden": "BB"
+        },
+        {
+          "round": 3,
+          "input": "ACDBEDDDDEDCDDDDDCDBDCDDCDBDD",
+          "target": 3,
+          "forbidden": "CC"
+        },
+        {
+          "round": 4,
+          "input": "ECADBDDDDDBDADDCDEDDEDEDDDDEC",
+          "target": 1,
+          "forbidden": "EE"
+        },
+        {
+          "round": 5,
+          "input": "DCCCDADCECCECCCECDADCBCCCBCD",
+          "target": 0,
+          "forbidden": "DD"
+        }
+      ]
+    },
+    {
+      "id": "SG-041",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "DBBBBDBEBBBEBBBDCABBBBABBACD",
+          "target": 1,
+          "forbidden": "DD"
+        },
+        {
+          "round": 2,
+          "input": "AAAEADAEAAAAEADAEAAABAABEADC",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 3,
+          "input": "BBABBBBACADAEBBBBEBBBEADACABBBA",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 4,
+          "input": "EABBCBBCBBBBBBABBBBCBBCACDBBBBD",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 5,
+          "input": "BEADCEECEECDAEBEEEBEBEEEEEBE",
+          "target": 1,
+          "forbidden": "BB"
+        }
+      ]
+    },
+    {
+      "id": "SG-042",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "BADCCCCCDCCCCDABCCCECCCCECBCCB CC",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 2,
+          "input": "CCC CCDBCCCCACCCABACECCCECABCCCAC",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 3,
+          "input": "ECDBACCCACCABDCECCCECECCEC CC",
+          "target": 1,
+          "forbidden": "EE"
+        },
+        {
+          "round": 4,
+          "input": "BB DBBDADCDEBBEBBEDCDADBBDBBB",
+          "target": 0,
+          "forbidden": "DD"
+        },
+        {
+          "round": 5,
+          "input": "BEACEDEEEEDEEEEDECAECEEECEEEA EE",
+          "target": 2,
+          "forbidden": "CC"
+        }
+      ]
+    },
+    {
+      "id": "SG-043",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AAA CAAACADAAADAAACEBAABAAABEC",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 2,
+          "input": "EE BEEBDBCEEEECEECBDBEAEEEAEBEE",
+          "target": 0,
+          "forbidden": "BB"
+        },
+        {
+          "round": 3,
+          "input": "CCC ACCADBDCCDCCBCCCCDCCDCCBE",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 4,
+          "input": "AA AAEAAEBECEDAAAAADAADECEBEAAAAE",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 5,
+          "input": "CEBCCBEAAAACACCCACECCBCCDCC CCC",
+          "target": 3,
+          "forbidden": "AA"
+        }
+      ]
+    },
+    {
+      "id": "SG-044",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CBDAAADAAABAAAABC CAAACEAAAAE",
+          "target": 0,
+          "forbidden": "CC"
+        },
+        {
+          "round": 2,
+          "input": "DEBCABBABEBBBBEBCBEBBBEBCBBB BB",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 3,
+          "input": "ABBABCBBBCBBADEBBBEBBBEDA BBBBB",
+          "target": 1,
+          "forbidden": "AA"
+        },
+        {
+          "round": 4,
+          "input": "EE BEDAEEEAEEEADEBEEEEBEBEEBEC",
+          "target": 2,
+          "forbidden": "BB"
+        },
+        {
+          "round": 5,
+          "input": "EEE EDEAAAAEDECBEDEEEEDEBEEBEDEEE",
+          "target": 3,
+          "forbidden": "DD"
+        }
+      ]
+    },
+    {
+      "id": "SG-045",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AEBCEDEEEDEEEEDECBECEEECEEEEEB",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 2,
+          "input": "DBDDBDBDDDDDBDEACDDDDDCDDDCAEDB",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 3,
+          "input": "AEEACEEEEBEAAAAEBEDEEDEBEAEEEE",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 4,
+          "input": "EADDDDDEBDDDDBDDECDDDCADDEDDDDEA",
+          "target": 1,
+          "forbidden": "EE"
+        },
+        {
+          "round": 5,
+          "input": "DAAAAADBADEAAAAEACAACAEDABDAAAD",
+          "target": 0,
+          "forbidden": "DD"
+        }
+      ]
+    },
+    {
+      "id": "SG-046",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "DEEEEDCDEEEEDBDADDDDDDADDDDADD DD",
+          "target": 3,
+          "forbidden": "EE"
+        },
+        {
+          "round": 2,
+          "input": "BEACAAACADAAAADAAAAEACAAACAED AA",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 3,
+          "input": "EEE AEEEEABDCEECEEEEECDBAEEEAEEEE",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 4,
+          "input": "BAEEEDEEEDEEAEEEDEEEDADCEEEC EEEE",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 5,
+          "input": "AAA BCDAAADAADCBAAAAAEAAAEABAAB",
+          "target": 1,
+          "forbidden": "BB"
+        }
+      ]
+    },
+    {
+      "id": "SG-047",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AABAAAAAABDCEAAAEAAAAECDBAAAB",
+          "target": 0,
+          "forbidden": "BB"
+        },
+        {
+          "round": 2,
+          "input": "DEEECEEECEDCEBEEEEBEEEEBECDEA",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 3,
+          "input": "AAACADAAAAADACDAABAAAABDCADAAAAE",
+          "target": 3,
+          "forbidden": "DD"
+        },
+        {
+          "round": 4,
+          "input": "DAEEEAEEDBEEEBAEEECEEECAEEDA",
+          "target": 1,
+          "forbidden": "AA"
+        },
+        {
+          "round": 5,
+          "input": "DBEBBBBBEBEBBBEBCABBABBBBBBBACBE",
+          "target": 2,
+          "forbidden": "EE"
+        }
+      ]
+    },
+    {
+      "id": "SG-048",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CBEDAAAAAADAAEAAAAABAEAAEABC",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 2,
+          "input": "CCCBECCCACCAEACDCCCCCDCAECCAC",
+          "target": 3,
+          "forbidden": "AA"
+        },
+        {
+          "round": 3,
+          "input": "ABEEEEEBEBEEEBEAEEECEDEEEEDECAB",
+          "target": 1,
+          "forbidden": "BB"
+        },
+        {
+          "round": 4,
+          "input": "AEEDEBDCEEEECEEDBEDEEDEBEEEE",
+          "target": 3,
+          "forbidden": "DD"
+        },
+        {
+          "round": 5,
+          "input": "CBADBBBBDBBBDABCBBCBCBBBBCBE",
+          "target": 2,
+          "forbidden": "CC"
+        }
+      ]
+    },
+    {
+      "id": "SG-049",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "CEEAEDEEEDEAEEEEEAEDEBDEEEDBE",
+          "target": 3,
+          "forbidden": "DD"
+        },
+        {
+          "round": 2,
+          "input": "CAEAAAAEACBAACDAAAADCAAACDAAAAAA",
+          "target": 2,
+          "forbidden": "CC"
+        },
+        {
+          "round": 3,
+          "input": "BDEDDEDAECDDDDDCDDCEADDEDDDDEB",
+          "target": 0,
+          "forbidden": "EE"
+        },
+        {
+          "round": 4,
+          "input": "AEBCDCCCCCCCDCBCCCECACCCACACCCAE",
+          "target": 1,
+          "forbidden": "AA"
+        },
+        {
+          "round": 5,
+          "input": "DCCCCABCCCCBCECCCECACCCBCCBAC",
+          "target": 2,
+          "forbidden": "BB"
+        }
+      ]
+    },
+    {
+      "id": "SG-050",
+      "type": "same_letter",
+      "rounds": [
+        {
+          "round": 1,
+          "input": "AEADAAADAEACDAAADCAEAAABAAAAA",
+          "target": 2,
+          "forbidden": "DD"
+        },
+        {
+          "round": 2,
+          "input": "CEDAAADAAADECAAAABAAAAABACAAAC",
+          "target": 1,
+          "forbidden": "CC"
+        },
+        {
+          "round": 3,
+          "input": "EEECEBEEEBECEBEEEEEBEAEEEEACEBD",
+          "target": 3,
+          "forbidden": "BB"
+        },
+        {
+          "round": 4,
+          "input": "EACACCCCCACADABCCBCCCBADACCCCAE",
+          "target": 0,
+          "forbidden": "AA"
+        },
+        {
+          "round": 5,
+          "input": "BEBBBEBEBBBBEBCDABBBBABBBBADCBE",
+          "target": 1,
+          "forbidden": "EE"
+        }
+      ]
+    }
+  ]
+}

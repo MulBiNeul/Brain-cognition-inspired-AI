@@ -1,0 +1,25 @@
+{
+  "description": "Reviewed transport recovery and error logging upgrades only. Prompts, grading, provider request bodies and native-history handling are unchanged. Earlier feedback versions are not compatible.",
+  "transport_only_upgrades": [
+    {
+      "from": "07ed9138af2a781a57612d9cb11effd78a2ffa58c07fe24b8fcefc0a037f682b",
+      "to": "895f20a29453055fea1a391b2366e6d9e1fe466d9b558da465b6df46828bec0e"
+    },
+    {
+      "from": "1705cc00ce91354ec44eee67d1e061f50bd58025229f785b8c239aa8a7aafc15",
+      "to": "895f20a29453055fea1a391b2366e6d9e1fe466d9b558da465b6df46828bec0e"
+    },
+    {
+      "from": "87e8f6740d859edd75899c1adcb45186bd8b159e39a0b3a9a4ea883fb7f41836",
+      "to": "62385f1395e15f607fcf85153b742abc10fcf2fce78f9980ad6708c88b5d8d28"
+    },
+    {
+      "from": "eff7cc22ee615f9dc7092bd4496cb84e0606d5552dee187023b57a31fab96db3",
+      "to": "62385f1395e15f607fcf85153b742abc10fcf2fce78f9980ad6708c88b5d8d28"
+    },
+    {
+      "from": "f0adcfb076e88c2fbe8fa3571ea33461896710b38e22f9a3a085056d34baa19b",
+      "to": "895f20a29453055fea1a391b2366e6d9e1fe466d9b558da465b6df46828bec0e"
+    }
+  ]
+}

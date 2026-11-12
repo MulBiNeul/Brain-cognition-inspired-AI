@@ -14,7 +14,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from .evaluate import EvaluationSession, INSTRUCTIONS, load_items
+from .evaluate import EvaluationSession, INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS, load_items
 from ._paths import DATA_DIR, PACKAGE_DIR, PROJECT_DIR, WEB_DIR
 
 
@@ -132,6 +132,8 @@ class HumanApp:
                 "items": self.items, "dataset_sha256": fingerprint(self.items),
                 "instructions_sha256": fingerprint(INSTRUCTIONS), "protocol": self.protocol,
                 "implementation_sha256": self.implementation,
+                "persistent_error_basis": PERSISTENT_ERROR_BASIS,
+                "per_denominator": PER_DENOMINATOR,
                 "responses": [], "receipts": {}, "last_feedback": None,
             }
             engine = EvaluationSession(self.items, **self.protocol)

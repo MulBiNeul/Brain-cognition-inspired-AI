@@ -41,6 +41,8 @@ INSTRUCTIONS = (
     "Submission: {\"moves\": \"B2 B1\", \"answer\": \"A A\"}"
 )
 MAX_MOVES = 30
+PERSISTENT_ERROR_BASIS = "previous_rule_compliant_current_incorrect"
+PER_DENOMINATOR = "max_attempts"
 RULE_OUTCOMES = {(True, True): "both", (True, False): "current_only",
                  (False, True): "previous_only", (False, False): "neither"}
 
@@ -58,6 +60,7 @@ def grade_response(raw, record, previous=None):
     final_matches = physical_goal = goal = None
     exhausted = None
     previous_success = None if previous is None else False
+    previous_violations = None if previous is None else []
     violations, recoverable = [], []
     executed, failed_step = 0, None
     final_state = None
@@ -69,6 +72,7 @@ def grade_response(raw, record, previous=None):
         exhausted = result["board_exhausted"]
         violations, recoverable = result["violation_steps"], result["recoverable_violation_steps"]
         previous_success = result["valid_under_previous_rule"]
+        previous_violations = result["previous_violation_steps"]
         valid_plan = failed_step is None
         if valid_plan:
             physical_goal = result["stop_reason"] == "target_reached"
@@ -76,13 +80,17 @@ def grade_response(raw, record, previous=None):
             goal = physical_goal and final_matches
 
     correct = bool(goal and not violations)
+    previous_rule_compliant = (None if previous is None else
+                               bool(valid_plan and exhausted and final_matches and not previous_violations))
     if correct:
         feedback = "Correct"
     elif violations:
         feedback = "Correct, but rule violation" if goal else "Incorrect, also rule violation"
         # Steps are 1-based submitted moves; a forbidden pair is attributed to
-        # its second move. Keep every violation below for private scoring only.
-        feedback += f". Rule violation: move {violations[0]}."
+        # its second move. Report every violation identified during replay.
+        unit = "move" if len(violations) == 1 else "moves"
+        positions = ", ".join(map(str, violations))
+        feedback += f". Rule violation: {unit} {positions}."
     else:
         feedback = "Incorrect, but no rule violation"
     return {
@@ -93,7 +101,12 @@ def grade_response(raw, record, previous=None):
         "final_state": final_state, "board_exhausted": exhausted, "executed_steps": executed,
         "first_basic_error_step": failed_step,
         "violation_steps": violations, "recoverable_violation_steps": recoverable,
-        "persistent_error": None if previous is None else bool(violations),
+        "previous_violation_steps": previous_violations,
+        # Apply the previous rule to the current input, without imposing a goal.
+        # A current failure counts only when the complete, truthful submission
+        # obeyed the previous rule and all shared deletion mechanics.
+        "previous_rule_compliant": previous_rule_compliant,
+        "persistent_error": None if previous is None else previous_rule_compliant and not correct,
         "previous_success": previous_success,
         "previous_only": None if previous is None else previous_success and not correct,
         "rule_outcome": None if previous is None else RULE_OUTCOMES[correct, previous_success],
@@ -107,13 +120,16 @@ def copy_match(signature, references):
             "response": signature in references}
 
 
-def round_summary(number, records, status):
+def round_summary(number, records, status, max_attempts):
     count = len(records)
     errors = sum(not record["correct"] for record in records)
     persistent = None if number == 1 else sum(record["persistent_error"] for record in records)
     return {"round": number, "status": status, "submissions": count, "errors": errors,
             "rule_outcomes": {s: sum(r["rule_outcome"] == s for r in records) for s in RULE_OUTCOMES.values()},
-            "persistent_errors": persistent, "per": persistent / count if number > 1 and count else None,
+            "persistent_errors": persistent,
+            "per_denominator": max_attempts if number > 1 else None,
+            "per": persistent / max_attempts if number > 1 and count else None,
+            "observed_per": persistent / count if number > 1 and count else None,
             "error_rate": errors / count if count else None}
 
 
@@ -125,9 +141,15 @@ def observed_mean(rows, field):
 def metrics(problems):
     rounds = [r for problem in problems for r in problem["rounds"]]
     outcomes = {s: sum(r["rule_outcomes"][s] for r in rounds) for s in RULE_OUTCOMES.values()}
-    return {"scheduled_problems": len(problems),
+    return {"persistent_error_basis": PERSISTENT_ERROR_BASIS,
+            "per_denominator": PER_DENOMINATOR,
+            "scheduled_problems": len(problems),
             "mpe_eligible_problems": sum(problem["mpe"] is not None for problem in problems),
             "mpe": observed_mean(problems, "mpe"),
+            "observed_mpe": observed_mean(problems, "observed_mpe"),
+            "scheduled_transition_rounds": sum(r["round"] > 1 for r in rounds),
+            "observed_transition_rounds": sum(r["round"] > 1 and r["submissions"] > 0 for r in rounds),
+            "unobserved_transition_rounds": sum(r["round"] > 1 and r["submissions"] == 0 for r in rounds),
             "error_eligible_problems": sum(problem["error_rate"] is not None for problem in problems),
             "error_rate": observed_mean(problems, "error_rate"),
             "rule_outcomes": {"denominator": sum(outcomes.values()), "counts": outcomes}}
@@ -223,11 +245,11 @@ class EvaluationSession:
         return row
 
     def _finish_round(self, status):
-        self._rounds.append(round_summary(self.current_record["round"], self._attempts, status))
+        self._rounds.append(round_summary(self.current_record["round"], self._attempts, status, self.max_attempts))
         self.round_index += 1
         if status in ("exhausted", "generation_failure"):
             for record in self.current_item["rounds"][self.round_index:]:
-                self._rounds.append(round_summary(record["round"], [], "excluded_after_" + status))
+                self._rounds.append(round_summary(record["round"], [], "excluded_after_" + status, self.max_attempts))
             self.round_index = len(self.current_item["rounds"])
         if self.round_index == len(self.current_item["rounds"]):
             self._problems.append(self._problem_report(self.current_item, self._rounds))
@@ -242,7 +264,8 @@ class EvaluationSession:
     @staticmethod
     def _problem_report(item, rounds):
         return {"id": item["id"], "type": item["type"], "rounds": rounds,
-                "mpe": observed_mean(rounds, "per"), "error_rate": observed_mean(rounds, "error_rate")}
+                "mpe": observed_mean(rounds, "per"), "observed_mpe": observed_mean(rounds, "observed_per"),
+                "error_rate": observed_mean(rounds, "error_rate")}
 
     def report(self):
         problems = list(self._problems)
@@ -252,7 +275,7 @@ class EvaluationSession:
             for record in item["rounds"][len(rounds):]:
                 active = index == self.item_index and record is self.current_record
                 rounds.append(round_summary(record["round"], self._attempts if active else [],
-                                            "incomplete" if active else "unattempted"))
+                                            "incomplete" if active else "unattempted", self.max_attempts))
             problems.append(self._problem_report(item, rounds))
         types = sorted({item["type"] for item in self.items})
         return {"complete": self.complete, "max_attempts": self.max_attempts,

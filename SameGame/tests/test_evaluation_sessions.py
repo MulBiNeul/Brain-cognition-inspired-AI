@@ -37,7 +37,7 @@ class EvaluationSessionTests(unittest.TestCase):
         self.assertEqual(initial, [{"role": "system", "content": INSTRUCTIONS},
                                    {"role": "user", "content": 'Initial string: "AABB"'}])
         expected = [
-            "Correct", "Correct", "Correct, but rule violation. Rule violation: move 2.",
+            "Correct", "Correct", "Correct, but rule violation. Rule violation: moves 2, 3.",
             "Correct", "Correct",
         ]
         replies = [response(moves) for moves in ("AB", "AB", "AAAB", "BBA", "BBA")]
@@ -51,17 +51,44 @@ class EvaluationSessionTests(unittest.TestCase):
                 self.assertEqual([m["content"] for m in history if m["role"] == "assistant"], replies[:2])
             if index == 2:
                 self.assertEqual(row["violation_steps"], [2, 3])
+                self.assertEqual(row["previous_violation_steps"], [])
+                self.assertTrue(row["persistent_error"])
+                self.assertTrue(row["previous_rule_compliant"])
                 self.assertEqual(row["success_streak"], 0)
                 self.assertEqual(session.messages()[-2], {"role": "user", "content": expected[index]})
+            if index in (3, 4):
+                self.assertTrue(row["correct"])
+                self.assertFalse(row["persistent_error"])
+                self.assertEqual(row["previous_violation_steps"], [3])
+                self.assertEqual(row["success_streak"], index - 2)
         report = session.report()
         self.assertTrue(session.complete)
         self.assertTrue(report["complete"])
         self.assertEqual(session.responses, replies)
         first, second = report["problems"][0]["rounds"]
         self.assertEqual((first["submissions"], first["per"]), (2, None))
+        self.assertIsNone(first["per_denominator"])
         self.assertEqual((second["submissions"], second["persistent_errors"]), (3, 1))
-        self.assertEqual(second["per"], 1 / 3)
-        self.assertEqual(report["summary"]["mpe"], 1 / 3)
+        self.assertEqual(second["per"], 1 / 10)
+        self.assertEqual(second["per_denominator"], 10)
+        self.assertEqual(second["observed_per"], 1 / 3)
+        self.assertEqual(report["summary"]["mpe"], 1 / 10)
+        self.assertEqual(report["summary"]["persistent_error_basis"], "previous_rule_compliant_current_incorrect")
+        self.assertEqual(report["summary"]["per_denominator"], "max_attempts")
+        self.assertEqual(report["summary"]["observed_mpe"], 1 / 3)
+
+    def test_per_uses_configured_attempt_budget_after_early_success(self):
+        for budget in (4, 10):
+            with self.subTest(budget=budget):
+                session = EvaluationSession(fixtures(), max_attempts=budget)
+                for moves in ("AB", "AB", "AAAB", "BBA", "BBA"):
+                    session.submit(response(moves))
+                report = session.report()
+                second = report["problems"][0]["rounds"][1]
+                self.assertEqual(second["submissions"], 3)
+                self.assertEqual(second["per"], 1 / budget)
+                self.assertEqual(second["observed_per"], 1 / 3)
+                self.assertEqual(report["summary"]["mpe"], 1 / budget)
 
     def test_replaying_saved_responses_restores_exact_progress_and_public_history(self):
         session = EvaluationSession(fixtures())
@@ -73,7 +100,7 @@ class EvaluationSessionTests(unittest.TestCase):
         self.assertEqual(restored.messages(), session.messages())
         self.assertEqual(restored.report(), session.report())
         self.assertEqual(restored.messages()[-2], {"role": "user", "content":
-                         "Correct, but rule violation. Rule violation: move 2."})
+                         "Correct, but rule violation. Rule violation: moves 2, 3."})
         self.assertEqual((restored.item_index, restored.round_index, restored.attempt), (0, 1, 2))
         restored.submit(response("BBA"))
         self.assertFalse(restored.complete)
@@ -158,7 +185,9 @@ class HumanSessionHTTPTests(unittest.TestCase):
     def assert_public(self, snapshot):
         self.assertEqual(snapshot["instructions"], INSTRUCTIONS)
         for key in ("target", "forbidden", "round", "type", "success_streak", "per", "mpe",
-                    "violation_steps", "rule_outcome", "copy"):
+                    "violation_steps", "previous_violation_steps", "previous_rule_compliant",
+                    "persistent_error", "persistent_error_basis", "observed_per", "per_denominator",
+                    "rule_outcome", "copy"):
             self.assertNotIn(key, snapshot)
         self.assertNotIn("PRIVATE_ITEM_", json.dumps(snapshot))
         for entry in snapshot["history"]:
@@ -231,12 +260,12 @@ class HumanSessionHTTPTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(len(state["history"]), 1)
 
-    def test_only_first_violation_hint_survives_human_history_and_restart(self):
+    def test_all_violation_positions_survive_human_history_and_restart(self):
         current = self.begin()
         for index, moves in enumerate(["A1 B1", "A1 B1", "A1 A1 A1 B1"]):
             status, current = self.request("POST", "/api/submit", self.submission(current, str(index), moves))
             self.assertEqual(status, 200)
-        feedback = "Correct, but rule violation. Rule violation: move 2."
+        feedback = "Correct, but rule violation. Rule violation: moves 2, 3."
         self.assertEqual(current["last_feedback"], feedback)
         self.assertEqual(current["history"], [{
             "attempt": 1, "moves": "A1 A1 A1 B1", "answer": "", "feedback": feedback,

@@ -1,0 +1,17 @@
+# Rerun only the 25 same-letter items with the corrected all-round dataset.
+config_version = 1
+default_profile = "sol"
+
+[experiment]
+dataset = "../data/easy_same_letter_v2/same_letter/problems.json"
+max_attempts = 10
+required_streak = 2
+max_output_tokens = 25000
+timeout = 600.0
+
+[profiles.sol]
+label = "GPT-6.1 Sol · medium · 같은 문자 유형 수정"
+provider = "openai"
+model = "gpt-6.1-sol"
+effort = "medium"
+reasoning_summary = "auto"

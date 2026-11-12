@@ -159,7 +159,7 @@ class FeedbackTests(unittest.TestCase):
 
     def test_repeated_violations_count_once_per_submission(self):
         item = {"id": "test", "type": "same_letter", "rounds": [
-            {"round": 1, "input": "AABB", "target": 0, "forbidden": "BB"},
+            {"round": 1, "input": "AABB", "target": 0, "forbidden": "BA"},
             {"round": 2, "input": "AABBAABBAA", "target": 0, "forbidden": "AA"},
         ]}
         submissions = iter(["AB", "AB", "AAAB", "BBA", "BBA"])
@@ -168,15 +168,20 @@ class FeedbackTests(unittest.TestCase):
                      delivered.append)
         first, second = report["problems"][0]["rounds"]
         self.assertEqual(delivered, ["Correct", "Correct",
-                                    "Correct, but rule violation. Rule violation: move 2.",
+                                    "Correct, but rule violation. Rule violation: moves 2, 3.",
                                     "Correct", "Correct"])
         self.assertIsNone(first["per"])
+        self.assertTrue(report["submissions"][2]["persistent_error"])
         self.assertEqual(report["submissions"][2]["violation_steps"], [2, 3])
+        self.assertEqual(report["submissions"][2]["previous_violation_steps"], [])
+        self.assertFalse(report["submissions"][3]["persistent_error"])
+        self.assertFalse(report["submissions"][4]["persistent_error"])
         self.assertEqual(second["persistent_errors"], 1)
-        self.assertEqual(second["per"], 1 / 3)
-        self.assertEqual(report["summary"]["mpe"], 1 / 3)
+        self.assertEqual(second["per"], 1 / 10)
+        self.assertEqual(second["observed_per"], 1 / 3)
+        self.assertEqual(report["summary"]["mpe"], 1 / 10)
 
-    def test_multiple_violations_reveal_only_the_first_submitted_move_number(self):
+    def test_multiple_violations_reveal_all_submitted_move_numbers(self):
         record = {"input": "AABBAABBAA", "target": 0, "forbidden": "AA"}
         for answer, label in [("", "Correct, but rule violation"),
                               ("B", "Incorrect, also rule violation")]:
@@ -184,7 +189,7 @@ class FeedbackTests(unittest.TestCase):
                 result = grade_response(json.dumps({"moves": "A2 A1 A1 B1", "answer": answer}), record)
                 self.assertEqual(result["violation_steps"], [2, 3])
                 self.assertEqual(result["executed_steps"], 4)
-                self.assertEqual(result["feedback"], label + ". Rule violation: move 2.")
+                self.assertEqual(result["feedback"], label + ". Rule violation: moves 2, 3.")
                 self.assertFalse(result["correct"])
 
     def test_the_same_final_can_be_valid_under_one_or_both_rules(self):
@@ -195,19 +200,72 @@ class FeedbackTests(unittest.TestCase):
                 result = grade_response(json.dumps({"moves": moves, "answer": ""}), record, previous="AB")
                 self.assertEqual(result["rule_outcome"], outcome)
                 self.assertEqual(result["correct"], outcome in {"current_only", "both"})
+                self.assertEqual(result["persistent_error"], outcome == "previous_only")
+                self.assertEqual(result["previous_rule_compliant"], outcome in {"previous_only", "both"})
+                self.assertEqual(result["previous_violation_steps"],
+                                 {"current_only": [3], "previous_only": [], "neither": [2], "both": []}[outcome])
+                if outcome == "current_only":
+                    self.assertEqual(result["feedback"], "Correct")
+
+    def test_first_round_has_no_previous_rule_metric_even_with_current_violations(self):
+        result = grade_response('{"moves":"A1 B1","answer":""}',
+                                {"input": "AABB", "target": 0, "forbidden": "AB"})
+        self.assertEqual(result["violation_steps"], [2])
+        self.assertIsNone(result["previous_violation_steps"])
+        self.assertIsNone(result["previous_rule_compliant"])
+        self.assertIsNone(result["persistent_error"])
+
+    def test_goal_error_can_persist_without_old_goal_success_but_invalid_answers_do_not(self):
+        record = {"input": "AABBC", "target": 0, "forbidden": "CC"}
+        for raw, expected in (('{"moves":"A1 B1","answer":"C"}', True),
+                              ('{"moves":"A1 B1","answer":"D"}', False),
+                              ('not json', False), ('{"answer":"C"}', False)):
+            with self.subTest(raw=raw):
+                result = grade_response(raw, record, previous="AA")
+                self.assertFalse(result["correct"])
+                self.assertFalse(result["previous_success"])
+                self.assertEqual(result["previous_violation_steps"], [])
+                self.assertEqual(result["previous_rule_compliant"], expected)
+                self.assertEqual(result["persistent_error"], expected)
+
+    def test_previous_rule_violation_and_wrong_final_do_not_count_as_persistence(self):
+        result = grade_response('{"moves":"A1 A1 A1 B1","answer":"B"}',
+                                {"input": "AABBAABBAA", "target": 0, "forbidden": "BB"}, previous="AA")
+        self.assertFalse(result["correct"])
+        self.assertEqual(result["violation_steps"], [])
+        self.assertEqual(result["previous_violation_steps"], [2, 3])
+        self.assertFalse(result["previous_rule_compliant"])
+        self.assertFalse(result["persistent_error"])
+        self.assertEqual(result["feedback"], "Incorrect, but no rule violation")
+
+    def test_previous_rule_checks_stop_at_first_impossible_move(self):
+        record = {"input": "AABB", "target": 0, "forbidden": "BB"}
+        raw = '{"moves":"A1 A1 B1 B1","answer":""}'
+        result = grade_response(raw, record, previous="AA")
+        self.assertEqual((result["executed_steps"], result["first_basic_error_step"]), (1, 2))
+        self.assertEqual(result["violation_steps"], [])
+        self.assertEqual(result["previous_violation_steps"], [2])
+        self.assertFalse(result["previous_rule_compliant"])
+        self.assertFalse(result["persistent_error"])
+        unexecuted = grade_response(raw, record, previous="BB")
+        self.assertEqual(unexecuted["previous_violation_steps"], [])
+        self.assertFalse(unexecuted["previous_rule_compliant"])
+        self.assertFalse(unexecuted["persistent_error"])
 
     def test_stopping_at_target_with_a_group_is_incomplete(self):
         record = {"input": "AABBCC", "target": 2, "forbidden": "BA"}
         for moves, feedback in [("AB", "Incorrect, but no rule violation"),
                                 ("BA", "Incorrect, also rule violation. Rule violation: move 2.")]:
             with self.subTest(moves=moves):
-                result = grade_response(json.dumps({"moves": moves, "answer": "CC"}), record)
+                result = grade_response(json.dumps({"moves": moves, "answer": "CC"}), record, previous="DD")
                 self.assertEqual(result["feedback"], feedback)
                 self.assertFalse(result["board_exhausted"])
                 self.assertTrue(result["final_matches"])
                 self.assertFalse(result["physical_goal_reached"])
                 self.assertEqual(result["executed_steps"], 2)
                 self.assertEqual(result["final_state"], "CC")
+                self.assertFalse(result["previous_rule_compliant"])
+                self.assertFalse(result["persistent_error"])
 
     def test_replay_after_a_violation_requires_the_remaining_actions(self):
         record = {"input": "AABBCC", "target": 0, "forbidden": "AB"}
@@ -219,6 +277,9 @@ class FeedbackTests(unittest.TestCase):
         self.assertEqual((full["final_state"], full["board_exhausted"]), ("", True))
         self.assertEqual(short["violation_steps"], full["violation_steps"])
         self.assertEqual(full["rule_outcome"], "previous_only")
+        self.assertFalse(short["persistent_error"])
+        self.assertTrue(full["previous_rule_compliant"])
+        self.assertTrue(full["persistent_error"])
 
     def test_exhausted_board_can_miss_the_target(self):
         record = {"input": "ABCCDA", "target": 2, "forbidden": "BB"}
