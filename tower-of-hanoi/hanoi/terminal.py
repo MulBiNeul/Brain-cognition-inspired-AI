@@ -123,12 +123,13 @@ def describe_moves(moves, *, pegs=('A', 'B', 'C', 'D'), disk_count=3, initial_po
 class TerminalReporter:
     """Display progress, rules, move plans, and persistent error rates for researchers."""
 
-    def __init__(self, directory, config, rules, max_attempts, required_successes, *, problems=None, round_policies=None):
+    def __init__(self, directory, config, rules, max_attempts, required_successes, *, problems=None, round_policies=None, persistent_error_policy='previous_rule_compliant_current_failure_v1'):
         self.directory = directory
         self.config = config
         self.rules = tuple(rules)
         self.problems = tuple(problems or ())
         self.round_policies = tuple(round_policies or ())
+        self.persistent_error_policy = persistent_error_policy
         self.default_max_attempts = max_attempts
         self.default_required_successes = required_successes
         self.pegs = ('A', 'B', 'C', 'D')
@@ -227,7 +228,12 @@ class TerminalReporter:
         self._detail('출력 방식', 'JSON 요청 · API 스키마 강제 없음 · 로컬 공통 채점')
         self._detail('출력 한도', f"{self.config.get('max_output_tokens', 25000):,} 토큰 · 자동 재시도 0회")
         self._detail('공백 반복', '256자 연속 시 미채점 · 해당 문제 중단 후 다음 문제')
-        self._detail('PE 판정', '현재 추가 이동 제한 위반 · 목적지 불일치는 별도 집계')
+        if self.persistent_error_policy == 'previous_rule_compliant_current_failure_v1':
+            self._detail('PE 판정', '현재 초기 배치에서 직전 추가 제한을 준수한 유효한 전체 계획이 현재 오답')
+        elif self.persistent_error_policy == 'any_current_movement_restriction_violation_v1':
+            self._detail('PE 판정', '현재 추가 이동 제한 위반 · 목적지 불일치는 별도 집계')
+        else:
+            self._detail('PE 판정', '저장된 프로토콜 정의 확인 필요')
         self._detail('연구자 화면', '구체적 목표·제한·위반 위치·라운드 정보는 API 입력에 포함하지 않음', 'yellow')
         self._detail('로그', self.directory)
         self._close()
@@ -294,10 +300,14 @@ class TerminalReporter:
             outgoing = audit.get('output', {}).get('opaque_reasoning_items', 0)
             self._print(f'    추론 상태: 이전 {incoming}개 전달 · 이번 {outgoing}개 보존 (암호화/서명 항목)')
         pe = record.get('persistent_error')
-        pe_text = '해당 없음 (R1 제외)' if pe is None else '예 · 현재 추가 이동 제한 위반' if pe else '아니오'
+        pe_text = '해당 없음 (R1 제외)' if pe is None else '예' if pe else '아니오'
         elapsed = record.get('elapsed_seconds')
         duration = f'{elapsed:.2f}초' if isinstance(elapsed, (int, float)) and math.isfinite(elapsed) else '—'
         self._print(f'    지속적 오류 PE: {pe_text}  ·  응답 시간: {duration}')
+        if 'previous_rule_compliant' in record:
+            previous = record['previous_rule_compliant']
+            previous_text = '해당 없음 (R1)' if previous is None else '예' if previous else '아니오'
+            self._print(f'    직전 추가 제한 준수: {previous_text} · 현재 초기 배치에서 전체 계획 검사')
         if 'movement_rule_error' in record:
             violations = record.get('movement_rule_violations') or []
             invalid_plan = (record.get('base_error') or {}).get('kind') == 'invalid_plan'
@@ -406,7 +416,7 @@ class TerminalReporter:
         self._line(f"참고 PER (pooled)  {_rate(pooled.get('persistent_errors', 0), pooled.get('attempts', 0))}")
         self._line(f"참고 오답률 (pooled)  {_rate(pooled.get('failures', 0), pooled.get('attempts', 0))} · R2~R5 오답 합 / 제출 합")
         if 'goal_errors' in pooled:
-            self._line(f"목적지 불일치 {pooled.get('goal_errors', 0)}회 · 목적지 판정 불가 {pooled.get('attempts', 0) - pooled.get('goal_evaluated_attempts', 0)}회 (PE와 별도)")
+            self._line(f"목적지 불일치 {pooled.get('goal_errors', 0)}회 · 목적지 판정 불가 {pooled.get('attempts', 0) - pooled.get('goal_evaluated_attempts', 0)}회 (별도 진단 집계)")
         for condition, item in summary.get('conditions', {}).items():
             value = item.get('mpe')
             rate = f'{value:.2%}' if isinstance(value, (float, int)) else '—'
@@ -414,8 +424,14 @@ class TerminalReporter:
             value = item.get('mean_error_rate')
             rate = f'{value:.2%}' if isinstance(value, (float, int)) and (not isinstance(value, bool)) else '—'
             self._line(f"  평균 오답률 {rate} · {error_rounds} 문제 N={item.get(error_problem_count_field, '—')}")
-        self._line('PE = 현재 추가 이동 제한을 하나 이상 위반한 제출 (제출당 최대 1회)')
-        self._line('목적지 불일치는 PE에서 제외 · 직전 라운드 성공 여부와 무관')
+        if self.persistent_error_policy == 'previous_rule_compliant_current_failure_v1':
+            self._line('PE = 현재 초기 배치에서 기본 이동과 직전 추가 제한을 모두 지킨 전체 계획이 현재 오답인 제출')
+            self._line('현재 목표만 불일치한 오답도 포함 · 직전 목표 도달 여부는 비교하지 않음')
+        elif self.persistent_error_policy == 'any_current_movement_restriction_violation_v1':
+            self._line('PE = 현재 추가 이동 제한을 하나 이상 위반한 제출 (제출당 최대 1회)')
+            self._line('목적지 불일치는 PE에서 제외 · 직전 라운드 성공 여부와 무관')
+        else:
+            self._line('PE는 저장된 채점값을 표시함 · 정의는 해당 실행의 프로토콜 확인 필요')
         self._line('성공한 제출도 분모에 포함 · 미사용 시도와 R1은 지속적 오류율에서 제외')
         self._line('문제 MPE = 진행된 R2~R5 PER의 산술평균 · Total MPE = 포함 문제 MPE의 산술평균')
         self._line(f'오답률: {error_rounds} 라운드 → 문제 → 전체/유형 순서로 산술평균 · 미실행 라운드 제외')

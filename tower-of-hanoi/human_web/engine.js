@@ -10,6 +10,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
   const PEGS = ['A', 'B', 'C', 'D'];
+  const PERSISTENT_ERROR_POLICY = 'previous_rule_compliant_current_failure_v1';
   const FEEDBACK = {Correct: '정답', Incorrect: '오답', 'Rule violation': '규칙 위반',
     'Correct, but rule violation': '정답이지만 규칙 위반'};
   const LABELS = {peg: '기둥 조건', occupancy: '기둥 상태 조건',
@@ -75,15 +76,20 @@
     const moves = validMoves(input) ? clone(input) : null;
     const currentRound = problem.rounds[roundNumber - 1], current = evaluate(moves, currentRound);
     const previous = roundNumber > 1 ? evaluate(moves, {...problem.rounds[roundNumber - 2],
-      initial_positions: currentRound.initial_positions, goal_peg: currentRound.goal_peg}).current_success : null;
+      initial_positions: currentRound.initial_positions, goal_peg: currentRound.goal_peg}) : null;
+    // Previous-rule compliance uses the current initial board, independently of either goal.
+    const previousRuleCompliant = previous === null ? null : previous.base_valid && !previous.movement_rule_error;
     let feedback = 'Incorrect', code = 'incorrect';
     if (current.current_success) { feedback = 'Correct'; code = 'correct'; }
     else if (current.movement_rule_error) {
       if (current.base_valid && current.goal_reached) { feedback = 'Correct, but rule violation'; code = 'goal_reached_rule_violation'; }
       else { feedback = 'Rule violation'; code = 'rule_violation'; }
     }
-    return {moves, parse_valid: moves !== null, ...current, previous_success: previous,
-      persistent_error: roundNumber > 1 ? current.movement_rule_error : null,
+    return {moves, parse_valid: moves !== null, ...current,
+      previous_success: previous === null ? null : previous.current_success,
+      previous_rule_compliant: previousRuleCompliant,
+      persistent_error: roundNumber > 1 ? previousRuleCompliant && !current.current_success : null,
+      persistent_error_policy: PERSISTENT_ERROR_POLICY,
       feedback, correctness_feedback: current.current_success ? 'Correct' : 'Incorrect',
       feedback_code: code, feedback_policy: 'goal_rule_4way_v1'};
   }
@@ -111,12 +117,12 @@
     const newToken = options.token || token;
     const policies = [1, 2, 3, 4, 5].map(round => ({round, max_attempts: config.max_attempts,
       success_streak_required: round > 1 || config.r1_apply_k ? config.success_streak : 1}));
-    const protocol = {version: 'hanoi_human_offline_v1', bundle_id: bundle.bundle_id,
+    const protocol = {version: 'hanoi_human_offline_v2', bundle_id: bundle.bundle_id,
       config: clone(config), feedback_policy: 'goal_rule_4way_v1', dataset: clone(dataset),
       dataset_sha256: bundle.dataset_sha256, participant_instructions: clone(instructions),
       input_policy: 'Peg-click full plan; basic-mechanics invalid clicks are blocked. Hidden restrictions are evaluated only after submission.',
       empty_plan_policy: '1..30 moves required; round trips allowed.',
-      persistent_error_policy: 'any_current_movement_restriction_violation_v1'};
+      persistent_error_policy: PERSISTENT_ERROR_POLICY};
     function create(participant) {
       if (typeof participant !== 'string' || !/^[A-Za-z0-9_-]{1,40}$/.test(participant)) throw Error('참여 코드는 영문, 숫자, 밑줄, 하이픈으로 1~40자 입력하세요.');
       const timestamp = clock();
@@ -177,6 +183,13 @@
       return state;
     }
     function summarize(records) {
+      // Summaries require records with this engine's metric policy and diagnostics.
+      if (records.some(row => row.persistent_error_policy !== PERSISTENT_ERROR_POLICY ||
+          (row.round === 1 ? row.previous_rule_compliant !== null || row.persistent_error !== null :
+            typeof row.previous_rule_compliant !== 'boolean' ||
+            row.persistent_error !== (row.previous_rule_compliant && !row.current_success)))) {
+        throw Error('지속적 오류 계산 기준이 다른 기록은 함께 집계할 수 없습니다. 원본 기록으로 별도 재분석하세요.');
+      }
       const episodes = problems.map((problem, index) => {
         const episode = index + 1, batch = records.filter(x => x.episode === episode);
         let exhaustedAt = null;
@@ -238,9 +251,11 @@
         successful_rounds: episodes.reduce((sum, e) => sum + e.rounds.filter(r => r.status === 'success').length, 0),
         exhausted_rounds: episodes.reduce((sum, e) => sum + e.rounds.filter(r => r.status === 'exhausted').length, 0),
         scored_rounds: [2, 3, 4, 5], pooled: stats(scored),
+        persistent_error_policy: PERSISTENT_ERROR_POLICY,
         metric_policy: 'round_per_then_problem_mpe_then_total_mpe_v1',
         error_metric_policy: 'round_error_rate_r1_r5_then_problem_mean_then_total_mean_v2',
-        metric_definition: {round_per: 'persistent_errors / actual graded submissions in that round',
+        metric_definition: {persistent_error: 'current failure with basic-valid replay from the current initial board and no previous-round movement restriction violation; neither goal is required for previous-rule compliance',
+          round_per: 'persistent_errors / actual graded submissions in that round',
           problem_mpe: 'unweighted mean of observed R2-R5 PERs', total_mpe: 'unweighted mean of eligible problem MPEs',
           round_error_rate: 'incorrect submissions / actual graded submissions',
           problem_mean_error_rate: 'unweighted mean of observed R1-R5 error rates',
@@ -263,7 +278,7 @@
     function exportResult(state) {
       const checkpoint = clone(state);
       delete checkpoint.records; delete checkpoint.receipts;
-      return {schema_version: 2, kind: 'hanoi_human_result', bundle_id: bundle.bundle_id,
+      return {schema_version: 3, kind: 'hanoi_human_result', bundle_id: bundle.bundle_id,
         session_id: state.session_id, participant_id: state.participant_id,
         created_at: state.created_at, updated_at: state.updated_at, finished: state.finished,
         protocol: clone(protocol), records: clone(state.records),
@@ -271,7 +286,11 @@
     }
     function importResult(document) {
       const fail = () => { throw Error('저장 파일의 실험 조건이나 진행 기록이 일치하지 않습니다. 이 HTML에서 저장한 원본 JSON을 선택하세요.'); };
-      if (!document || document.schema_version !== 2 || document.kind !== 'hanoi_human_result' ||
+      if (document && document.kind === 'hanoi_human_result' && document.protocol &&
+          document.protocol.persistent_error_policy !== PERSISTENT_ERROR_POLICY) {
+        throw Error('저장 파일의 지속적 오류 계산 기준이 이 평가와 일치하지 않습니다. 이 HTML에서 저장한 JSON을 선택하세요.');
+      }
+      if (!document || document.schema_version !== 3 || document.kind !== 'hanoi_human_result' ||
           document.bundle_id !== bundle.bundle_id || !equal(document.protocol, protocol) ||
           !validToken(document.session_id) || typeof document.participant_id !== 'string' || !/^[A-Za-z0-9_-]{1,40}$/.test(document.participant_id) ||
           !validDate(document.created_at) || !validDate(document.updated_at) || !Array.isArray(document.records) ||

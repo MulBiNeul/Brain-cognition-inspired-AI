@@ -209,7 +209,7 @@ def restriction_witness(initial_positions: Sequence[str], goal_peg: str,
 def transition_witness(initial_positions: Sequence[str], goal_peg: str,
                        previous_rule: Rule, current_rule: Rule,
                        max_moves: int = MAX_MOVES) -> list[str] | None:
-    """Use the SAME current initial/goal; allow old rule and violate new rule."""
+    """Find a current-board plan obeying the previous restriction but violating the current one."""
     return _search(initial_positions, goal_peg, allowed=previous_rule, observed=current_rule,
                    require_violation=True, max_moves=max_moves)
 

@@ -11,12 +11,12 @@ from .prompts import feedback_values
 _UNSPECIFIED_GOAL = object()
 
 def _candidate_protocol(frozen):
-    return isinstance(frozen, dict) and frozen.get('version') in (24, 25, 26, 27) and (frozen.get('dataset_version') == 7)
+    return isinstance(frozen, dict) and frozen.get('version') in (24, 25, 26, 27, 28, 29) and (frozen.get('dataset_version') == 7)
 
 def _candidate_trace(moves, rule, peg_names, disk_count, goal_peg, initial_positions):
     """Replay the saved candidate rule; forbidden basic-legal moves still execute."""
     from .rules import replay_plan as replay_candidate
-    result = {'success': False, 'reason': '', 'failed_at': None, 'steps': [], 'goal_peg': goal_peg}
+    result = {'success': False, 'base_valid': False, 'rule_compliant': False, 'reason': '', 'failed_at': None, 'steps': [], 'goal_peg': goal_peg}
     stacks = initial_stacks(initial_positions, pegs=peg_names, disk_count=disk_count)
     if stacks is None or disk_count != 3 or tuple(peg_names) != ('A', 'B', 'C', 'D'):
         result['reason'] = '퍼즐 배치 기록 형식 오류'
@@ -47,6 +47,8 @@ def _candidate_trace(moves, rule, peg_names, disk_count, goal_peg, initial_posit
         result['steps'].append({'index': error['step'], 'move': move, 'disk': disk, 'valid': False, 'base_valid': False, 'rule_violation': None, 'message': '기본 하노이 이동 오류', 'state': before})
         result['failed_at'] = result['failed_at'] or error['step']
     result['success'] = trace['base_legal'] and trace['rule_compliant'] and trace['goal_reached']
+    result['base_valid'] = trace['base_legal']
+    result['rule_compliant'] = trace['rule_compliant']
     if error:
         result['reason'] = '기본 하노이 이동 오류'
     elif not trace['rule_compliant']:
@@ -57,11 +59,17 @@ def _candidate_trace(moves, rule, peg_names, disk_count, goal_peg, initial_posit
         result['reason'] = f'모든 이동은 유효하지만 최종 배치가 목표 {goal_peg}에 도달하지 않았습니다.'
     return result
 
-def pe_definition(version):
-    return '지속적 오류 = 현재 라운드의 추가 이동 제한을 하나 이상 위반한 제출. 위반한 제한이 여러 개여도 제출당 1회로 계산합니다. 목적지 불일치는 별도 오류이며 PE에 포함하지 않습니다. 직전 라운드의 성공 여부는 PE와 무관합니다.'
+def pe_definition(frozen):
+    """Describe the metric policy saved with the run."""
+    policy = frozen.get('persistent_error_policy')
+    if policy == 'previous_rule_compliant_current_failure_v1':
+        return '지속적 오류 = 현재 초기 배치에서 기본 이동법과 직전 추가 이동 제한을 모두 지킨 전체 계획이 현재 오답인 제출. 현재 목표만 불일치한 오답도 포함하며, 직전 목표 도달 여부는 비교하지 않습니다. 형식 오류·기본 이동 오류는 PE에 포함하지 않으며 제출당 최대 1회입니다.'
+    if policy == 'any_current_movement_restriction_violation_v1':
+        return '지속적 오류 = 현재 라운드의 추가 이동 제한을 하나 이상 위반한 제출. 위반한 제한이 여러 개여도 제출당 1회로 계산합니다. 목적지 불일치는 별도 오류이며 PE에 포함하지 않습니다. 직전 라운드의 성공 여부는 PE와 무관합니다.'
+    return '지속적 오류는 저장된 채점값을 표시합니다. 정책 기록이 없거나 지원하지 않는 정의이므로 원본 프로토콜을 확인해야 합니다.'
 
 def movement_diagnostics(record):
-    """Show saved protocol diagnostics without regrading historical records under new definitions."""
+    """Format movement and goal diagnostics from the saved grading record."""
     if 'movement_rule_error' not in record:
         return ''
     violations = record.get('movement_rule_violations') or []
@@ -221,7 +229,7 @@ def snapshot(directory):
         errors.append('protocol.json: config 객체 형식 오류')
         config = {}
     if not _candidate_protocol(frozen):
-        errors.append('지원하지 않는 프로토콜입니다. 이전 실험은 보관된 뷰어에서 확인하세요.')
+        errors.append('지원하지 않는 프로토콜입니다. protocol.json의 버전과 데이터셋 형식을 확인하세요.')
     allowed_goals = ('A', 'B', 'C', 'D')
     count = config.get('episodes', 1)
     if type(count) is not int or not 1 <= count <= 300:
@@ -268,6 +276,8 @@ def snapshot(directory):
         if records:
             warnings.append('submissions.jsonl이 없어 개별 record.json에서 기록을 읽었습니다.')
     required = ('call', 'episode', 'round', 'attempt', 'current_success', 'previous_success', 'persistent_error')
+    if frozen.get('persistent_error_policy') == 'previous_rule_compliant_current_failure_v1':
+        required += ('previous_rule_compliant',)
     if any((any((key not in record for key in required)) for record in records)):
         errors.append('시도 기록에 필수 채점 필드가 없습니다.')
     calls = [record.get('call') for record in records]
@@ -345,12 +355,17 @@ def trial_detail(directory, call):
             if previous_goal not in allowed_goals:
                 errors.append('직전 라운드의 목표 기둥 기록 형식 오류')
             previous_trace = replay_plan(record.get('moves'), previous_rule, peg_names=peg_names, disk_count=disk_count, goal_peg=previous_goal)
+            if frozen.get('persistent_error_policy') == 'previous_rule_compliant_current_failure_v1':
+                previous_trace['scope'] = 'previous_rule_only'
+                previous_trace['success'] = previous_trace.get('base_valid', False) and previous_trace.get('rule_compliant', False)
+                if previous_trace['success']:
+                    previous_trace['reason'] = '직전 추가 제한 준수 · 목표 도달 여부는 비교하지 않음'
     elif record:
         errors.append('라운드 규칙 기록이 없어 이동을 재생할 수 없습니다.')
     return {'record': record, 'generation_failure': _json(trial / 'generation_failure.json', errors), 'request': request, 'response': response, 'current_trace': current_trace, 'previous_trace': previous_trace, 'errors': errors}
 
 def csv_text(data):
-    fields = ['protocol_version', 'provider', 'model', 'episode', 'problem_id', 'condition', 'condition_label', 'round', 'attempt', 'feedback_policy', 'feedback_code', 'feedback', 'correctness_feedback', 'current_success', 'previous_success', 'persistent_error', 'movement_rule_error', 'movement_rule_violations', 'goal_error', 'goal_reached', 'base_valid', 'base_error', 'success_streak', 'round_success', 'success_streak_required', 'move_count', 'moves', 'elapsed_seconds', 'response_id']
+    fields = ['protocol_version', 'persistent_error_policy', 'provider', 'model', 'episode', 'problem_id', 'condition', 'condition_label', 'round', 'attempt', 'feedback_policy', 'feedback_code', 'feedback', 'correctness_feedback', 'current_success', 'previous_success', 'previous_rule_compliant', 'persistent_error', 'movement_rule_error', 'movement_rule_violations', 'goal_error', 'goal_reached', 'base_valid', 'base_error', 'success_streak', 'round_success', 'success_streak_required', 'move_count', 'moves', 'elapsed_seconds', 'response_id']
     protocol = data.get('protocol', {})
     frozen = protocol.get('frozen', protocol)
     stream = io.StringIO(newline='')
@@ -359,6 +374,7 @@ def csv_text(data):
     for record in data.get('records', []):
         row = {key: record.get(key) for key in fields}
         row['protocol_version'] = frozen.get('version')
+        row['persistent_error_policy'] = frozen.get('persistent_error_policy')
         config = frozen.get('config', {})
         row['feedback_policy'] = record.get('feedback_policy', frozen.get('feedback_policy', config.get('feedback_policy', 'binary_v1')))
         row['provider'] = config.get('provider', 'openai')
@@ -430,7 +446,7 @@ def html_text(data):
             positions = rules[number - 1].get('initial_positions')
             plan = ' · '.join(describe_moves(moves, initial_positions=positions) or ['형식 오류'])
         label = f"#{record.get('call')} · {record.get('problem_id', 'E' + str(record.get('episode')))} · {condition_text(problem_condition(frozen, record.get('episode')))} · R{record.get('round')}-{record.get('attempt')} · {record.get('feedback')}"
-        checks = {key: record.get(key) for key in ('feedback_policy', 'feedback_code', 'feedback', 'correctness_feedback', 'current_success', 'previous_success', 'persistent_error', 'movement_rule_error', 'movement_rule_violations', 'goal_error', 'goal_reached', 'base_valid', 'base_error', 'success_streak', 'round_success', 'parse_valid', 'elapsed_seconds', 'response_id', 'usage', 'reasoning_replay') if key in record}
+        checks = {key: record.get(key) for key in ('feedback_policy', 'feedback_code', 'feedback', 'correctness_feedback', 'current_success', 'previous_success', 'previous_rule_compliant', 'persistent_error', 'movement_rule_error', 'movement_rule_violations', 'goal_error', 'goal_reached', 'base_valid', 'base_error', 'success_streak', 'round_success', 'parse_valid', 'elapsed_seconds', 'response_id', 'usage', 'reasoning_replay') if key in record}
         diagnostic = f'<p>{_text(movement_diagnostics(record))}</p>'
         attempts.append(f"<details><summary>{_text(label)} · 지속적 오류: {_text(record.get('persistent_error'))}</summary><p class='plan'>{_text(plan)}</p>{diagnostic}<h3>채점 기록</h3><pre>{_pretty(checks)}</pre><h3>모델의 실제 출력</h3><pre>{_text(record.get('raw_output'))}</pre></details>")
     diagnostics = ''.join((f'<li>{_text(message)}</li>' for message in data.get('errors', []) + data.get('warnings', [])))
@@ -440,7 +456,11 @@ def html_text(data):
     progress = f"완료 라운드 {_text(summary.get('completed_rounds'))} / {_text(summary.get('total_rounds'))} · 전체 최대 {_text(summary.get('max_submissions'))}회 제출"
     method = f"R1: T={r1.get('max_attempts')}, 연속 정답 {r1.get('success_streak_required')}회. R2–R5: T={later.get('max_attempts')}, k={later.get('success_streak_required')}. 기준 달성 시 다음 라운드로 진행합니다. T 내 기준 미달 시 해당 문제의 남은 라운드를 미실행 처리하고 다음 문제로 진행합니다. R1은 PER 및 MPE에서 제외합니다. 라운드 PER의 분모는 실제 채점 제출 수입니다. 문제 간 대화는 초기화합니다."
     progress += f" · 미실행 {_text(summary.get('excluded_rounds', 0))}라운드"
-    method += ' 한 문제 안에서는 같은 규칙 유형을 유지하고, R1–R5의 초기 배치·목표·추가 제한을 변경합니다. 제한은 누적하지 않고 라운드마다 교체하며, 각 제출은 해당 라운드의 초기 배치와 초기 규칙 이력에서 시작합니다. 직전 규칙 비교에는 현재 초기 배치와 목표를 사용합니다.'
+    method += ' 한 문제 안에서는 같은 규칙 유형을 유지하고, R1–R5의 초기 배치·목표·추가 제한을 변경합니다. 제한은 누적하지 않고 라운드마다 교체하며, 각 제출은 해당 라운드의 초기 배치와 초기 규칙 이력에서 시작합니다.'
+    if frozen.get('persistent_error_policy') == 'previous_rule_compliant_current_failure_v1':
+        method += ' 직전 추가 제한의 준수 여부는 현재 초기 배치에서 검사하며 목표는 비교하지 않습니다. previous_success는 현재 목표까지 포함하는 별도 진단값이며 PE 판정에는 사용하지 않습니다.'
+    else:
+        method += ' 직전 규칙의 진단 재생에는 현재 초기 배치와 목표를 사용합니다.'
     method += ' 출력 방식: ' + ('일반 텍스트로 JSON 요청 · API 스키마 강제 없음 · 로컬 공통 채점.' if config.get('output_format') == 'plain' else 'API 스키마 강제 · 별도 진단 설정.')
     method += ' 추론 상태는 같은 문제의 R1–R5에서 유지하고 문제 변경 시 초기화합니다. Sol 암호화 reasoning 항목과 Opus 원본 signed thinking 블록을 전달합니다.'
     method += f' 모델 피드백은 {feedback_labels} 중 하나입니다.'
@@ -472,7 +492,7 @@ body{{font:15px/1.6 system-ui,sans-serif;background:#f4f6fa;color:#192336;max-wi
 {primary_metric}
 {error_metric}
 <div class="card">참고: 제출 통합 오답률 (pooled)<b>{_rate(pooled.get('failure_rate'))}</b>R2–R5 오답 합 / 제출 합</div></div>
-<p class="muted">{method} {pe_definition(frozen.get('version'))} R1은 MPE에서 제외하고 오답률에는 포함합니다. 미완료 실행의 값은 중간 집계입니다. 같은 실험 안의 제출은 서로 독립인 표본이 아닙니다.</p>
+<p class="muted">{method} {pe_definition(frozen)} R1은 MPE에서 제외하고 오답률에는 포함합니다. 미완료 실행의 값은 중간 집계입니다. 같은 실험 안의 제출은 서로 독립인 표본이 아닙니다.</p>
 <p class="muted">{metric_method}</p>
 {goal_summary}
 {('<ul class="warning">' + diagnostics + '</ul>' if diagnostics else '')}

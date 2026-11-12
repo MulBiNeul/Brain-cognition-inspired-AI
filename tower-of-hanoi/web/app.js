@@ -18,7 +18,7 @@
   async function refresh() {
     const data = await api("/api/runs"); $("runs").replaceChildren();
     for (const r of data.runs) { const b = document.createElement("button"); b.textContent = `${r.config.model} · ${r.name}`; b.addEventListener("click", () => selectRun(r.name).catch(notice)); $("runs").append(b); }
-    if (!data.runs.length) $("runs").textContent = "아직 저장된 새 실험 기록이 없습니다.";
+    if (!data.runs.length) $("runs").textContent = "저장된 실험 기록이 없습니다.";
     if (selected) await selectRun(selected);
   }
   $("refresh").addEventListener("click", () => refresh().catch(notice));
@@ -30,7 +30,8 @@
       $("trace").replaceChildren();
       for (const [key, label] of [["current_trace", "현재 규칙"], ["previous_trace", "직전 규칙 · 현재 초기 배치·목표"]]) {
         const t = d[key]; if (!t) continue;
-        const h = document.createElement("h3"); h.textContent = `${label}: ${t.reason}`; $("trace").append(h);
+        const traceLabel = t.scope === "previous_rule_only" ? "직전 추가 제한 · 현재 초기 배치 · 목표 비교 제외" : label;
+        const h = document.createElement("h3"); h.textContent = `${traceLabel}: ${t.reason}`; $("trace").append(h);
         const ol = document.createElement("ol");
         for (const step of t.steps) { const li = document.createElement("li"); li.textContent = `${step.index}: ${step.move ? `원판 ${step.disk ?? "?"} ${step.move.split("").join("→")}` : "초기 배치"} · ${step.message} · ${Object.entries(step.state).map(([k,v]) => `${k}=[${v}]`).join(" ")}`; ol.append(li); }
         $("trace").append(ol);

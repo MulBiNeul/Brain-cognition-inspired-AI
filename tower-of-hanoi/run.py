@@ -21,7 +21,7 @@ def main(argv=None) -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check-only", action="store_true", help="인증·모델 조회만 확인; 생성 요청·파일 저장 없음")
     mode.add_argument("--dry-run", action="store_true", help="API 없이 요청 미리보기; 기본 저장 위치는 시스템 임시 폴더")
-    # Accept older commands; --resume now includes pending-request recovery.
+    # Pending-request recovery is enabled by --resume.
     parser.add_argument("--retry-pending", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     if args.retry_pending and not args.resume:

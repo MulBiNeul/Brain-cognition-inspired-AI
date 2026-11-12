@@ -30,8 +30,9 @@ SUCCESS_STREAK = 2  # k: Required consecutive correct submissions; an incorrect 
 MAX_MOVES = 30
 PEGS = ("A", "B", "C", "D")
 DISK_COUNT = 3
-PROTOCOL_VERSION = 26
-FOURWAY_PROTOCOL_VERSION = 27
+PROTOCOL_VERSION = 28
+FOURWAY_PROTOCOL_VERSION = 29
+PERSISTENT_ERROR_POLICY = "previous_rule_compliant_current_failure_v1"
 WHITESPACE_LIMIT = 256
 DATASET_VERSION = 7
 COMMANDS = tuple(source + target for source in PEGS for target in PEGS if source != target)
@@ -312,11 +313,16 @@ def grade(raw, round_number, problem_number=1, problem=None, *, feedback_policy=
     if previous_rule is not None:
         previous_rule = replace(previous_rule, initial_positions=rules[round_number - 1].initial_positions,
                                 goal_peg=rules[round_number - 1].goal_peg)
-    previous = is_success(moves, previous_rule) if previous_rule is not None else None
+    previous = evaluate_plan(moves, previous_rule) if previous_rule is not None else None
+    # Check the previous restriction on the current board, without requiring a goal.
+    previous_compliant = (previous["base_valid"] and not previous["movement_rule_error"]
+                          if previous is not None else None)
     result = {
         "moves": moves, "parse_valid": moves is not None,
-        **current, "previous_success": previous,
-        "persistent_error": current["movement_rule_error"] if round_number > 1 else None,
+        **current, "previous_success": previous["current_success"] if previous is not None else None,
+        "previous_rule_compliant": previous_compliant,
+        "persistent_error": previous_compliant and not current["current_success"] if round_number > 1 else None,
+        "persistent_error_policy": PERSISTENT_ERROR_POLICY,
         "feedback": "Correct" if current["current_success"] else "Incorrect",
     }
     if feedback_policy == "goal_rule_4way_v1":
@@ -368,8 +374,8 @@ def continuation_items(raw):
         return [{"role": "assistant", "content": deepcopy(blocks)}]
 
     def omit_none(value):
-        # Same normalization as the existing puzzle adapter: output-only nullable
-        # defaults (e.g. reasoning.content/status) are not valid input fields.
+        # Output-only nullable defaults (e.g. reasoning.content/status)
+        # are not valid input fields.
         if isinstance(value, dict):
             return {k: omit_none(v) for k, v in value.items() if v is not None}
         if isinstance(value, list):
@@ -526,8 +532,9 @@ def prepare_protocol(directory, config, resume):
         "round_end_policy": f"Every round: at most {config['max_attempts']} submissions. R1 criterion: {round_policies(config)[0]['success_streak_required']} consecutive correct answer(s); R2-5 criterion: {config['success_streak']}. Incorrect resets streak. A round exhausting T without meeting its criterion ends the problem; remaining rounds are excluded and the next problem starts with fresh history",
         "context": "Complete public history and original provider-native continuation items retained across all rounds of the same problem; reset only at the next problem. No previous_response_id or server-stored conversation",
         "reasoning_replay_policy": {"scope": "same_problem_across_all_rounds", "reset": "on_problem_change_only", "openai": "Replay complete original output items including encrypted_content; reasoning.context=all_turns; include=reasoning.encrypted_content; store=false. Only output-only null defaults and created_by provenance are omitted for input compatibility", "anthropic": "Replay complete assistant content with thinking signatures and redacted_thinking data, byte-for-byte field values and original block order; thinking=adaptive, display=omitted", "visible_history": "Public episode history remains separate; private blocks are not converted to text messages or shown as feedback", "integrity": "Persist per-trial continuation items and hashes; reconstruct solely from saved native responses on resume, with no new sampling"},
-        "primary_metric": "Round PER = persistent errors / actual submissions; problem MPE = arithmetic mean of attempted R2-R5 PERs; Total MPE = arithmetic mean of eligible problem MPEs. R1 excluded; destination error and previous success do not determine persistent error",
-        "persistent_error_policy": "any_current_movement_restriction_violation_v1",
+        "primary_metric": "Round PER = persistent errors / actual graded submissions; problem MPE = arithmetic mean of attempted R2-R5 PERs; Total MPE = arithmetic mean of eligible problem MPEs. R1 excluded. A persistent error is a current incorrect submission that obeys the previous additional movement restriction on the current initial board, with valid basic Hanoi moves; previous goal attainment is not required",
+        "persistent_error_policy": PERSISTENT_ERROR_POLICY,
+        "previous_rule_compliance_policy": "Evaluate the full submitted plan from the CURRENT initial positions under the PREVIOUS additional movement restriction, with source/visit memory reset. Require a valid parsed plan and valid basic Hanoi moves, but no goal attainment. Persistent error = previous_rule_compliant AND NOT current_success",
         "diagnostic_path_policy": "Follow the intended plan using basic Hanoi mechanics while ignoring additional restrictions for state updates; record all identifiable restriction violations up to and including the first basic-mechanics-invalid attempted move. Do not assess later unreachable moves. Count at most one persistent error per submission",
         "destination_error_policy": "Separate completion criterion: compare final destination only when the intended plan is valid under basic Hanoi mechanics; otherwise goal_error is null. Destination and movement errors can co-occur",
         "invalid_or_refusal_policy": "Completed visible output is scored once as invalid; binary failure feedback only",
@@ -547,7 +554,7 @@ def prepare_protocol(directory, config, resume):
             dependency_sha256={name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
                                for name in ("hanoi/rules.py", "hanoi/validation.py", "hanoi/prompts.py")},
             condition_policy="One rule type per problem; one additional restriction in every round R1-R5. Five distinct rule variants and five initial-state families per problem",
-            restriction_revision="Four-type schema version 1, dataset version 7; all selected round plans and witnesses independently validated before execution",
+            restriction_revision="Movement-restriction schema version 1, dataset version 7; all selected round plans and witnesses independently validated before execution",
             initial_state_policy="Initial positions are ordered by disk 1,2,3. They change across rounds. Each attempt resets the board, previous-source memory, and visit memory to that round's initial state",
             goal_policy="Hidden accepted destination changes between adjacent rounds and may be any of A/B/C/D",
             public_objective="A complete plan ends with all three disks stacked on one peg; the selected accepted peg remains undisclosed",
@@ -764,6 +771,19 @@ def summarize(records, episodes, required_successes=SUCCESS_STREAK, policies=Non
     if type(required_successes) is not int or not 1 <= required_successes <= policies[1]["max_attempts"]:
         raise ValueError("연속 정답 기준은 1부터 최대 시도 수 사이의 정수여야 합니다.")
     criterion = required_successes
+    record_policies = {record.get("persistent_error_policy", "any_current_movement_restriction_violation_v1")
+                       for record in records}
+    if len(record_policies) > 1:
+        raise ExperimentError("서로 다른 지속적 오류 정의의 기록을 하나로 집계할 수 없습니다.")
+    pe_policy = next(iter(record_policies), PERSISTENT_ERROR_POLICY)
+    pe_definition = (
+        "A persistent error is a current incorrect submission that obeys the previous additional movement restriction "
+        "on the current initial board, with a valid parsed plan and valid basic Hanoi moves. Previous goal attainment "
+        "is not required; current goal-only errors can count. R1 is excluded."
+        if pe_policy == PERSISTENT_ERROR_POLICY else
+        "Under the recorded policy, persistent error is any detected current additional movement-restriction violation, "
+        "independent of the previous restriction or goal attainment. R1 is excluded."
+    )
     def stats(rows):
         pe = sum(bool(x["persistent_error"]) for x in rows)
         failures = sum(not x["current_success"] for x in rows)
@@ -880,7 +900,9 @@ def summarize(records, episodes, required_successes=SUCCESS_STREAK, policies=Non
         "scored_rounds": [2, 3, 4, 5], "pooled": stats(scored),
         "metric_policy": "round_per_then_problem_mpe_then_total_mpe_v1",
         "error_metric_policy": "round_error_rate_r1_r5_then_problem_mean_then_total_mean_v2",
+        "persistent_error_policy": pe_policy,
         "metric_definition": {
+            "persistent_error": pe_definition,
             "round_per": "persistent_errors / actual graded submissions in that round",
             "problem_mpe": "unweighted mean of available R2-R5 PERs with at least one graded submission",
             "total_mpe": "unweighted mean of problem MPEs with at least one graded R2-R5 submission",
@@ -893,7 +915,7 @@ def summarize(records, episodes, required_successes=SUCCESS_STREAK, policies=Non
             "missing": "unattempted rounds are excluded, never filled with zero; MPE requires a graded R2-R5 submission, mean error requires a graded R1-R5 submission",
             "observed_failures": "graded incorrect submissions and exhausted rounds are included; ungraded generation failures are not submissions",
             "scale": "fraction in JSON; percentage for display",
-            "diagnostics": "pooled, scored, condition failure_rate, excluding_first_attempt and complete_*_rate_mean retain submission-weighted legacy diagnostics; they are not the equal-round then equal-problem primary metrics",
+            "diagnostics": "pooled, scored, condition failure_rate, excluding_first_attempt and complete_*_rate_mean are submission-weighted diagnostics; the primary metrics equally weight rounds within problems and then problems",
         },
         "total_mpe": sum(problem_mpes) / len(problem_mpes) if problem_mpes else None,
         "total_mean_error_rate": sum(problem_mean_error_rates) / len(problem_mean_error_rates) if problem_mean_error_rates else None,
@@ -917,7 +939,7 @@ def summarize(records, episodes, required_successes=SUCCESS_STREAK, policies=Non
         "refusals": sum(x["refusal"] for x in records),
         "usage": {key: sum((x.get("usage") or {}).get(key, 0) or 0 for x in records)
                   for key in ("input_tokens", "output_tokens", "total_tokens")},
-        "note": ("Each problem starts with fresh history. R1 has a finite submission budget and is excluded from PER/MPE. ") + (" A round exhausting its budget without meeting its criterion ends the problem; remaining rounds are excluded, never scored as failures. ") + " R2-5 persistent error means any current additional movement-restriction violation, counted once per submission and independent of destinations or previous success. Goal errors are separate and may overlap with persistent errors. Round PER uses actual graded submissions without padding. Problem MPE equally averages attempted scored-round PERs; Total MPE equally averages eligible problem MPEs, including partially observed problems. Mean error rate includes R1: incorrect submissions / actual graded submissions per observed R1-5 round, equal round means per problem, then equal problem means per condition or overall for every problem with at least one graded submission, including R1-only problems. Pooled R2-5 rates are diagnostic only. Partial runs are not final estimates.",
+        "note": ("Each problem starts with fresh history. R1 has a finite submission budget and is excluded from PER/MPE. ") + (" A round exhausting its budget without meeting its criterion ends the problem; remaining rounds are excluded, never scored as failures. ") + " " + pe_definition + " Round PER uses actual graded submissions without padding. Problem MPE equally averages attempted scored-round PERs; Total MPE equally averages eligible problem MPEs, including partially observed problems. Mean error rate includes R1: incorrect submissions / actual graded submissions per observed R1-5 round, equal round means per problem, then equal problem means per condition or overall for every problem with at least one graded submission, including R1-only problems. Pooled R2-5 rates are diagnostic only. Partial runs are not final estimates.",
     }
 
 
@@ -928,9 +950,11 @@ def execute(directory, config, client, retry_pending=False):
     feedback_policy = config.get("feedback_policy", "binary_v1")
     prompt = task_prompt(feedback_policy)
     problems = configured_problems(config)
-    dataset_identity = read_json(directory / "protocol.json")["frozen"]["dataset_identity"] if config.get("dataset") else None
+    frozen = read_json(directory / "protocol.json")["frozen"]
+    dataset_identity = frozen["dataset_identity"] if config.get("dataset") else None
     reporter = TerminalReporter(directory, config, problems[0].rules, config["max_attempts"], config["success_streak"],
-                                problems=problems, round_policies=policies)
+                                problems=problems, round_policies=policies,
+                                persistent_error_policy=frozen["persistent_error_policy"])
     reporter.start()
     records, generation_failures = [], []
     call = 0
