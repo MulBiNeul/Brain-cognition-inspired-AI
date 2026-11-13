@@ -1,4 +1,4 @@
-# Same model and reasoning settings as the Tower-of-Hanoi evaluation.
+# OpenAI model profile.
 config_version = 1
 default_profile = "sol"
 

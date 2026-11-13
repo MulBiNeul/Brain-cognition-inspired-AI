@@ -1,6 +1,7 @@
-"""Regression coverage for native context and interruption-safe API evaluation."""
+"""Exercise the model evaluation protocol without model API calls."""
 
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
+from copy import deepcopy
 from io import StringIO
 import json
 from pathlib import Path
@@ -9,284 +10,239 @@ import unittest
 from unittest.mock import patch
 
 from src import model_runner, providers
+from src.catalog import load_catalog
 from src.evaluate import INSTRUCTIONS
 
 
-def response(text='{"moves":"A1 B1","answer":""}', *, marker="opaque", status="completed"):
-    return {
-        "status": status,
-        "output": [
-            {"type": "reasoning", "encrypted_content": marker, "summary": []},
-            {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": text}]},
-        ],
-        "usage": {"input_tokens": 12, "output_tokens": 8},
-    }
+def items():
+    return [{"id": f"SG-{number:03d}", "type": "same_letter", "rounds": [
+        {"round": r, "forbidden": forbidden, "cases": [
+            {"id": f"c{goal}", "input": "A"*20 + "BBCCDDEE" + "CDE"[:goal], "target": goal}
+            for goal in range(4)]}
+        for r, forbidden in enumerate(("CC", "DD"), 1)]}
+        for number in (1, 2)]
 
 
-def problem(identifier, rounds=1):
-    return {"id": identifier, "type": "same_letter", "rounds": [
-        {"round": number, "input": "AABB", "target": 0, "forbidden": "AA"}
-        for number in range(1, rounds+1)
-    ]}
+def answer(request):
+    history = request.get("input", request.get("messages"))
+    text = json.loads(history[-1]["content"].removeprefix("Initial string: "))
+    return json.dumps({"moves": "A1 B1 C1 D1 E1", "answer": text[28:]})
+
+
+def response(text, index=0):
+    return {"status": "completed", "output": [
+        {"type": "reasoning", "encrypted_content": f"opaque-{index}", "summary": []},
+        {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": text}]}],
+        "usage": {"input_tokens": 12, "output_tokens": 8}}
 
 
 class ModelExecutionTests(unittest.TestCase):
     def setUp(self):
         self.settings = model_runner.load_settings(profile="sol")
-        self.settings.update(max_attempts=2, required_streak=1)
+        self.settings.update(selection_seed=20261112, max_attempts=5, required_streak=2)
 
-    def execute(self, items, directory, receive, *, resume=False):
+    def execute(self, directory, receive, *, resume=False):
         with redirect_stderr(StringIO()):
-            return model_runner.execute(items, self.settings, directory, resume=resume,
-                                        client=object(), receive=receive)
+            return model_runner.execute(items(), self.settings, directory, resume=resume,
+                                           client=object(), receive=receive, retry_delay=0)
 
-    def test_profiles_match_hanoi_models_and_wire_parameters(self):
-        for profile, name in (("sol", "gpt-6.1-sol"), ("opus", "claude-opus-5-5"), ("sonnet", "claude-sonnet-5-5")):
+    def test_new_cases_native_history_and_hidden_metadata(self):
+        requests = []
+
+        def receive(client, provider, request, path):
+            requests.append(deepcopy(request))
+            return response(answer(request), len(requests))
+
+        with TemporaryDirectory() as folder:
+            report = self.execute(Path(folder), receive)
+            self.assertTrue(report["complete"])
+            self.assertEqual(len(report["submissions"]), 8)
+            self.assertEqual(report["summary"]["mpe"], 0)
+            for before, after in zip(report["submissions"], report["submissions"][1:]):
+                self.assertNotEqual(before["input"], after["input"])
+                self.assertNotEqual(before["target"], after["target"])
+            for request in requests:
+                self.assertEqual(request["instructions"], INSTRUCTIONS)
+                visible = json.dumps(request["input"])
+                for field in ("case_id", "target", "forbidden", "persistent_error"):
+                    self.assertNotIn(field, visible)
+            self.assertTrue(any(x.get("encrypted_content") == "opaque-1" for x in requests[2]["input"]))
+            self.assertEqual(len(requests[4]["input"]), 1)
+            frozen = model_runner.read_json(Path(folder)/"protocol.json")
+            self.assertEqual(frozen["items"], items())
+            self.assertEqual(frozen["version"], 1)
+
+    def test_interrupted_resume_reuses_the_exact_pending_case(self):
+        requests = []
+
+        def receive(client, provider, request, path):
+            requests.append(deepcopy(request))
+            if len(requests) == 2:
+                raise KeyboardInterrupt
+            return response(answer(request), len(requests))
+
+        with TemporaryDirectory() as folder:
+            directory = Path(folder)
+            with self.assertRaises(KeyboardInterrupt):
+                self.execute(directory, receive)
+            self.assertEqual(len(model_runner.read_json(directory/"checkpoint.json")["responses"]), 1)
+            pending = requests[-1]
+            recovered_requests = []
+
+            def resumed(client, provider, request, path):
+                recovered_requests.append(deepcopy(request))
+                return response(answer(request), len(recovered_requests)+1)
+
+            report = self.execute(directory, resumed, resume=True)
+            self.assertEqual(recovered_requests[0], pending)
+            self.assertTrue(report["complete"])
+            self.assertEqual(len(report["submissions"]), 8)
+            self.assertEqual(report["summary"]["mpe"], 0)
+
+    def test_transport_retry_does_not_select_another_case(self):
+        requests = []
+
+        def receive(client, provider, request, path):
+            requests.append(deepcopy(request))
+            if len(requests) == 1:
+                raise providers.ProviderError("temporary", retryable=True)
+            return response(answer(request), len(requests))
+
+        with TemporaryDirectory() as folder, patch.object(model_runner.time, "sleep"):
+            report = self.execute(Path(folder), receive)
+            self.assertEqual(requests[0], requests[1])
+            self.assertEqual(len(report["submissions"]), 8)
+
+    def test_completed_resume_makes_no_more_requests(self):
+        with TemporaryDirectory() as folder:
+            directory = Path(folder)
+            first = self.execute(directory, lambda c, p, request, path: response(answer(request)))
+            second = self.execute(directory, lambda *args: self.fail("unexpected request"), resume=True)
+            self.assertEqual(first, second)
+
+    def test_incomplete_protocol_is_rejected(self):
+        with self.assertRaises(ValueError):
+            model_runner.require_protocol({"version": 1, "settings": {}})
+
+    def test_dry_run_needs_no_api_key_and_creates_no_results(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            dataset = root/"problems.json"
+            dataset.write_text(json.dumps({"version": 1, "seed": 72, "rounds_per_item": 2,
+                                           "cases_per_target": 1, "items": items()}))
+            template = Path(model_runner.DEFAULT_CONFIGS["sol"]).read_text()
+            config = root/"config.toml"
+            config.write_text(template.replace("../data/problems.json", "problems.json"))
+            output = root/"results"
+            with redirect_stdout(StringIO()) as printed, patch.object(providers, "make_client", side_effect=AssertionError("API client created")):
+                code = model_runner.main(["--config", str(config), "--dry-run", "--output", str(output)])
+            self.assertEqual(code, 0)
+            self.assertFalse(output.exists())
+            request = json.loads(printed.getvalue())["request"]
+            self.assertEqual(request["instructions"], INSTRUCTIONS)
+            self.assertEqual(len(request["input"]), 1)
+
+    def test_declared_counts_and_dataset_order_are_preserved(self):
+        document = {"version": 1, "seed": 72, "rounds_per_item": 2,
+                    "cases_per_target": 1, "items": list(reversed(items()))}
+        with TemporaryDirectory() as folder:
+            path = Path(folder)/"problems.json"
+            path.write_text(json.dumps(document))
+            loaded, seed = load_catalog(path)
+            self.assertEqual(loaded, document["items"])
+            for field, value in (("rounds_per_item", 3), ("cases_per_target", 2)):
+                with self.subTest(field=field):
+                    altered = {**document, field: value}
+                    path.write_text(json.dumps(altered))
+                    with self.assertRaises(ValueError):
+                        load_catalog(path)
+
+
+    def test_provider_profiles_and_top_level_instructions(self):
+        expected = {"sol": "gpt-6.1-sol", "opus": "claude-opus-5-5", "sonnet": "claude-sonnet-5-5"}
+        for profile, name in expected.items():
             settings = model_runner.load_settings(profile=profile)
             self.assertEqual(settings["model"], name)
-            request = providers.make_request(settings, "system", [{"role": "user", "content": "input"}])
+            initial = [{"role": "user", "content": 'Initial string: "AABB"'}]
+            request = providers.make_request(settings, INSTRUCTIONS, initial)
             self.assertNotIn("temperature", request)
             self.assertEqual(request["tools"], [])
             if profile == "sol":
+                self.assertEqual(request["instructions"], INSTRUCTIONS)
+                self.assertEqual(request["input"], initial)
                 self.assertFalse(request["store"])
                 self.assertEqual(request["reasoning"], {"effort": "medium", "context": "all_turns"})
                 self.assertEqual(request["include"], ["reasoning.encrypted_content"])
             else:
+                self.assertEqual(request["system"], INSTRUCTIONS)
+                self.assertEqual(request["messages"], initial)
                 self.assertEqual(request["thinking"], {"type": "adaptive", "display": "omitted"})
                 self.assertEqual(request["output_config"], {"effort": "medium"})
 
-    def test_native_context_crosses_rounds_and_resets_at_new_problem(self):
-        requests = []
-        def receive(client, provider, request, path):
-            requests.append(request)
-            return response(marker=f"opaque-{len(requests)}")
-        with TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            items = [problem("one", 2), problem("two")]
-            report = self.execute(items, directory, receive)
-            self.assertEqual(len(report["submissions"]), 3)
-            self.assertTrue(report["complete"])
-            self.assertTrue(all(row["feedback"] == "Correct" for row in report["submissions"]))
-            self.assertEqual(len(requests[0]["input"]), 1)
-            self.assertTrue(any(item.get("encrypted_content") == "opaque-1" for item in requests[1]["input"]))
-            self.assertEqual(len(requests[2]["input"]), 1)
-            self.assertEqual(requests[1]["input"][-2], {"role": "user", "content": "Correct"})
-            self.assertEqual(model_runner.read_json(directory/"checkpoint.json")["responses"],
-                             ['{"moves":"A1 B1","answer":""}']*3)
-            resumed = self.execute(items, directory, lambda *args: self.fail("completed run regenerated"),
-                                   resume=True)
-            self.assertEqual(resumed, report)
-
-    def test_unified_instructions_stay_at_top_level_for_both_providers(self):
-        initial = {"role": "user", "content": 'Initial string: "AABB"'}
-        for profile, history_key, instruction_key in (
-                ("sol", "input", "instructions"), ("opus", "messages", "system")):
-            with self.subTest(profile=profile), TemporaryDirectory() as temporary:
-                self.settings = model_runner.load_settings(profile=profile)
-                self.settings.update(max_attempts=2, required_streak=1)
-                requests = []
-                raw = response()
-                if profile == "opus":
+    def test_one_violation_position_reaches_both_providers_on_changing_inputs(self):
+        puzzle = [{"id": "private-item", "type": "same_letter", "rounds": [
+            {"round": 1, "forbidden": "AA", "cases": [
+                {"id": f"c{goal}", "input": "AABBAABBAA" + "CDE"[:goal], "target": goal}
+                for goal in range(4)]}]}]
+        feedback = "Correct, but rule violation. Rule violation: move 2."
+        for profile, key in (("sol", "input"), ("opus", "messages")):
+            settings = model_runner.load_settings(profile=profile)
+            settings.update(selection_seed=72, max_attempts=2, required_streak=1)
+            requests, outputs = [], []
+            def receive(client, provider, request, path):
+                requests.append(deepcopy(request))
+                tape = json.loads(request[key][-1]["content"].removeprefix("Initial string: "))
+                moves = "A1 A1 A1 B1" if len(requests) == 1 else "B1 B1 A1"
+                raw_text = json.dumps({"moves": moves, "answer": tape[10:]})
+                raw = response(raw_text)
+                if provider == "anthropic":
                     raw = {"type": "message", "role": "assistant", "stop_reason": "end_turn",
-                           "content": [{"type": "thinking", "thinking": "", "signature": "original-signature"},
-                                       {"type": "text", "text": '{"moves":"A1 B1","answer":""}'}]}
+                           "content": [{"type": "thinking", "thinking": "", "signature": "opaque"},
+                                       {"type": "text", "text": raw_text}]}
+                outputs.append(raw)
+                return raw
+            with self.subTest(profile=profile), TemporaryDirectory() as folder, redirect_stderr(StringIO()):
+                report = model_runner.execute(puzzle, settings, Path(folder), client=object(), receive=receive)
+            self.assertTrue(report["complete"])
+            self.assertEqual([r["feedback"] for r in report["submissions"]], [feedback, "Correct"])
+            self.assertEqual(report["submissions"][0]["violation_steps"], [2, 3])
+            self.assertNotEqual(requests[0][key][-1], requests[1][key][-1])
+            self.assertEqual(requests[1][key], requests[0][key] +
+                providers.continuation_items(outputs[0], settings["provider"]) +
+                [{"role": "user", "content": feedback}, requests[1][key][-1]])
+            self.assertNotIn("forbidden", json.dumps(requests))
 
-                def receive(client, provider, request, path):
-                    requests.append(request)
-                    return raw
-
-                report = self.execute([problem("one", 2), problem("two")], Path(temporary), receive)
-                self.assertTrue(report["complete"])
-                for request in requests:
-                    self.assertEqual(request[instruction_key], INSTRUCTIONS)
-                    self.assertFalse(any(item.get("role") == "system" or item.get("content") == INSTRUCTIONS
-                                         for item in request[history_key]))
-                    self.assertEqual(request[history_key][-1], initial)
-                self.assertEqual(requests[0][history_key], [initial])
-                self.assertEqual(requests[1][history_key],
-                                 [initial] + providers.continuation_items(raw, self.settings["provider"])
-                                 + [{"role": "user", "content": "Correct"}, initial])
-                self.assertEqual(requests[2][history_key], [initial])
-
-    def test_previous_rule_compliant_error_is_private_and_persisted(self):
-        item = {"id": "one", "type": "same_letter", "rounds": [
-            {"round": 1, "input": "AABB", "target": 0, "forbidden": "AA"},
-            {"round": 2, "input": "AABBAABB", "target": 0, "forbidden": "BB"},
-            {"round": 3, "input": "AABB", "target": 0, "forbidden": "CC"},
-        ]}
-        self.settings["reasoning_summary"] = "auto"
-        self.settings["max_attempts"] = 10
+    def test_persistent_error_is_saved_privately_with_its_actual_case(self):
+        puzzle = [{"id": "private-item", "type": "same_letter", "rounds": [
+            {"round": number, "forbidden": forbidden, "cases": [
+                {"id": f"c{goal}", "input": "AABBAABB" + "CDE"[:goal], "target": goal}
+                for goal in range(4)]}
+            for number, forbidden in enumerate(("AA", "BB", "CC"), 1)]}]
+        settings = {**self.settings, "max_attempts": 10, "required_streak": 1, "reasoning_summary": "auto"}
         requests = []
-
         def receive(client, provider, request, path):
-            requests.append(request)
-            moves = {2: "B1 B1 A1", 3: "A1 A1 B1"}.get(len(requests), "A1 B1")
-            return response(json.dumps({"moves": moves, "answer": ""}))
-
-        with TemporaryDirectory() as temporary, redirect_stderr(StringIO()) as terminal:
-            directory = Path(temporary)
-            report = model_runner.execute([item], self.settings, directory, client=object(), receive=receive)
-            second = report["submissions"][1]
-            self.assertTrue(report["complete"])
-            self.assertEqual(second["feedback"], "Correct, but rule violation. Rule violation: move 2.")
-            self.assertFalse(second["correct"])
-            self.assertEqual(second["success_streak"], 0)
-            self.assertTrue(second["persistent_error"])
-            self.assertTrue(second["previous_rule_compliant"])
-            self.assertEqual(second["previous_violation_steps"], [])
-            self.assertEqual(second["violation_steps"], [2])
-            third = report["submissions"][2]
-            self.assertTrue(third["correct"])
-            self.assertFalse(third["persistent_error"])
-            self.assertEqual(third["previous_violation_steps"], [2])
+            requests.append(deepcopy(request))
+            tape = json.loads(request["input"][-1]["content"].removeprefix("Initial string: "))
+            moves = "A1 A1 B1" if len(requests) == 3 else "B1 B1 A1"
+            return response(json.dumps({"moves": moves, "answer": tape[8:]}))
+        with TemporaryDirectory() as folder, redirect_stderr(StringIO()):
+            directory = Path(folder)
+            report = model_runner.execute(puzzle, settings, directory, client=object(), receive=receive)
+            row = report["submissions"][1]
+            self.assertTrue(row["persistent_error"])
+            self.assertEqual(row["previous_violation_steps"], [])
+            self.assertEqual(row["violation_steps"], [2])
             self.assertEqual(report["summary"]["mpe"], .05)
-            self.assertEqual(report["summary"]["observed_mpe"], .25)
-            self.assertEqual(report["summary"]["persistent_error_basis"], "previous_rule_compliant_current_incorrect")
-            self.assertEqual(report["summary"]["per_denominator"], "max_attempts")
-            protocol = model_runner.read_json(directory / "protocol.json")
-            self.assertEqual(protocol["persistent_error_basis"], "previous_rule_compliant_current_incorrect")
-            self.assertEqual(protocol["per_denominator"], "max_attempts")
-            saved = model_runner.read_json(directory / "submissions" / "00002_record.json")["score"]
-            self.assertEqual(saved, second)
-            diagnostic = model_runner.read_json(directory / "submissions" / "00002_reasoning_summary.json")
-            self.assertTrue(diagnostic["persistent_error"])
-            self.assertEqual(diagnostic["previous_violation_steps"], [])
-            self.assertIn("이전 규칙 위반 행동: 2", (directory / "reasoning_log.txt").read_text())
-            for label in ("이전 규칙 위반", "2번째 행동", "지속 오류", "발생", "PE=1"):
-                self.assertIn(label, terminal.getvalue())
-            self.assertEqual(requests[2]["input"][-2], {"role": "user", "content": second["feedback"]})
-            self.assertEqual(requests[3]["input"][-2], {"role": "user", "content": "Correct"})
-            self.assertNotIn("previous_violation_steps", json.dumps(requests))
-            self.assertNotIn("previous_rule_violation", json.dumps(requests))
-            self.assertNotIn("previous_rule_compliant_current_incorrect", json.dumps(requests))
-
-    def test_all_violation_positions_reach_both_providers_with_native_history(self):
-        item = {"id": "one", "type": "same_letter", "rounds": [
-            {"round": 1, "input": "AABBAABBAA", "target": 0, "forbidden": "AA"},
-        ]}
-        feedback = "Correct, but rule violation. Rule violation: moves 2, 3."
-        initial = {"role": "user", "content": 'Initial string: "AABBAABBAA"'}
-        for profile, history_key in (("sol", "input"), ("opus", "messages")):
-            with self.subTest(profile=profile), TemporaryDirectory() as temporary:
-                self.settings = model_runner.load_settings(profile=profile)
-                self.settings.update(max_attempts=2, required_streak=1)
-                requests, outputs = [], []
-
-                def receive(client, provider, request, path):
-                    requests.append(request)
-                    moves = "A1 A1 A1 B1" if len(requests) == 1 else "B1 B1 A1"
-                    text = json.dumps({"moves": moves, "answer": ""})
-                    raw = response(text)
-                    if provider == "anthropic":
-                        raw = {"type": "message", "role": "assistant", "stop_reason": "end_turn",
-                               "content": [{"type": "thinking", "thinking": "", "signature": "opaque-signature"},
-                                           {"type": "text", "text": text}]}
-                    outputs.append(raw)
-                    return raw
-
-                report = self.execute([item], Path(temporary), receive)
-                self.assertTrue(report["complete"])
-                self.assertEqual(report["submissions"][0]["violation_steps"], [2, 3])
-                self.assertEqual([row["feedback"] for row in report["submissions"]], [feedback, "Correct"])
-                self.assertEqual(requests[1][history_key],
-                                 [initial] + providers.continuation_items(outputs[0], self.settings["provider"])
-                                 + [{"role": "user", "content": feedback}, initial])
-
-    def test_saved_response_is_reused_after_checkpoint_interruption(self):
-        calls = []
-        def receive(*args):
-            calls.append(1)
-            return response()
-        with TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            real_save = model_runner.save_progress
-            def interrupt_after_response(directory, session, item, history):
-                if session.responses:
-                    raise OSError("simulated interruption")
-                real_save(directory, session, item, history)
-            with patch.object(model_runner, "save_progress", side_effect=interrupt_after_response):
-                with self.assertRaises(OSError):
-                    self.execute([problem("one")], directory, receive)
-            self.assertEqual(model_runner.read_json(directory/"checkpoint.json")["responses"], [])
-            self.assertTrue((directory/"submissions"/"00001_response.json").exists())
-            report = self.execute([problem("one")], directory, receive, resume=True)
-            self.assertTrue(report["complete"])
-            self.assertEqual(len(calls), 1)
-            self.assertEqual(len(report["submissions"]), 1)
-
-    def test_transport_failure_is_ungraded_and_resume_recovers(self):
-        with TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            with self.assertRaises(providers.ProviderError):
-                self.execute([problem("one")], directory,
-                             lambda *args: (_ for _ in ()).throw(providers.ProviderError("connection stopped")))
-            saved = model_runner.read_json(directory/"checkpoint.json")
-            self.assertEqual(saved["responses"], [])
-            report = self.execute([problem("one")], directory, lambda *args: response(), resume=True)
-            self.assertTrue(report["complete"])
-            self.assertEqual(len(report["submissions"]), 1)
-            self.assertEqual(len(list((directory/"submissions").glob("*_started.json"))), 2)
-
-    def test_terminal_stream_is_recovered_before_another_request(self):
-        for provider in ("openai", "anthropic"):
-            for finished in (True, False):
-                with self.subTest(provider=provider, finished=finished), TemporaryDirectory() as temporary:
-                    self.settings["provider"] = provider
-                    directory = Path(temporary)
-                    raw = response(status="completed" if finished else "incomplete")
-                    event = {"type": f"response.{raw['status']}", "response": raw}
-                    if provider == "anthropic":
-                        raw = {"type": "message", "role": "assistant",
-                               "stop_reason": "end_turn" if finished else "max_tokens",
-                               "content": [{"type": "text", "text": '{"moves":"A1 B1","answer":""}'}]}
-                        event = {"type": "message_stop", "message": raw}
-                    def interrupt_after_event(client, name, request, stream_path):
-                        stream_path.write_text(json.dumps(event) + "\n", encoding="utf-8")
-                        raise KeyboardInterrupt
-                    with self.assertRaises(KeyboardInterrupt):
-                        self.execute([problem("one")], directory, interrupt_after_event)
-                    self.assertFalse((directory/"submissions"/"00001_response.json").exists())
-                    report = self.execute([problem("one")], directory,
-                                          lambda *args: self.fail("completed stream regenerated"), resume=True)
-                    self.assertTrue(report["complete"])
-                    self.assertEqual(len(report["submissions"]), int(finished))
-                    envelope = model_runner.read_json(directory/"submissions"/"00001_response.json")
-                    self.assertEqual(envelope["response"], raw)
-                    self.assertEqual(envelope["recovered_from_stream"], "00001_transport_001_stream.jsonl")
-                    self.assertEqual(len(list((directory/"submissions").glob("*_started.json"))), 1)
-
-    def test_partial_stream_never_becomes_a_response(self):
-        with TemporaryDirectory() as temporary:
-            path = Path(temporary)/"partial.jsonl"
-            path.write_text(json.dumps({"type": "response.output_text.delta", "delta": "partial"}) +
-                            '\n{"type":"response.completed","response":', encoding="utf-8")
-            self.assertIsNone(providers.recover_response(path, "openai"))
-            path.write_text(json.dumps({"type": "content_block_stop", "index": 0}) + "\n" +
-                            json.dumps({"type": "message_stop"}) + "\n", encoding="utf-8")
-            self.assertIsNone(providers.recover_response(path, "anthropic"))
-
-    def test_incomplete_generation_skips_problem_without_grading(self):
-        calls = []
-        def receive(*args):
-            calls.append(1)
-            return response(status="incomplete") if len(calls) == 1 else response()
-        with TemporaryDirectory() as temporary:
-            report = self.execute([problem("one", 2), problem("two")], Path(temporary), receive)
-        self.assertTrue(report["complete"])
-        self.assertEqual(len(report["submissions"]), 1)
-        self.assertEqual(report["problems"][0]["rounds"][0]["status"], "generation_failure")
-        self.assertEqual(report["problems"][0]["rounds"][1]["status"], "excluded_after_generation_failure")
-
-    def test_anthropic_thinking_signatures_are_kept_and_not_graded(self):
-        raw = {"type": "message", "role": "assistant", "stop_reason": "end_turn", "content": [
-            {"type": "thinking", "thinking": "", "signature": "original-signature"},
-            {"type": "text", "text": '{"moves":"A1 B1","answer":""}'},
-        ]}
-        self.assertEqual(providers.visible_text(raw, "anthropic"), ('{"moves":"A1 B1","answer":""}', None))
-        native = providers.continuation_items(raw, "anthropic")
-        self.assertEqual(native, [{"role": "assistant", "content": raw["content"]}])
-        native[0]["content"][0]["signature"] = "modified-copy"
-        self.assertEqual(raw["content"][0]["signature"], "original-signature")
+            self.assertEqual(model_runner.read_json(directory/"submissions/00002_record.json")["score"], row)
+            detail = model_runner.read_json(directory/"submissions/00002_reasoning_summary.json")
+            for field in ("input", "target", "case_id", "persistent_error"):
+                self.assertEqual(detail[field], row[field])
+            self.assertTrue(report["submissions"][2]["correct"])
+            self.assertFalse(report["submissions"][2]["persistent_error"])
+            self.assertEqual(report["submissions"][2]["previous_violation_steps"], [2])
+            self.assertEqual(requests[2]["input"][-2]["content"], row["feedback"])
+            for private in ("persistent_error", "previous_violation_steps", "case_id", "target", "forbidden"):
+                self.assertNotIn(private, json.dumps(requests))
 
 
 if __name__ == "__main__":

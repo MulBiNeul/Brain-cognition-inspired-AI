@@ -7,7 +7,8 @@ from pathlib import Path
 from statistics import mean
 
 from ._paths import DATA_DIR
-from .grade import Game, parse_moves, read_round
+from .grade import Game, parse_moves
+from .catalog import load_catalog
 
 
 INSTRUCTIONS = (
@@ -43,8 +44,7 @@ INSTRUCTIONS = (
 MAX_MOVES = 30
 PERSISTENT_ERROR_BASIS = "previous_rule_compliant_current_incorrect"
 PER_DENOMINATOR = "max_attempts"
-RULE_OUTCOMES = {(True, True): "both", (True, False): "current_only",
-                 (False, True): "previous_only", (False, False): "neither"}
+SUBMISSION_CLASSES = ("current_correct", "persistent_error", "ordinary_error", "invalid")
 
 
 def grade_response(raw, record, previous=None):
@@ -59,7 +59,6 @@ def grade_response(raw, record, previous=None):
     valid_plan = False
     final_matches = physical_goal = goal = None
     exhausted = None
-    previous_success = None if previous is None else False
     previous_violations = None if previous is None else []
     violations, recoverable = [], []
     executed, failed_step = 0, None
@@ -71,7 +70,6 @@ def grade_response(raw, record, previous=None):
         final_state = result["final_state"]
         exhausted = result["board_exhausted"]
         violations, recoverable = result["violation_steps"], result["recoverable_violation_steps"]
-        previous_success = result["valid_under_previous_rule"]
         previous_violations = result["previous_violation_steps"]
         valid_plan = failed_step is None
         if valid_plan:
@@ -80,17 +78,25 @@ def grade_response(raw, record, previous=None):
             goal = physical_goal and final_matches
 
     correct = bool(goal and not violations)
+    complete_truthful = bool(valid_plan and exhausted and final_matches)
     previous_rule_compliant = (None if previous is None else
-                               bool(valid_plan and exhausted and final_matches and not previous_violations))
+                               complete_truthful and not previous_violations)
+    persistent_error = None if previous is None else previous_rule_compliant and not correct
+    if not complete_truthful:
+        submission_class = "invalid"
+    elif correct:
+        submission_class = "current_correct"
+    elif persistent_error:
+        submission_class = "persistent_error"
+    else:
+        submission_class = "ordinary_error"
     if correct:
         feedback = "Correct"
     elif violations:
         feedback = "Correct, but rule violation" if goal else "Incorrect, also rule violation"
         # Steps are 1-based submitted moves; a forbidden pair is attributed to
-        # its second move. Report every violation identified during replay.
-        unit = "move" if len(violations) == 1 else "moves"
-        positions = ", ".join(map(str, violations))
-        feedback += f". Rule violation: {unit} {positions}."
+        # its second move. Reveal one position while retaining the complete trace.
+        feedback += f". Rule violation: move {violations[0]}."
     else:
         feedback = "Incorrect, but no rule violation"
     return {
@@ -106,10 +112,8 @@ def grade_response(raw, record, previous=None):
         # A current failure counts only when the complete, truthful submission
         # obeyed the previous rule and all shared deletion mechanics.
         "previous_rule_compliant": previous_rule_compliant,
-        "persistent_error": None if previous is None else previous_rule_compliant and not correct,
-        "previous_success": previous_success,
-        "previous_only": None if previous is None else previous_success and not correct,
-        "rule_outcome": None if previous is None else RULE_OUTCOMES[correct, previous_success],
+        "persistent_error": persistent_error,
+        "submission_class": submission_class,
     }
 
 
@@ -125,7 +129,8 @@ def round_summary(number, records, status, max_attempts):
     errors = sum(not record["correct"] for record in records)
     persistent = None if number == 1 else sum(record["persistent_error"] for record in records)
     return {"round": number, "status": status, "submissions": count, "errors": errors,
-            "rule_outcomes": {s: sum(r["rule_outcome"] == s for r in records) for s in RULE_OUTCOMES.values()},
+            "submission_classes": {s: sum(r["submission_class"] == s for r in records)
+                                   for s in SUBMISSION_CLASSES},
             "persistent_errors": persistent,
             "per_denominator": max_attempts if number > 1 else None,
             "per": persistent / max_attempts if number > 1 and count else None,
@@ -140,7 +145,7 @@ def observed_mean(rows, field):
 
 def metrics(problems):
     rounds = [r for problem in problems for r in problem["rounds"]]
-    outcomes = {s: sum(r["rule_outcomes"][s] for r in rounds) for s in RULE_OUTCOMES.values()}
+    classes = {s: sum(r["submission_classes"][s] for r in rounds) for s in SUBMISSION_CLASSES}
     return {"persistent_error_basis": PERSISTENT_ERROR_BASIS,
             "per_denominator": PER_DENOMINATOR,
             "scheduled_problems": len(problems),
@@ -152,7 +157,7 @@ def metrics(problems):
             "unobserved_transition_rounds": sum(r["round"] > 1 and r["submissions"] == 0 for r in rounds),
             "error_eligible_problems": sum(problem["error_rate"] is not None for problem in problems),
             "error_rate": observed_mean(problems, "error_rate"),
-            "rule_outcomes": {"denominator": sum(outcomes.values()), "counts": outcomes}}
+            "submission_classes": classes}
 
 
 class EvaluationSession:
@@ -284,38 +289,11 @@ class EvaluationSession:
                 "problems": problems, "submissions": list(self.records)}
 
 
-def load_items(data_dir, item_ids=None, limit=None):
-    """Load and check round fields without exposing evaluator metadata to callers' prompts."""
-    path = Path(data_dir)
-    if path.suffix != ".json":
-        path = path / "problems.json"
-    items = json.loads(path.read_text(encoding="utf-8"))["items"]
-    if not isinstance(items, list) or not items:
-        raise ValueError("the dataset must contain at least one item")
-    ids = [item["id"] for item in items]
-    if len(set(ids)) != len(ids):
-        raise ValueError("duplicate item IDs in the dataset")
-    for item in items:
-        if not item["rounds"]:
-            raise ValueError("each item must contain rounds")
-        for number, record in enumerate(item["rounds"], 1):
-            read_round(record, number, item["type"])
-    if item_ids:
-        unknown = set(item_ids) - set(ids)
-        if unknown:
-            raise ValueError("unknown item(s): " + ", ".join(sorted(unknown)))
-        items = [item for item in items if item["id"] in item_ids]
-    items.sort(key=lambda item: (item["type"], item["id"]))
-    if limit is not None:
-        if limit < 1:
-            raise ValueError("limit must be positive")
-        items = items[:limit]
-    return items
-
-
-def run(items, respond, deliver_feedback, *, max_attempts=10, required_streak=2):
+def run(items, respond, deliver_feedback, *, seed, max_attempts=10, required_streak=2):
     """respond(messages) returns raw JSON, None at EOF, or blank for a failed generation."""
-    session = EvaluationSession(items, max_attempts=max_attempts, required_streak=required_streak)
+    from .session import ExperimentSession
+
+    session = ExperimentSession(items, seed=seed, max_attempts=max_attempts, required_streak=required_streak)
     while not session.complete:
         raw = respond(session.messages())
         if raw is None:
@@ -344,7 +322,7 @@ def main():
     if args.report is not None and args.report.resolve() in inputs:
         parser.error("report path must be separate from the input files")
     try:
-        items = load_items(args.data_dir, args.item)
+        items, seed = load_catalog(args.data_dir, args.item)
     except (OSError, ValueError, KeyError) as error:
         parser.error(str(error))
     stream = sys.stdin if args.responses is None else args.responses.open(encoding="utf-8")
@@ -363,7 +341,7 @@ def main():
 
     try:
         report = run(items, respond, lambda text: emit({"type": "feedback", "feedback": text}),
-                     max_attempts=args.max_attempts, required_streak=args.required_streak)
+                     seed=seed, max_attempts=args.max_attempts, required_streak=args.required_streak)
         if args.responses is not None and stream.readline():
             parser.error("response file contains submissions beyond the end of the scheduled run")
     finally:

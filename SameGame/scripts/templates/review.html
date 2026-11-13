@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>SameGame · 문제 검토</title>
+<style>
+:root{--ink:#172b2b;--muted:#526966;--line:#d1dcd6;--page:#f4f6f2;--white:#fff;--dark:#142e2e;--accent:#13775c;--light:#e7f4ec;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--sans:Inter,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+*{box-sizing:border-box}html{background:var(--page);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}body{margin:0}button,input,select{font:inherit;color:inherit}button,select{cursor:pointer}button{border:0;background:none}button:disabled{opacity:.4;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #008969;outline-offset:2px}h1,h2,h3,p,dl,dd{margin:0}h1{font-size:clamp(32px,3.3vw,46px);line-height:1.15;letter-spacing:-.055em;font-weight:730}h2{font-size:18px;letter-spacing:-.04em;font-weight:690}h3{font-size:14px}.mono,code{font-family:var(--mono);letter-spacing:.02em}.small,.subtle{color:var(--muted);font-size:12px}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(100%)}[hidden]{display:none!important}
+.top{background:var(--dark);color:white;min-height:62px;display:flex;align-items:stretch;padding:0 clamp(18px,3.5vw,58px);gap:clamp(36px,8vw,130px)}.brand{display:flex;align-items:center;gap:11px;font-size:23px;letter-spacing:-.065em;font-weight:720}.mark{display:grid;grid-template-columns:repeat(2,10px);grid-template-rows:repeat(2,10px);gap:3px;transform:rotate(-2deg)}.mark i{background:#8bd0ac;border-radius:2px}.mark i:nth-child(2){background:#e3edb1}.mark i:nth-child(4){background:#529e84}.topnav{display:flex;gap:25px}.topnav button{color:#b5c9c2;padding:3px 1px 0;border-bottom:3px solid transparent;font-weight:560;font-size:14px}.topnav button[aria-current]{border-color:#8edbb1;color:#fff}
+.layout{display:grid;grid-template-columns:218px minmax(0,1fr);max-width:1570px;margin:0 auto}.sidebar{background:#edf1eb;border-right:1px solid var(--line);padding:31px 16px;position:sticky;top:0;align-self:start;height:calc(100vh - 0px);max-height:100vh;display:flex;flex-direction:column;gap:12px}.sidehead{display:flex;justify-content:space-between;align-items:center;padding:0 4px}.sidehead h2{font-size:16px}.count{background:#dce5db;border-radius:20px;padding:1px 8px;font:11px/1.65 var(--mono);color:#355248}.search,.sidebar select,.presetrow select{border:1px solid #c2cfc7;border-radius:6px;background:var(--white);height:36px}.search{display:flex;align-items:center;gap:8px;padding:0 10px}.search input{border:0;background:none;width:100%;min-width:0;font-size:13px;outline-offset:1px}.glass{position:relative;width:12px;height:12px;border:1.7px solid #70857f;border-radius:50%;margin-right:2px}.glass:after{content:"";position:absolute;right:-4px;bottom:-2px;width:6px;height:2px;transform:rotate(47deg);background:#70857f}.sidebar select{padding:0 7px;font-size:13px;width:100%}.itemlist{overflow:auto;min-height:100px;scrollbar-width:thin;scrollbar-color:#c3d0c5 transparent;margin-top:2px;padding-right:3px}.itemlist button{width:100%;display:flex;justify-content:space-between;align-items:center;border-radius:5px;padding:9px 10px;text-align:left;min-height:36px;font:600 13px var(--mono);letter-spacing:.005em}.itemlist button:hover{background:#e1e9df}.itemlist button[aria-current]{background:#d3e9d9;color:#155a45}.itemlist .code-type{font:11px var(--sans);color:#52695e}.itemlist .empty{padding:8px;font-size:13px}.mobile-picker{display:none}
+main{min-width:0;padding:33px clamp(22px,3.15vw,52px) 50px}.view{max-width:1290px;margin:auto}.view>h1{margin:6px 0 22px}.eyebrow{color:var(--accent);font-weight:730;font-size:12px;letter-spacing:.04em;margin-bottom:5px}.titleline,.titlerow,.problemnav,.cardhead,.resultline,.trace-head,.actions,.transport,.presetrow{display:flex;align-items:center}.titleline,.cardhead,.trace-head{justify-content:space-between}.titlerow{gap:14px}.titlerow h1{font-family:var(--mono);letter-spacing:-.075em}.type-label{border:1px solid #bdcfc2;color:#476352;border-radius:20px;font-size:12px;font-weight:600;padding:3px 10px}.problemnav{gap:6px}.iconbtn,.playbtn{background:#fff;border:1px solid #c6d3cb;height:32px;min-width:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px}.iconbtn{font:22px/1 var(--sans)}.playbtn{font-weight:600;font-size:12px;padding:0 10px}.iconbtn:not(:disabled):hover,.playbtn:not(:disabled):hover,.ghost:hover{background:#edf5ef}
+.rounds{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-bottom:1px solid var(--line);margin-top:20px;gap:4px}.rounds button{padding:9px 6px;font-size:14px;font-weight:630;color:#586e67;border-bottom:3px solid transparent;white-space:nowrap;line-height:1.4}.rounds button[aria-pressed=true]{color:#096b50;border-bottom-color:#218461;background:#e6efe6;border-radius:5px 5px 0 0}.rounds button:hover{background:#eaf0e9}.conditions{display:flex;gap:34px;flex-wrap:wrap;margin:17px 0}.conditions>div{display:flex;gap:8px;align-items:center}.conditions span{color:var(--muted);font-size:12px}.conditions strong{font-size:14px;font-weight:650}.conditions .pair{font-family:var(--mono);font-weight:650;color:#8a4b2c}
+.card{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden;box-shadow:0 1px 2px #20382b07;min-width:0}.cardhead{padding:14px 18px;gap:10px;border-bottom:1px solid #e3e9e3}.cardbody{padding:15px 18px}.verified{color:#196248;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px}.verified:before{content:"✓";font-weight:760;background:#dff1e5;border-radius:50%;width:17px;height:17px;text-align:center;line-height:17px}.boardrows{display:grid;gap:7px;padding:12px 14px 7px}.boardrow{width:100%;background:#fbfcf9;border:1px solid #dae3da;display:grid;grid-template-columns:94px minmax(0,1fr);align-items:center;gap:10px;padding:10px 11px;border-radius:7px;text-align:left}.boardrow:hover{background:#f1f7f0}.boardrow[aria-pressed=true]{border-color:#5f977d;background:#eff7ef;box-shadow:inset 3px 0 #257c57}.boardlabel{display:flex;align-items:center;gap:6px;font-weight:650;font-size:13px}.boardlabel b{border-radius:4px;display:inline-grid;place-items:center;width:23px;height:23px;font:650 13px var(--mono);background:#dce5de;color:#3a5645}.boardrow[aria-pressed=true] .boardlabel b{background:#216a50;color:white}.ribbon{display:flex;flex-wrap:wrap;align-items:center;gap:3px;line-height:1;min-height:25px}.run{display:inline-block;font:650 15px/1.65 var(--mono);letter-spacing:.07em;padding:0 4px;color:var(--fg);background:var(--bg);border-radius:4px}.letterA{--fg:#1e634d;--bg:#ccebd9}.letterB{--fg:#804f13;--bg:#fae3ae}.letterC{--fg:#385a84;--bg:#dae7f8}.letterD{--fg:#804657;--bg:#f5d9de}.letterE{--fg:#605182;--bg:#e8dff6}.boundary{height:23px;width:12px;position:relative;flex:none}.boundary:after,.bd-icon:after{content:"";position:absolute;left:50%;top:0;height:100%;border-left:2px dashed #607367}.bd-icon{display:inline-block;width:11px;height:12px;position:relative;vertical-align:middle}.boardnote{font-size:12px;color:var(--muted);padding:2px 18px 12px}.boardnote span+span{margin-left:12px}.workgrid{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:15px;margin-top:16px;align-items:start}
+.presetrow{gap:10px;margin-bottom:11px}.presetrow>label,.fields label{font-size:12px;color:#4a6159;font-weight:600}.presetrow select{height:30px;padding:1px 6px;font-size:12px;max-width:100%}.fields{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:10px}.fields label{display:grid;gap:4px}.fields input{border:1px solid #becec3;border-radius:6px;width:100%;height:36px;padding:0 8px;background:white;font-size:13px}.fields input::placeholder{font:11px var(--sans);color:#78857b}.actions{gap:7px;margin:11px 0}.primary,.ghost{border-radius:6px;padding:6px 10px;font-size:13px;font-weight:600}.primary{color:white;background:#14684f;border:1px solid #14684f}.primary:hover{background:#10533f}.ghost{border:1px solid #c3d1c7;background:white;color:#3a5a4b}.result{background:#f4f7f2;border-radius:6px;padding:9px 11px;font-size:12px}.resultline{gap:8px;flex-wrap:wrap}.resultline strong{font-size:13px;letter-spacing:-.02em}.correct{color:#086442}.incorrect{color:#94422d}.dirty{color:#85621d}.resultline span{color:#3f584c}.result #diagnosis{margin-top:2px;color:#4c5e55}.violbtn{background:#f9e5da;color:#8e452c;margin:3px 3px 0 0;border-radius:4px;min-width:23px;padding:1px 5px;font:12px/1.6 var(--mono)}.trace-head{margin:15px 0 7px}.trace-head span{font-size:12px;color:var(--muted)}.traceboard{background:#f7f8f5;border:1px solid #dce5dc;border-radius:6px;padding:8px;min-height:44px}.transport{gap:5px;margin-top:8px}.transport input{min-width:0;flex:1;accent-color:#217454;margin-left:6px}.small{margin-top:8px;line-height:1.55}.emptytape{color:#60746a;font-size:12px}.metrics{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px;padding-bottom:10px}.metrics>div{display:flex;flex-direction:column}.metrics strong{font:650 clamp(16px,1.5vw,23px)/1.2 var(--mono);letter-spacing:-.055em}.metrics span{font-size:11px;color:var(--muted);margin-top:4px}.answers,.sumtable{width:100%;border-collapse:collapse;font-size:13px}.answers th,.sumtable th{color:#5e7067;font-size:11px;font-weight:620;background:#f2f5f0}.answers th,.answers td,.sumtable th,.sumtable td{padding:7px 6px;text-align:left;border-bottom:1px solid #e2e9e3}.answers td:nth-child(2),.answers th:nth-child(2){text-align:right}.answers td:last-child{text-align:right}.answers td:nth-child(2),.sumtable td:not(:nth-child(2)){font-variant-numeric:tabular-nums}.answers button{color:#19694d;font-size:12px;font-weight:630;padding:3px 4px}.literal{white-space:pre;font-family:var(--mono);background:#ebf2ea;color:#203e30;border-radius:4px;padding:2px 5px}.summarytop{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.summarytop>div{border:1px solid var(--line);border-radius:9px;padding:15px 18px;background:white}.summarytop span{font-size:13px;color:var(--muted)}.summarytop strong{display:block;font:650 30px var(--mono);margin-top:7px}.view>.card+.card{margin-top:15px}.table-scroll{overflow:auto}.sumtable{min-width:485px}.sumtable td,.sumtable th{padding:9px}.checks>div{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,1.8fr);gap:15px;padding:8px 0;border-bottom:1px solid #e1e7e2}.checks>div:last-child{border:0}.checks dt{font-weight:620;font-size:13px}.checks dd{color:#4a6055;font-size:13px}.prose p{line-height:1.8;font-size:14px}.prose p+p{margin-top:8px}.prose code{background:#eef3ed;padding:1px 4px;border-radius:3px;white-space:pre}.subtle{white-space:nowrap}
+@media(min-width:1600px){.sidebar{border-left:1px solid var(--line)}}
+@media(max-width:1040px){.layout{grid-template-columns:177px minmax(0,1fr)}.sidebar{padding:25px 10px}main{padding:25px 18px}.cardhead{padding:13px}.cardbody{padding:12px}.workgrid{gap:10px}.run{font-size:13px}.boardrow{grid-template-columns:78px minmax(0,1fr)}.conditions{gap:20px}.conditions>div{gap:6px}.workgrid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}}
+@media(max-width:800px){.layout{display:block}.sidebar{position:static;height:auto;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:8px;border-right:0;border-bottom:1px solid var(--line)}.sidehead,.itemlist{display:none}.mobile-picker{display:block;font-size:0}.sidebar select,.search{height:34px}.sidebar .mobile-picker select{font-size:13px}.top{min-height:52px;justify-content:space-between;gap:16px}.brand{font-size:21px}.topnav{gap:16px}.topnav button{font-size:12px}.workgrid{grid-template-columns:1.2fr 1fr}}
+@media(max-width:640px){main{padding:20px 12px 30px}.top{padding:0 14px}.topnav{gap:11px}.brand{font-size:19px;gap:7px}.mark{grid-template-columns:repeat(2,8px);grid-template-rows:repeat(2,8px);gap:2px}.sidebar{padding:10px 12px;grid-template-columns:1fr 1fr}.sidebar>.search{grid-column:1/-1}.rounds{margin-top:13px;gap:0}.rounds button{font-size:12px;padding:8px 2px}.conditions{gap:12px;margin:11px 0;justify-content:space-between}.conditions>div{display:grid;gap:0}.conditions span{font-size:11px}.conditions strong{font-size:13px}.titlerow{gap:8px}.type-label{font-size:10px;padding:2px 7px}.problemnav{gap:4px}.boardrows{padding:9px 8px 4px}.boardrow{grid-template-columns:1fr;gap:5px;padding:8px 9px}.boardnote{padding:2px 10px 8px;font-size:11px}.boardlabel b{width:19px;height:19px;font-size:11px}.boardlabel{font-size:12px}.ribbon{gap:2px}.run{font-size:13px;padding:0 3px}.workgrid{grid-template-columns:1fr;gap:12px;margin-top:12px}.cardhead h2{font-size:16px}.summarytop{gap:6px}.summarytop>div{padding:10px}.summarytop strong{font-size:23px}.checks>div{grid-template-columns:1fr;gap:2px}.fields input{font-size:16px}.subtle{font-size:11px}.boardnote span+span{margin-left:5px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+.sidebar>.search,.sidebar>select,.sidebar>.sidehead{flex-shrink:0}.next-run{outline:2px solid #476652;outline-offset:1px}.handplay{margin-top:14px;padding-top:10px;border-top:1px solid #dce4dc}.handplay summary{cursor:pointer;font-size:13px;font-weight:650;color:#1a654c}.handplay .traceboard{margin:8px 0}.handplay .actions{margin-bottom:0}
+
+.puzzle-header,.manualbar,.hand-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}.puzzle-header{margin-bottom:7px}.manualbar{margin-top:10px;flex-wrap:wrap}.hand-actions{justify-content:flex-start}.handstatus{color:#66551c;background:#fbefc9;border-radius:12px;padding:2px 10px;font-size:12px;font-weight:650}.handstatus.finished{color:#14583e;background:#d9efdf}.boardcard .traceboard{padding:9px 11px}.boardcard #original-box{margin-top:5px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.boardcard #original-box small{color:var(--muted)}.boardcard #original{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.boardcard #hand-finish{margin-top:8px}.boardcard .small{font-size:13px}@media(max-width:640px){.puzzle-header .subtle{white-space:normal}}
+
+/* Every letter occupies one cell. The whole run is the click target. */
+#hand-state { overflow-x: auto; overscroll-behavior-x: contain; }
+.selectable-tape {
+  gap: 8px 4px;
+  flex-wrap: nowrap;
+  align-items: center;
+  min-height: 36px;
+  padding: 2px;
+}
+.selectable-tape .run {
+  display: inline-flex;
+  flex: none;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  line-height: 1;
+}
+.selectable-tape .tile {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 32px;
+  border-radius: 4px;
+  color: var(--fg);
+  background: var(--bg);
+  font: 650 16px/1 var(--mono);
+  letter-spacing: 0;
+}
+.selectable-tape .boundary { height: 32px; }
+.selectable-tape button.pick-run {
+  outline: 1px solid transparent;
+  outline-offset: 2px;
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  .selectable-tape button.pick-run:hover { outline-color: var(--fg); }
+}
+.selectable-tape button.pick-run:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+.selectable-tape button.pick-run:active { outline-color: var(--fg); }
+.hand-actions{margin-left:auto}#hand-log{overflow-wrap:anywhere}
+.trace-list {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 3px;
+  max-height: min(70vh, 640px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.trace-step {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fbfcf9;
+}
+.trace-step.active { border-color: var(--accent); background: #eff7f2; }
+.trace-step-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 7px;
+}
+.trace-select {
+  padding: 2px 0;
+  font-size: 12px;
+  font-weight: 650;
+  text-align: left;
+}
+.trace-select:hover { text-decoration: underline; }
+.trace-count, .trace-status { font-size: 12px; }
+.trace-count { color: var(--muted); }
+.trace-status { margin-top: 6px; color: var(--muted); }
+.trace-status.warning { color: #914728; }
+.trace-step .ribbon { min-width: 0; }
+
+.case-controls{margin-top:16px;padding:15px 18px;background:#edf5ef;border:1px solid #c5d9cd;border-radius:9px}.case-controls h2{font-size:15px}.case-controls p{font-size:12px;color:var(--muted);margin:6px 0 10px}.case-picker{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.case-picker select{min-height:34px;border:1px solid #bdd0c3;border-radius:5px;background:white;padding:3px 8px;max-width:100%}.case-picker label{font-size:12px;font-weight:650}.condition-history{font:12px/1.6 var(--mono);margin-top:9px;overflow-wrap:anywhere;color:#3f6352}.case-coverage{font-size:12px;color:#496454;margin-top:5px}.research-note{font-size:12px;color:#5b6b61;margin-top:12px}.hand-history{margin-top:13px}.hand-history summary{cursor:pointer;font-size:13px;font-weight:650}.hand-history .trace-list{max-height:360px;margin-top:8px}.hand-history .trace-step-head strong{font-size:12px}.report-link{font-size:13px;color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>SameGame</div>
+  <nav class="topnav" aria-label="검토 메뉴">
+    <button type="button" data-view="review" aria-current="page">라운드 검토</button>
+    <button type="button" data-view="summary">전체 검증</button>
+    <button type="button" data-view="rules">게임 규칙</button>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="문제 탐색">
+  <div class="sidehead"><h2>문제 목록</h2><span id="list-size" class="count"></span></div>
+  <label class="search"><span class="glass" aria-hidden="true"></span><input id="search" aria-label="문제 번호 검색" placeholder="문제 번호 검색" type="search"></label>
+  <select id="family" aria-label="문제 유형 필터"><option value="">모든 유형</option><option value="different_letter">서로 다른 글자 금지</option><option value="same_letter">같은 글자 연속 금지</option></select>
+  <label class="mobile-picker">문제 선택 <select id="mobile-items"></select></label>
+  <div class="itemlist" id="itemlist" aria-label="문제 선택"></div>
+</aside>
+<main>
+<section id="view-review" class="view">
+  <div class="titleline"><div><div class="eyebrow" id="dataset-label">라운드 검토</div><div class="titlerow"><h1 id="item-title"></h1><span id="type-label" class="type-label"></span></div></div>
+  <div class="problemnav"><button class="iconbtn" id="prev-item" aria-label="이전 문제">‹</button><button class="iconbtn" id="next-item" aria-label="다음 문제">›</button></div></div>
+  <div class="rounds" id="rounds" role="group" aria-label="라운드 선택"></div>
+  <p class="research-note">연구자 검토용 화면입니다. 목표와 규칙은 이 화면에 공개되며 실제 참가자에게는 제공하지 않습니다.</p>
+  <section class="case-controls" aria-label="시도별 조건 선택">
+    <h2>같은 라운드에서 바뀌는 조건</h2>
+    <p>금지 규칙은 라운드 안에서 유지됩니다. 다음 조건 예시에서는 직전과 입력 문자열·목표가 모두 달라집니다. 앞서 본 조건도 한 번 건너뛰면 다시 나올 수 있습니다.</p>
+    <div class="case-picker"><label for="case-select">검토할 조건</label><select id="case-select"></select><button id="next-case" class="primary" type="button">다음 조건 예시</button><button id="reset-cases" class="ghost" type="button">조건 이력 초기화</button></div>
+    <div id="case-coverage" class="case-coverage"></div>
+    <div id="case-diagnostics" class="case-coverage" hidden></div>
+    <div id="condition-history" class="condition-history" aria-live="polite"></div>
+  </section>
+  <div class="conditions">
+    <div><span>최종 목표</span><strong id="goal"></strong></div>
+    <div><span>현재 금지쌍</span><strong id="rule"></strong></div>
+    <div><span>직전 금지쌍</span><strong id="oldrule"></strong></div>
+  </div>
+  <section class="card boardcard" aria-label="직접 풀기">
+    <div class="cardhead"><h2>직접 풀기</h2><span id="hand-status" class="handstatus" aria-live="polite"></span></div>
+    <div class="cardbody"><div class="puzzle-header"><h3 id="hand-title">입력 문자열</h3><span id="board-note" class="subtle"></span></div>
+      <div id="hand-state" class="traceboard" tabindex="-1"></div>
+      <div id="original-box" hidden><small>처음 문자열</small><code id="original"></code></div>
+      <p class="small">지울 묶음에 커서를 올리면 테두리로 표시됩니다. 묶음을 누르면 붙어 있는 같은 글자가 모두 지워집니다.</p>
+      <div class="manualbar">
+        <div class="hand-actions"><button id="hand-undo" class="ghost" type="button">한 수 되돌리기</button><button id="hand-reset" class="ghost" type="button">처음부터</button></div></div>
+      <p id="hand-log" class="small" aria-live="polite"></p>
+      <div id="hand-finish" hidden><button id="hand-apply" class="primary" type="button">완주 수순 판정</button></div>
+      <details class="hand-history" open><summary>직접 푼 단계별 상태</summary><ol id="hand-trace" class="trace-list" aria-label="직접 선택한 묶음의 수직 이력"></ol></details>
+    </div>
+  </section>
+  <div class="workgrid">
+    <section class="card replaycard">
+      <div class="cardhead"><h2>수순 재생</h2></div>
+      <div class="cardbody">
+        <div class="presetrow"><label for="presets">예시 수순</label><select id="presets"></select></div>
+        <form id="submission" autocomplete="off">
+          <div class="fields"><label>삭제 수순<input class="mono" id="moves" placeholder="예: A2 B1 C1" spellcheck="false" autocapitalize="characters" required></label>
+          <label>제출할 최종 문자열<input class="mono" id="answer" placeholder="빈칸 = 모두 삭제" spellcheck="false" autocapitalize="characters"></label></div>
+          <div class="actions"><button class="primary" type="submit">제출 판정</button><button class="ghost" type="button" id="continue-plan" hidden>이 수순에서 이어서 지우기</button></div>
+        </form>
+        <section class="result" aria-label="제출 판정"><div class="resultline"><strong id="feedback"></strong><span id="actual-final"></span></div><div id="diagnosis" aria-live="polite"></div><div id="violations"></div></section>
+        <div class="trace-head"><h3>단계별 상태</h3><span id="step-caption" class="mono"></span></div>
+        <div class="transport"><button type="button" class="iconbtn" id="back" aria-label="이전 행동">‹</button><button type="button" class="playbtn" id="play">자동 재생</button><button type="button" class="iconbtn" id="forward" aria-label="다음 행동">›</button><input id="scrub" type="range" min="0" max="0" value="0" aria-label="재생 단계"></div>
+        <p class="small" id="step-explanation" aria-live="polite"></p>
+        <ol id="trace-board" class="trace-list" aria-label="처음부터 끝까지의 삭제 과정"></ol>
+      </div>
+    </section>
+    <section class="card answerscard">
+      <div class="cardhead"><h2>도달 가능한 최종 답안</h2></div>
+      <div class="cardbody"><div class="metrics" id="answer-metrics"></div>
+        <p class="small">정답 여부와 관계없이, 더 지울 묶음이 없을 때의 답안을 만드는 모든 삭제 조합을 셉니다. 원래 같은 위치의 글자들을 같은 묶음으로 지웠다면 순서가 달라도 한 가지입니다.</p>
+        <table class="answers"><thead><tr><th>최종 답안</th><th>남은 글자</th><th>조합 수</th><th>정답 가능</th><th><span class="sr">예시 재생</span></th></tr></thead><tbody id="answer-list"></tbody></table>
+        <p class="small">정답 가능은 해당 문자열에 현재 금지쌍을 지키며 도달할 수 있는지를 나타냅니다. 조합 수에는 규칙을 위반하는 수순도 포함됩니다.</p>
+
+      </div>
+    </section>
+  </div>
+</section>
+<section id="view-summary" class="view" hidden>
+  <div class="eyebrow">데이터셋</div><h1>전체 검증</h1>
+  <div id="summary-top" class="summarytop"></div>
+  <section class="card"><div class="cardhead"><h2>목표별 도달 가능한 조합</h2></div><div class="cardbody">
+    <div class="table-scroll"><table class="sumtable"><thead><tr><th>목표</th><th>조건 수</th><th>도달 가능한 최종 조합 수</th><th>목표 글자 수에 맞는 조합</th><th>최종 답안 종류</th></tr></thead><tbody id="sum-rows"></tbody></table></div>
+    <p class="small">범위는 같은 목표를 가진 조건의 최솟값과 최댓값입니다. 목표 글자 수에 맞는 조합에는 금지쌍을 위반해야만 도달하는 경우도 포함합니다.</p>
+  </div></section>
+  <section class="card"><div class="cardhead"><h2>완주 및 규칙 전환</h2></div><div class="cardbody"><dl id="summary-checks" class="checks"></dl></div></section>
+  <p class="small" id="snapshot"></p><p><a id="report-link" class="report-link" hidden>생성 검증 보고서(JSON) 열기</a></p>
+</section>
+<section id="view-rules" class="view" hidden>
+  <div class="eyebrow">평가 방식</div><h1>게임 규칙</h1>
+  <section class="card"><div class="cardhead"><h2>문자열 삭제</h2></div><div class="cardbody prose">
+    <p>같은 글자가 두 개 이상 붙은 묶음 중 원하는 하나를 골라 통째로 지웁니다. 예를 들어 <code>AABBAAAC</code>에서 <code>A1</code>을 누르면 <code>BBAAAC</code>, <code>A2</code>를 누르면 <code>AABBC</code>가 됩니다. 두 A 묶음 사이의 <code>BB</code>도 따로 고를 수 있습니다. <code>AAA</code>를 한 번 선택하면 세 글자가 모두 사라집니다. 새로 붙은 묶음은 다음 행동에서 선택해야 지워집니다.</p>
+    <p><code>ABBA</code>에서 B를 지우면 <code>AA</code>가 됩니다. <code>ABB A</code>에서 B를 지우면 <code>A A</code>가 됩니다. 공백은 영구 경계이며 글자 수에서만 제외합니다.</p>
+    <p>같은 구간에서 지울 수 있는 묶음이 하나도 없을 때 끝납니다. 그때 남은 글자 수가 목표인 0·1·2·3글자 중 해당 값과 일치해야 합니다. <code>A A</code>는 2글자, <code>AB A</code>는 3글자로 인정합니다. <code>AA</code>와 <code>AA B</code>에서는 A를 더 지워야 합니다.</p>
+  </div></section>
+  <section class="card"><div class="cardhead"><h2>금지쌍과 피드백</h2></div><div class="cardbody prose">
+    <p><code>AC</code>는 A를 지운 직후 C를 지우는 행동을 금지합니다. <code>BB</code>는 B를 두 번 연속 선택하는 행동을 금지합니다. 금지쌍은 묶음 번호와 관계없이 선택한 글자로 판정합니다. 위반한 선택도 해당 묶음이 있으면 그대로 지우고 위반 위치를 기록합니다. 예를 들어 <code>ABBAC</code>에서 B를 지우면 <code>AAC</code>입니다. 목표가 3이어도 계속하며, B 직후 A가 금지되어 있어도 A를 선택하면 <code>C</code>까지 진행합니다.</p>
+    <p>참가자 피드백에는 최초 위반 위치 하나만 표시합니다. 예: <code>Rule violation: move 3.</code> 이 연구자 검토 화면의 위반 위치 목록과 재생 기록에는 모든 위반을 표시합니다.</p>
+    <dl class="checks"><div><dt>Correct</dt><dd>제출한 수순이 목표와 최종 문자열을 충족하고 금지쌍을 지켰습니다.</dd></div><div><dt>Incorrect, but no rule violation</dt><dd>성공 요건을 충족하지 못했고 식별된 금지쌍 위반이 없습니다.</dd></div><div><dt>Incorrect, also rule violation</dt><dd>금지쌍 위반이 있고 목표·제출 답의 일치를 확인하지 못했습니다.</dd></div><div><dt>Correct, but rule violation</dt><dd>목표와 제출 답이 일치하지만 금지쌍을 위반했습니다.</dd></div></dl>
+  </div></section>
+  <section class="card"><div class="cardhead"><h2>라운드와 지속 오류</h2></div><div class="cardbody prose">
+    <p>같은 라운드에서도 시도마다 입력 문자열과 목표가 바뀌고 금지쌍은 유지됩니다. 직전 시도와 동일한 문자열이나 동일한 목표는 연속해서 선택하지 않습니다. 비연속 재사용은 허용합니다. 새 라운드에 들어가면 금지쌍도 바뀝니다. 현재 목표와 금지쌍은 실제 참가자에게 공개하지 않습니다.</p>
+    <p>2라운드부터는 현재 문자열에서 끝까지 실행한 응답이 직전 금지쌍을 지키면서 현재 문제에서는 오답이면 지속 오류로 셉니다. 현재 금지쌍 위반뿐 아니라 목표 글자 수 불일치도 포함합니다. 형식 오류, 실행 불가능한 행동, 미완료 수순, 제출한 최종 문자열의 불일치는 제외합니다. 현재 정답은 직전 금지쌍 위반 여부와 관계없이 지속 오류가 아닙니다.</p>
+    <p>이 검토판은 한 제출의 정오답과 지속 오류 해당 여부를 보여줍니다. 여러 시도의 PER·MPE를 집계하거나 모델 실험을 실행하지 않습니다. 직전 규칙은 직전 시도의 조건이 아니라 직전 라운드의 금지쌍을 뜻합니다.</p>
+  </div></section>
+</section>
+</main></div>
+<noscript>이 파일의 검토 기능을 사용하려면 브라우저의 JavaScript를 켜 주세요.</noscript>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+'use strict';
+// Ordinals are assigned afresh in the current string. A boundary interrupts a
+// run, but the ordinal counter for each letter spans the whole string.
+__SCORING_JAVASCRIPT__
+const dataset = JSON.parse(document.getElementById('data').textContent);
+document.title = 'SameGame · '+dataset.label;
+document.getElementById('dataset-label').textContent = dataset.label+' · 첫 위치 피드백';
+const $ = id => document.getElementById(id);
+const number = n => n.toLocaleString('ko-KR');
+const typeName = k => k === 'different_letter' ? '서로 다른 글자 금지' : '같은 글자 연속 금지';
+const exampleNames = {correct:'대표 정답',previousOnly:'지속 오류 예시',generalError:'일반 오답 예시',currentOnly:'정답 · 직전 규칙 위반',both:'정답 · 두 규칙 모두 준수'};
+const ruleNames = {current_only:'지속 오류 아님 · 현재 정답, 직전 규칙 위반',both:'지속 오류 아님 · 현재 정답, 두 규칙 모두 준수',persistent_error:'지속 오류 해당 · 직전 규칙 준수, 현재 오답',general_error:'지속 오류 아님 · 직전 규칙 위반, 현재 오답',ineligible:'지속 오류 판정 제외 · 완주 수순과 일치하는 최종 답안이 필요합니다'};
+const explanations = {
+  invalid_format:'삭제 수순을 A2 B1처럼 공백으로 구분해 입력하세요.',
+  no_removable_run:'선택한 번호의 묶음이 현재 문자열에 없습니다.',
+  target_overshot:'남은 글자 수가 목표보다 적습니다.',target_not_reached:'남은 글자 수가 목표보다 많습니다.',
+  incomplete_plan:'묶음이 남아 있어 수순이 미완료입니다.',
+  final_mismatch:'신고한 문자열이 수순을 재생한 결과와 다릅니다.'
+};
+const drafts = new Map();
+const handPlans = new Map();
+let itemIndex = 0, roundIndex = 0, caseIndex = 0, view = 'review';
+const conditionHistory = new Map();
+let result = null, cursor = 0, timer = null, dirty = false;
+const item = () => dataset.items[itemIndex];
+const activeRound = () => item().rounds[roundIndex];
+const round = () => activeRound().cases[caseIndex];
+const roundId = () => item().id + ':' + roundIndex;
+const draftId = () => roundId() + ':' + round().id;
+const draft = () => {
+  const id = draftId();
+  if (!drafts.has(id)) {
+    const ex = round().examples.correct;
+    drafts.set(id,{moves:ex.moves,answer:ex.answer,preset:'correct'});
+  }
+  return drafts.get(id);
+};
+function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function option(value,text){ const opt=el('option','',text); opt.value=value; return opt; }
+function btn(text,cls,fn){ const b=el('button',cls,text); b.type='button';b.addEventListener('click',fn);return b; }
+function literal(s){return el('span','literal',s === '' ? '∅' : s);}
+function visibleFinal(s){return s === '' ? '빈 문자열 (∅)' : s;}
+function ruleText(r){return r[0]+' → '+r[1];}
+function countLetters(s){return s.replaceAll(' ','').length;}
+function ribbon(text, highlight = null, chooseRun = null) {
+  const row = el('div', chooseRun ? 'ribbon selectable-tape' : 'ribbon');
+  row.setAttribute('role', chooseRun ? 'group' : 'img');
+  row.setAttribute('aria-label', chooseRun ? '문자열에서 지울 묶음 선택' : '문자열 '+(text.trim()||'비어 있음'));
+  for (const {chars, start, token} of groupsOnTape(text)) {
+    if (chars === ' ') {
+      const bar = el('span','boundary');
+      bar.title = '공백 · 영구 경계'; bar.setAttribute('aria-label','공백 경계');
+      row.append(bar);
+      continue;
+    }
+    let block;
+    if (chooseRun && token) {
+      block = btn(chars, 'run pick-run letter'+chars[0], event => chooseRun(token, start, event.detail === 0));
+      block.dataset.move = token;
+      block.dataset.start = start;
+      block.title = token+' · '+chars+' 전체 삭제';
+      block.setAttribute('aria-label', token+' 묶음 지우기 ('+chars+', '+chars.length+'글자)');
+    } else {
+      block = el('span','run letter'+chars[0],chars);
+      if (!chooseRun) block.setAttribute('aria-hidden','true');
+    }
+    if (chooseRun) {
+      block.replaceChildren(...Array.from(chars, letter => el('span', 'tile', letter)));
+    }
+    if (start === highlight) block.classList.add('next-run');
+    row.append(block);
+  }
+  if (!countLetters(text)) row.append(el('span','emptytape','빈 문자열 · 0글자'));
+  return row;
+}
+function stopPlay(){if(timer!==null){clearInterval(timer);timer=null;} $('play').textContent='자동 재생';}
+function filtered(){
+  const query=$('search').value.trim().toUpperCase(); const kind=$('family').value;
+  return dataset.items.map((v,i)=>({v,i})).filter(({v})=>(!kind||v.type===kind)&&v.id.includes(query));
+}
+function renderNav(scroll=false) {
+  const list=$('itemlist'), mobile=$('mobile-items'), filteredItems=filtered();list.replaceChildren();mobile.replaceChildren();
+  $('list-size').textContent=number(filteredItems.length);
+  for(const {v,i} of filteredItems){
+    const b=btn('','',()=>chooseItem(i));
+    b.append(el('span','',v.id),el('span','code-type',v.type==='different_letter'?'서로 다른 글자':'같은 글자'));
+    if(i===itemIndex)b.setAttribute('aria-current','true');
+    list.append(b);mobile.append(option(String(i),v.id));
+  }
+  if(!filteredItems.length){
+    list.append(el('p','empty','일치하는 문제가 없습니다.'));
+    mobile.append(option('','검색 결과 없음'));mobile.disabled=true;
+  }else{mobile.disabled=false;mobile.value=String(itemIndex);}
+  const at=filteredItems.findIndex(({i})=>i===itemIndex);
+  $('prev-item').disabled=at<=0;$('next-item').disabled=at<0||at>=filteredItems.length-1;
+  if(scroll&&at>=0){
+    const active=list.children[at];
+    if(active.offsetTop<list.scrollTop||active.getBoundingClientRect().bottom>list.getBoundingClientRect().bottom){
+      list.scrollTop+=active.getBoundingClientRect().top-list.getBoundingClientRect().top-list.clientHeight/3;
+    }
+  }
+}
+function selectView(next){
+  stopPlay();view=next;
+  for(const name of ['review','summary','rules']) $('view-'+name).hidden=name!==next;
+  for(const b of document.querySelectorAll('[data-view]')){
+    if(b.dataset.view===next)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
+  }
+}
+function chooseItem(i){
+  if(i<0||i>=dataset.items.length)return;
+  itemIndex=i;roundIndex=0;caseIndex=0;conditionHistory.delete(roundId());selectView('review');renderNav(true);renderReview();
+}
+function changeRound(i){
+  roundIndex=i;caseIndex=0;conditionHistory.delete(roundId());renderReview();
+}
+function saveLocation(){
+  try{history.replaceState(null,'','#'+encodeURIComponent(item().id)+'/'+(roundIndex+1)+'/'+encodeURIComponent(round().id));}catch{}
+}
+function eligibleCaseIndices(cases, currentIndex) {
+  const previous=cases[currentIndex];
+  return cases.map((value,index)=>({value,index})).filter(({value})=>value.input!==previous.input&&value.target!==previous.target).map(({index})=>index);
+}
+function nextCaseIndex(cases, currentIndex, draw=Math.random) {
+  const eligible=eligibleCaseIndices(cases,currentIndex);
+  return eligible.length?eligible[Math.min(eligible.length-1,Math.floor(draw()*eligible.length))]:null;
+}
+function chooseCase(index, extendHistory=false) {
+  if(index<0||index>=activeRound().cases.length)return;
+  const history=conditionHistory.get(roundId())||[caseIndex];
+  caseIndex=index;
+  conditionHistory.set(roundId(),extendHistory?[...history,index]:[index]);
+  if(extendHistory){handPlans.delete(draftId());drafts.delete(draftId());}
+  renderReview();
+}
+function renderCaseControls() {
+  const cases=activeRound().cases, selector=$('case-select');
+  selector.replaceChildren(...cases.map((entry,index)=>option(String(index),entry.id+' · 목표 '+entry.target+'글자 · '+countLetters(entry.input)+'글자 입력'+(entry.input.includes(' ')?' · 공백':''))));
+  selector.value=String(caseIndex);
+  const counts=[0,1,2,3].map(target=>target+'글자 목표 '+cases.filter(x=>x.target===target).length+'개');
+  $('case-coverage').textContent='이 라운드 '+cases.length+'개 조건 · '+counts.join(' / ');
+  const certificate=round().certificate, diagnostic=$('case-diagnostics');
+  diagnostic.hidden=!certificate;
+  if(certificate){
+    const labels={shortest_success_moves:'최단 정답 수순',longest_success_moves:'최장 정답 수순',minimum_merged_deletions:'필수 병합 삭제',minimum_singleton_merge_deletions:'필수 단독 문자 병합',initial_choices:'처음 선택 가능 묶음',successful_letter_multisets:'정답 문자 구성'};
+    diagnostic.textContent='생성 검증: '+Object.entries(labels).filter(([key])=>certificate[key]!==undefined).map(([key,label])=>label+' '+certificate[key]).join(' · ');
+  }
+  if(!conditionHistory.has(roundId()))conditionHistory.set(roundId(),[caseIndex]);
+  const history=conditionHistory.get(roundId());
+  $('condition-history').textContent='조건 미리보기 이력: '+history.map(index=>cases[index].id+' (목표 '+cases[index].target+')').join(' → ');
+  $('next-case').disabled=eligibleCaseIndices(cases,caseIndex).length===0;
+}
+function renderReview(){
+  stopPlay();const r=round();
+  $('item-title').textContent=item().id;$('type-label').textContent=typeName(item().type);
+  $('rounds').replaceChildren(...item().rounds.map((entry,i)=>{
+    const b=btn('라운드 '+entry.round,'',()=>changeRound(i));b.setAttribute('aria-pressed',String(i===roundIndex));
+    b.title=ruleText(entry.forbidden)+' 금지 · '+entry.cases.length+'개 조건';return b;
+  }));
+  renderCaseControls();
+  $('goal').textContent=r.target===0?'모두 삭제':r.target+'글자 남기기';
+  $('rule').textContent=ruleText(r.forbidden);$('rule').className='pair';
+  $('oldrule').textContent=roundIndex?ruleText(item().rounds[roundIndex-1].forbidden):'없음';
+  $('oldrule').className=roundIndex?'mono':'';
+  $('board-note').textContent=r.input.includes(' ')?'점선은 공백 경계입니다.':'공백 경계 없음';
+  const d=draft(), presets=$('presets');presets.replaceChildren();
+  for(const [k,name] of Object.entries(exampleNames)){
+    if(round().examples[k])presets.append(option(k,name));
+  }
+  presets.append(option('manual','직접 입력 / 선택한 수순'));
+  presets.value=d.preset;$('moves').value=d.moves;$('answer').value=d.answer;
+  renderAnswers();renderHand();runFromForm();saveLocation();
+}
+function setPlan(moves,answer,preset='manual'){
+  const d=draft();Object.assign(d,{moves,answer,preset});$('moves').value=moves;$('answer').value=answer;$('presets').value=preset;runFromForm();
+}
+function outcomeTotals(board) {
+  let total = 0, atTarget = 0;
+  for (const outcome of board.outcomes) {
+    total += outcome.groups;
+    if (countLetters(outcome.text) === board.target) atTarget += outcome.groups;
+  }
+  return {total, atTarget, strings: board.outcomes.length};
+}
+function renderAnswers(){
+  const b=round(), counts=outcomeTotals(b), metrics=$('answer-metrics');
+  metrics.replaceChildren(...[[counts.total,'도달 가능한 최종 조합 수'],[counts.atTarget,'목표 글자 수에 맞는 조합'],[counts.strings,'최종 답안 종류']].map(([v,label])=>{
+    const n=el('div');n.append(el('strong','',number(v)),el('span','',label));return n;
+  }));
+  const tbody=$('answer-list');tbody.replaceChildren();
+  for(const f of b.outcomes){
+    const row=el('tr'), t=el('td');t.append(literal(f.text));
+    if(f.text==='') t.append(el('span','small',' 빈 문자열'));
+    const remaining=countLetters(f.text);
+    const action=el('td'),button=btn('재생 ↗','',()=>setPlan(f.moves,f.text));
+    button.setAttribute('aria-label',visibleFinal(f.text)+' 완주 예시 재생');action.append(button);
+    row.append(t,el('td','',remaining+(remaining===b.target?' (목표)':'')),el('td','mono',number(f.groups)),el('td',f.correct?'correct':'subtle',f.correct?'가능':'불가'),action);tbody.append(row);
+  }
+}
+function runFromForm(){
+  stopPlay();dirty=false;const r=round(),d=draft();
+  d.moves=$('moves').value;d.answer=$('answer').value;
+  result=inspectorReplay(round().input,r.target,r.forbidden,roundIndex?item().rounds[roundIndex-1].forbidden:null,d.moves,d.answer);
+  cursor=0;renderFeedback();renderStep({rebuild:true});
+}
+function renderFeedback(){
+  const f=$('feedback'),actual=$('actual-final'),diag=$('diagnosis'),viol=$('violations');
+  actual.replaceChildren();diag.replaceChildren();viol.replaceChildren();
+  $('continue-plan').hidden=dirty||!result.validFormat||result.failedStep!==null||result.completed;
+  if(dirty){f.textContent='판정 대기';f.className='dirty';diag.textContent='수정한 응답을 판정하면 재생할 수 있습니다.';return;}
+  f.textContent=result.feedback;f.className=result.feedback==='Correct'?'correct':'incorrect';
+  if(result.finalState!==null){actual.append(document.createTextNode(result.failedStep?'중단 상태 ':result.completed?'최종 상태 ':'미완료 상태 '),literal(result.finalState));}
+  const details=[];
+  if(roundIndex===0)details.push('R1 · 지속 오류 판정 제외.');
+  if(result.validFormat&&!result.failedStep&&!result.completed)details.push('계속 지울 수 있는 묶음 '+result.remainingChoices.join(', ')+'.');
+  if(result.failedStep!==null) details.push(result.failedStep+'번째 행동에서 중단.');
+  if(explanations[result.reason]) details.push(explanations[result.reason]);
+  if(result.finalMatches===false&&result.reason!=='final_mismatch')details.push('제출한 최종 문자열과 실제 결과가 다릅니다.');
+  if(result.ruleOutcome)details.push(ruleNames[result.ruleOutcome]+'.');
+  else if(result.feedback==='Correct')details.push('목표와 현재 금지쌍을 충족했습니다.');
+  diag.textContent=details.join(' ');
+  if(result.violationSteps.length){
+    viol.append(document.createTextNode('위반 위치 '));
+    for(const at of result.violationSteps){const b=btn(String(at),'violbtn',()=>jump(at));b.title=at+'번째 행동 보기';viol.append(b);}
+  }
+}
+function jump(n){stopPlay();cursor=Math.max(0,Math.min(n,result.states.length-1));renderStep({reveal:true});}
+function traceRow(state, index) {
+  const row = el('li', 'trace-step');
+  const heading = el('div', 'trace-step-head');
+  let label = '시작 문자열';
+  if (index > 0) {
+    label = index+'번째 · '+state.action;
+    label += state.executed ? ' · '+state.removedLength+'글자 삭제' : ' · 선택 실패';
+  }
+  const select = btn(label, 'trace-select', () => jump(index));
+  heading.append(select, el('span', 'trace-count', countLetters(state.text)+'글자 남음'));
+  const next = result.states[index+1];
+  row.append(heading, ribbon(state.text, next?.executed ? next.removedStart : null));
+  const statuses = [];
+  if (state.violation) statuses.push('금지쌍 위반');
+  if (index > 0 && !state.executed) statuses.push('해당 묶음이 없어 이 단계에서 중단');
+  if (index === result.states.length-1 && result.completed) statuses.push('지울 묶음 없음 · 완주');
+  if (statuses.length) {
+    const warning = state.violation || (index > 0 && !state.executed);
+    row.append(el('p', warning ? 'trace-status warning' : 'trace-status', statuses.join(' · ')));
+  }
+  return row;
+}
+function renderStep({rebuild=false, reveal=false}={}){
+  const panel=$('trace-board'), note=$('step-explanation'), range=$('scrub');
+  const max=result.states.length-1;
+  if(dirty){
+    panel.replaceChildren(el('li','emptytape','수정한 수순의 판정을 기다리고 있습니다.'));
+    $('step-caption').textContent='—';note.textContent='';range.max='0';range.value='0';
+  }else{
+    if (rebuild) {
+      panel.replaceChildren(...result.states.map(traceRow));
+      panel.scrollTop = 0;
+    }
+    for (const [index, row] of [...panel.children].entries()) {
+      const active = index === cursor;
+      row.classList.toggle('active', active);
+      const button = row.querySelector('.trace-select');
+      if (active) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+    }
+    if (reveal) {
+      const active = panel.children[cursor];
+      const box = panel.getBoundingClientRect(), step = active.getBoundingClientRect();
+      if (step.top < box.top) panel.scrollTop += step.top-box.top-3;
+      else if (step.bottom > box.bottom) panel.scrollTop += step.bottom-box.bottom+3;
+    }
+    const s=result.states[cursor],next=result.states[cursor+1];
+    $('step-caption').textContent=cursor+' / '+max;range.max=max;range.value=cursor;
+    if(cursor===0) note.textContent='제출 전 상태 · '+countLetters(s.text)+'글자';
+    else if(!s.executed)note.textContent=cursor+'번째 · '+s.action+' 선택 · 지울 수 있는 묶음 없음'+(s.violation?' · 금지쌍 위반':'');
+    else note.textContent=cursor+'번째 · '+s.action+' 묶음 '+s.removedLength+'글자 삭제 · '+countLetters(s.text)+'글자 남음'+(s.violation?' · 금지쌍 위반':'');
+    if(next?.executed)note.textContent+=' · 다음 삭제: '+next.action+' × '+next.removedLength+' (테두리)';
+  }
+  $('back').disabled=dirty||cursor===0;$('forward').disabled=dirty||cursor>=max;
+  range.disabled=dirty||max===0;$('play').disabled=dirty||max===0;
+}
+function mutated(){
+  stopPlay();dirty=true;
+  Object.assign(draft(),{moves:$('moves').value,answer:$('answer').value,preset:'manual'});
+  $('presets').value='manual';renderFeedback();renderStep();
+}
+function renderHand(){
+  const id=draftId(), plan=handPlans.get(id)||[], moves=plan.join(' '), r=round();
+  const play=inspectorReplay(r.input,r.target,r.forbidden,roundIndex?item().rounds[roundIndex-1].forbidden:null,moves,'');
+  const text=play.states[play.states.length-1].text;
+  const available=groupsOnTape(text).filter(run=>run.token), complete=available.length===0;
+  $('hand-title').textContent=moves?'현재 문자열':'입력 문자열';
+  $('hand-status').textContent=complete?'삭제 완료':'진행 중';
+  $('hand-status').classList.toggle('finished',complete);
+  $('original-box').hidden=!moves;$('original').textContent=r.input;
+  $('hand-state').replaceChildren(ribbon(text,null,(token,start,fromKeyboard)=>{
+    handPlans.set(id,[...plan,token]);
+    renderHand();
+    if (fromKeyboard) {
+      const buttons = [...$('hand-state').querySelectorAll('button')];
+      const next = buttons.find(button => Number(button.dataset.start) >= start) || buttons.at(-1);
+      (next || $('hand-undo')).focus();
+    }
+  }));
+  $('hand-log').textContent='삭제 수순 '+(moves||'없음')+' · '+countLetters(text)+'글자 남음'+
+    (play.violationSteps.length?' · 위반 위치 '+play.violationSteps.join(', '):'')+
+    (complete?' · 지울 묶음 없음':' · 선택 가능한 묶음 '+available.length+'개');
+  $('hand-undo').disabled=!moves;$('hand-reset').disabled=!moves;
+  $('hand-finish').hidden=!complete;$('hand-apply').disabled=!complete;
+  $('hand-trace').replaceChildren(...play.states.map((state,index)=>{
+    const row=el('li','trace-step'), head=el('div','trace-step-head');
+    head.append(el('strong','',index===0?'시작 문자열':index+'번째 · '+state.action+' · '+state.removedLength+'글자 삭제'),el('span','trace-count',countLetters(state.text)+'글자 남음'));
+    row.append(head,ribbon(state.text));
+    if(state.violation)row.append(el('p','trace-status warning','현재 금지쌍 위반 · 삭제는 계속 진행'));
+    return row;
+  }));
+  $('hand-reset').onclick=()=>{handPlans.delete(id);renderHand();};
+  $('hand-undo').onclick=()=>{handPlans.set(id,plan.slice(0,-1));renderHand();};
+  $('hand-apply').onclick=()=>{setPlan(moves,text.trim());$('feedback').scrollIntoView({block:'nearest'});};
+}
+function renderSummary(){
+  const s=dataset.summary;
+  const top=$('summary-top');top.replaceChildren(...[[s.items,'문제'],[s.rounds,'라운드'],[s.cases,'시도별 조건']].map(([n,t])=>{
+    const box=el('div');box.append(el('span','',t),el('strong','',number(n)));return box;
+  }));
+  const rounds=dataset.items.flatMap(x=>x.rounds.flatMap(r=>r.cases));
+  const range=n=>{if(!n.length)return '—';const a=Math.min(...n), b=Math.max(...n);return a===b?number(a):number(a)+'–'+number(b);};
+  const body=$('sum-rows');body.replaceChildren();
+  for(const t of [0,1,2,3]){
+    const totals=rounds.filter(x=>x.target===t).map(outcomeTotals);
+    const values=[t+'글자',totals.length,range(totals.map(b=>b.total)),range(totals.map(b=>b.atTarget)),range(totals.map(b=>b.strings))];
+    const row=el('tr');for(const value of values)row.append(el('td','',String(value)));body.append(row);
+  }
+  const checks=[
+    ['완주 조건','동일 구간에 같은 글자 두 개 이상 연속된 묶음이 더 이상 없어야 합니다. 목표 글자 수와 금지쌍은 삭제를 중단시키지 않습니다.'],
+    ['조건별 묶음 조합의 합',number(rounds.reduce((n,r)=>n+outcomeTotals(r).total,0))+'가지 · 각 조건에서 끝까지 지운 묶음 조합 수를 더한 값입니다.'],
+    ['두 규칙을 모두 지키는 정답이 있는 조건',s.ruleCompatible+' / '+s.transitions+'개 전환 조건 · 현재 목표와 직전·현재 금지쌍을 함께 충족하는 수순이 있습니다.'],
+    ['규칙 위반에 의한 지속 오류 예시가 있는 조건',number(s.previousRuleProbes)+' / '+s.transitions+'개 전환 조건 · 현재 목표에 도달하고 직전 규칙을 지키면서 현재 규칙을 위반하는 수순입니다. 목표 실패만으로도 지속 오류가 될 수 있습니다.'],
+    ['일반 오답 예시가 있는 조건',number(s.generalErrorProbes)+' / '+s.transitions+'개 전환 조건 · 직전 규칙을 위반하면서 현재 문제에도 실패하는 완주 수순이 있습니다.']
+  ];
+  $('summary-checks').replaceChildren(...checks.map(([a,b])=>{const div=el('div');div.append(el('dt','',a),el('dd','',b));return div;}));
+  $('snapshot').textContent='내장 문제 데이터 · SHA-256 '+dataset.sha.slice(0,16)+'… · 라운드 간 규칙 전환 '+s.transitionRounds+'개 · 시도별 조건의 물리적 도달 가능성을 확인한 결과입니다.';
+  if(dataset.reportHref){$('report-link').href=dataset.reportHref;$('report-link').hidden=false;}
+}
+for(const b of document.querySelectorAll('[data-view]')) b.addEventListener('click',()=>{selectView(b.dataset.view);window.scrollTo(0,0);});
+for(const id of ['search','family']) $(id).addEventListener(id==='search'?'input':'change',()=>{
+  const list=filtered();if(list.length&&!list.some(({i})=>i===itemIndex))chooseItem(list[0].i);else renderNav();
+});
+$('mobile-items').addEventListener('change',()=>{if($('mobile-items').value!=='')chooseItem(Number($('mobile-items').value));});
+for(const [id,delta] of [['prev-item',-1],['next-item',1]])$(id).addEventListener('click',()=>{
+  const list=filtered(), pos=list.findIndex(({i})=>i===itemIndex);if(list[pos+delta])chooseItem(list[pos+delta].i);
+});
+$('case-select').addEventListener('change',()=>chooseCase(Number($('case-select').value)));
+$('next-case').addEventListener('click',()=>{const next=nextCaseIndex(activeRound().cases,caseIndex);if(next!==null)chooseCase(next,true);});
+$('reset-cases').addEventListener('click',()=>{conditionHistory.set(roundId(),[caseIndex]);renderCaseControls();});
+$('presets').addEventListener('change',()=>{
+  const k=$('presets').value,ex=round().examples[k];if(ex)setPlan(ex.moves,ex.answer,k);else mutated();
+});
+for(const id of ['moves','answer']) $(id).addEventListener('input',mutated);
+$('submission').noValidate=true;$('submission').addEventListener('submit',e=>{e.preventDefault();runFromForm();});
+$('continue-plan').addEventListener('click',()=>{
+  if(dirty||!result.validFormat||result.failedStep!==null||result.completed)return;
+  handPlans.set(draftId(),parsePlan(draft().moves));renderHand();$('hand-state').focus();
+});
+$('back').addEventListener('click',()=>jump(cursor-1));$('forward').addEventListener('click',()=>jump(cursor+1));
+$('scrub').addEventListener('input',e=>jump(Number(e.target.value)));
+$('play').addEventListener('click',()=>{
+  if(timer!==null){stopPlay();return;}
+  if(cursor>=result.states.length-1)cursor=0;
+  renderStep({reveal:true});$('play').textContent='일시 정지';
+  timer=setInterval(()=>{cursor++;renderStep({reveal:true});if(cursor>=result.states.length-1)stopPlay();},650);
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPlay();});
+const link=location.hash.slice(1).split('/');
+if(link.length>=2){
+  try{
+    const id=decodeURIComponent(link[0]), i=dataset.items.findIndex(x=>x.id===id), number=Number(link[1])-1;
+    if(i>=0&&Number.isInteger(number)&&number>=0&&number<dataset.items[i].rounds.length){
+      itemIndex=i;roundIndex=number;
+      if(link[2]){const c=activeRound().cases.findIndex(x=>x.id===decodeURIComponent(link[2]));if(c>=0)caseIndex=c;}
+    }
+  }catch{}
+}
+renderNav(true);renderSummary();renderReview();
+</script>
+</body></html>

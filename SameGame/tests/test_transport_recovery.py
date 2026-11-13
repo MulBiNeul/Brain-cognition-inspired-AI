@@ -12,30 +12,13 @@ from unittest.mock import MagicMock, patch
 from src import model_runner, providers
 
 
-def complete_response(marker="original-state"):
-    return {
-        "status": "completed",
-        "output": [
-            {"type": "reasoning", "encrypted_content": marker, "summary": []},
-            {"type": "message", "role": "assistant", "content": [
-                {"type": "output_text", "text": '{"moves":"A1 B1","answer":""}'},
-            ]},
-        ],
-        "usage": {"input_tokens": 12, "output_tokens": 8},
-    }
-
-
-def item(rounds=1):
-    return {"id": "transport-test", "type": "same_letter", "rounds": [
-        {"round": number, "input": "AABB", "target": 0, "forbidden": "AA"}
-        for number in range(1, rounds + 1)
-    ]}
+from tests.runtime_fixtures import complete_response, item
 
 
 class TransportRecoveryTests(unittest.TestCase):
     def setUp(self):
         self.settings = model_runner.load_settings(profile="sol")
-        self.settings.update(max_attempts=2, required_streak=1, timeout=180.0)
+        self.settings.update(selection_seed=11, max_attempts=2, required_streak=1, timeout=180.0)
 
     def execute(self, directory, receive, *, rounds=1, client=None, **options):
         options.setdefault("retry_delay", 0)
@@ -55,7 +38,7 @@ class TransportRecoveryTests(unittest.TestCase):
                     "type": "response.output_text.delta", "delta": "PARTIAL_SHOULD_NOT_ENTER_CONTEXT",
                 }) + "\n", encoding="utf-8")
                 raise providers.ProviderError("stream stopped", retryable=True, kind="incomplete_stream")
-            return complete_response(f"state-{len(requests)}")
+            return complete_response(request, f"state-{len(requests)}")
 
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -105,7 +88,7 @@ class TransportRecoveryTests(unittest.TestCase):
 
             def restored(client, provider, request, path):
                 resumed_requests.append(deepcopy(request))
-                return complete_response()
+                return complete_response(request)
 
             report = self.execute(directory, restored, resume=True)
             self.assertTrue(report["complete"])
@@ -148,9 +131,11 @@ class TransportRecoveryTests(unittest.TestCase):
 
     def test_completed_event_is_recovered_before_retrying_request(self):
         calls = []
-        raw = complete_response()
+        raw = None
 
         def completed_then_disconnected(client, provider, request, path):
+            nonlocal raw
+            raw = complete_response(request)
             calls.append(1)
             path.write_text(json.dumps({"type": "response.completed", "response": raw}) + "\n",
                             encoding="utf-8")
@@ -173,7 +158,7 @@ class TransportRecoveryTests(unittest.TestCase):
 
         def receive(client, provider, request, path):
             requests.append(deepcopy(request))
-            return complete_response()
+            return complete_response(request)
 
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -191,12 +176,12 @@ class TransportRecoveryTests(unittest.TestCase):
     def test_server_retry_after_is_honored(self):
         calls = []
 
-        def throttled_once(*args):
+        def throttled_once(client, provider, request, path):
             calls.append(1)
             if len(calls) == 1:
                 raise providers.ProviderError("rate limit", retryable=True, kind="rate_limit",
                                               status_code=429, retry_after=17.0)
-            return complete_response()
+            return complete_response(request)
 
         with TemporaryDirectory() as temporary, patch.object(model_runner.time, "sleep") as sleep:
             report = self.execute(Path(temporary), throttled_once)
@@ -218,33 +203,15 @@ class TransportRecoveryTests(unittest.TestCase):
             self.assertEqual(len(calls), 1)
             self.assertEqual(model_runner.read_json(directory / "checkpoint.json")["responses"], [])
 
-    def test_resume_compatibility_requires_exact_reviewed_from_and_to(self):
-        with TemporaryDirectory() as temporary:
-            project = Path(temporary)
-            (project / "configs").mkdir()
-            manifest = project / "configs" / "resume_compatibility.json"
-            with patch.object(model_runner, "PROJECT_DIR", project), \
-                    patch.object(model_runner, "implementation_fingerprint", return_value="current"):
-                self.assertTrue(model_runner.compatible_fingerprint("current", self.settings))
-                self.assertFalse(model_runner.compatible_fingerprint("previous", self.settings))
-                manifest.write_text(json.dumps({"transport_only_upgrades": [
-                    {"from": "previous", "to": "different-code"},
-                    {"from": "unrelated-run", "to": "current"},
-                ]}), encoding="utf-8")
-                self.assertFalse(model_runner.compatible_fingerprint("previous", self.settings))
-                manifest.write_text(json.dumps({"transport_only_upgrades": [
-                    {"from": "previous", "to": "current"},
-                ]}), encoding="utf-8")
-                self.assertTrue(model_runner.compatible_fingerprint("previous", self.settings))
-                self.assertFalse(model_runner.compatible_fingerprint("old-feedback-version", self.settings))
-            with patch.object(model_runner, "PROJECT_DIR", project), \
-                    patch.object(model_runner, "implementation_fingerprint", return_value="unreviewed-new-code"):
-                self.assertFalse(model_runner.compatible_fingerprint("previous", self.settings))
+    def test_resume_requires_an_exact_implementation_fingerprint(self):
+        with patch.object(model_runner, "implementation_fingerprint", return_value="current"):
+            self.assertTrue(model_runner.compatible_fingerprint("current", self.settings))
+            self.assertFalse(model_runner.compatible_fingerprint("different-code", self.settings))
 
     def test_unreviewed_resume_fails_before_any_provider_request(self):
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
-            self.execute(directory, lambda *args: complete_response())
+            self.execute(directory, lambda *args: complete_response(args[2]))
             protocol_path = directory / "protocol.json"
             protocol = model_runner.read_json(protocol_path)
             protocol["fingerprint"] = "a-different-feedback-implementation"

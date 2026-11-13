@@ -7,7 +7,6 @@ from collections import Counter, defaultdict
 from functools import cache
 from itertools import groupby
 from pathlib import Path
-from statistics import median
 from typing import NamedTuple
 
 from ._paths import DATA_DIR
@@ -25,7 +24,7 @@ def require(condition, message):
 
 
 def parse_moves(moves):
-    """Read numbered actions or the compact legacy notation for first runs."""
+    """Read numbered actions or the compact notation selecting the first group."""
     if isinstance(moves, str):
         if re.fullmatch(r"[A-E]+", moves):
             return tuple(letter + "1" for letter in moves)
@@ -326,12 +325,17 @@ def read_round(record, number, item_type):
     return Game(tape, target)
 
 
-def grade_item(public, item_id, number, actions=None, answer=None, *, group_counts=False):
+def grade_case(public, item_id, number, case_id, actions=None, answer=None, *, group_counts=False):
+    """Inspect one input condition using its round's current and previous rules."""
+    require(public.get("version") == 1, "unsupported problem schema")
     item = next((item for item in public["items"] if item["id"] == item_id), None)
     require(item is not None, f"unknown item {item_id!r}")
-    require(1 <= number <= len(item["rounds"]), "round number out of range")
+    require(type(number) is int and 1 <= number <= len(item["rounds"]), "round number out of range")
     record = item["rounds"][number - 1]
-    game = read_round(record, number, item["type"])
+    case = next((case for case in record["cases"] if case["id"] == case_id), None)
+    require(case is not None, f"unknown case {case_id!r} in {item_id} R{number}")
+    game = read_round({**case, "round": record["round"], "forbidden": record["forbidden"]},
+                      number, item["type"])
     previous = item["rounds"][number - 2]["forbidden"] if number > 1 else None
     forbidden = record["forbidden"]
     if group_counts:
@@ -343,6 +347,7 @@ def grade_item(public, item_id, number, actions=None, answer=None, *, group_coun
             "total_groupings": sum(counts.values()),
             "target_length_groupings": sum(count for final, count in counts.items()
                                           if len(final.replace(" ", "")) == game.target),
+            "final_answer_types": len(counts),
             "groupings_by_final": {final: counts[final] for final in finals},
         }
     elif actions is None:
@@ -350,7 +355,8 @@ def grade_item(public, item_id, number, actions=None, answer=None, *, group_coun
     else:
         result = game.grade(actions, forbidden, previous, final_answer=answer)
         result["mode"] = "actions_only" if answer is None else "actions_and_final"
-    return {"id": item_id, "round": number, "target": game.target, **result}
+    return {"id": item_id, "round": number, "case_id": case_id, "input": case["input"],
+            "target": game.target, "forbidden": forbidden, "previous_forbidden": previous, **result}
 
 
 def terminal_group_counts(game):
@@ -398,203 +404,10 @@ def successful_paths(game, forbidden):
     return counts_by_final, masses_by_multiset
 
 
-def summarize_solution_counts(counts_by_goal):
-    summary = {}
-    for goal, rounds in sorted(counts_by_goal.items()):
-        by_field = {}
-        for field in ("final_strings", "letter_multisets", "move_sequences"):
-            values = [record[field] for record in rounds]
-            by_field[field] = {"min": min(values), "median": median(values), "max": max(values),
-                               "histogram": dict(sorted(Counter(values).items()))}
-        rich_rounds = sum(record["letter_multisets"] >= 3 for record in rounds)
-        if goal > 0:
-            required = (len(rounds) + 3) // 4
-            require(rich_rounds >= required,
-                    f"target {goal}: only {rich_rounds} rounds have three letter multisets; need {required}")
-        summary[goal] = {"rounds": len(rounds), "rounds_with_at_least_three_multisets": rich_rounds, **by_field}
-    return summary
-
-
-def validate_length_balance(length_counts):
-    short_range_strata = full_range_strata = largest_difference = 0
-    for (kind, number, goal), counts in length_counts.items():
-        label = f"{kind} R{number} target {goal}"
-        if kind == "different_letter" and number > 1:
-            require(set(counts) == {31, 32}, f"{label}: both lengths 31 and 32 must be used exclusively")
-            difference = abs(counts[31] - counts[32])
-            require(difference <= 1, f"{label}: length frequencies 31/32 differ by {difference}")
-            largest_difference = max(largest_difference, difference)
-            short_range_strata += 1
-        else:
-            require(set(counts) == set(range(28, 33)), f"{label}: all five input lengths 28–32 must occur")
-            full_range_strata += 1
-    return {"strata_with_balanced_31_and_32": short_range_strata,
-            "largest_31_32_count_difference": largest_difference,
-            "strata_with_all_five_lengths": full_range_strata}
-
-
-def validate_round(record, key, number, item_type, previous):
-    require(set(record) == {"round", "input", "target", "forbidden"}, "expected round, input, target and forbidden")
-    game = read_round(record, number, item_type)
-    require(set(key) == {"round", "answer"}, "expected round and answer in key")
-    require(type(key["round"]) is int and key["round"] == number, "incorrect key round number")
-    forbidden = record["forbidden"]
-    final = key["answer"]
-    require(isinstance(final, str) and final == final.strip(" "), "expected a canonical final answer string")
-    tape = record["input"]
-    flat = Game(tape.replace(" ", ""), game.target) if " " in tape else None
-    path = game.final_witness(final, forbidden, required_pair=previous, flat=flat)
-    require(path is not None, f"no qualifying reference path for final {final!r}")
-    ref = game.grade(path, forbidden, previous)
-    require(ref["valid"], f"reference fails: {ref['reason']} at {ref['stop_step']}")
-    require(ref["final_state"] == final, "reference path ends in a different answer")
-    endings = game.legal_endings(forbidden)
-    require(endings.failing_actions is not None,
-            "need a legal path exhausting all removable runs at an incorrect length")
-    final_letters = endings.letters_by_length[game.target]
-    multiset_count = len({tuple(sorted(letters)) for letters in final_letters})
-    if game.target > 0:
-        require(multiset_count >= 2, "need two reachable letter multisets after removing spaces and order; "
-                f"found {multiset_count} across {len(final_letters)} letter strings")
-    require(any(letters for length, letters in enumerate(endings.letters_by_length) if length != game.target),
-            "no complete legal final at another target length from zero through three")
-    counts_by_final, masses = successful_paths(game, forbidden)
-    move_count = sum(counts_by_final.values())
-    require(move_count >= 3, f"need three distinct successful move sequences; found {move_count}")
-    if game.target == 0:
-        probability = masses[""]
-        description = "probability of complete deletion"
-    else:
-        probability = max(masses.values()) / sum(masses.values())
-        description = "probability of most frequent multiset conditioned on success"
-    require(probability <= 0.95 + 1e-10, f"uniform legal choices: {description} {probability:.12g} exceeds 0.95")
-    if previous is not None:
-        require(ref["valid_under_previous_rule"] is False,
-                "reference must also distinguish the new rule from the previous one")
-    minima = game.physical_minima()
-    require(minima is not None and minima[0] >= 4 and minima[1] >= 2,
-            f"insufficient minimum merge counts across all physical successes: {minima}")
-    if flat is not None:
-        require(not flat.grade(path, forbidden)["valid"], "spaced reference still succeeds without its boundary")
-
-    exposure = None
-    if previous is not None:
-        witness = game.previous_rule_witness(forbidden, previous)
-        require(witness is not None, "no success under the previous rule on the current board and goal")
-        diagnosis = game.grade(witness.answer, forbidden, previous)
-        require(diagnosis["previous_only"], "recomputed witness must succeed under the previous rule only")
-        recoverable = diagnosis["recoverable_violation_steps"]
-        require(witness.recoverable == len(recoverable) and witness.hits == len(diagnosis["violation_steps"]),
-                "witness search and replay disagree")
-        require(len(recoverable) >= 3 and 5 * len(recoverable) >= 2 * diagnosis["executed_steps"],
-                "witness must have at least three recoverable violations spanning at least 40% of actions")
-        exposure = len(recoverable) / diagnosis["executed_steps"]
-    counts = {"final_strings": len(counts_by_final), "letter_multisets": multiset_count,
-              "move_sequences": move_count}
-    return minima, ref["final_state"], exposure, len(final_letters), counts, probability
-
-
 def validate(public, key):
-    require(public["rounds_per_item"] == 5, "expected five rounds per item")
-    require(set(key) == {"items"}, "expected only items in answer key")
-    items, answers = public["items"], key["items"]
-    require(len(items) == len(answers) == 50, "expected 50 public and key items")
-    require(all(set(item) == {"id", "rounds"} for item in answers), "expected only id and rounds in key items")
-    keyed = {item["id"]: item["rounds"] for item in answers}
-    ids = {item["id"] for item in items}
-    require(len(ids) == 50 and ids == keyed.keys(), "public and key IDs must match uniquely")
-    shapes, minima = set(), []
-    boundary_examples = {"A A": [], "AB A": []}
-    boundaries, types = Counter(), Counter()
-    minimum_distinct_finals, minimum_multisets = {}, {}
-    maximum_probabilities = Counter()
-    length_counts = defaultdict(Counter)
-    solution_counts = defaultdict(list)
-    goals_by_round = [Counter() for _ in range(5)]
-    goals_by_type = {kind: [Counter() for _ in range(5)] for kind in sorted(TYPES)}
-    probes = spaced_refs = 0
-    exposures = {kind: [] for kind in TYPES}
-    for item in items:
-        item_id, kind, records = item["id"], item["type"], item["rounds"]
-        require(kind in TYPES, f"{item_id}: unknown type")
-        require(len(records) == len(keyed[item_id]) == 5, f"{item_id}: expected five rounds")
-        types[kind] += 1
-        goals, spaces, rules = [], set(), set()
-        previous = None
-        for number, (record, saved) in enumerate(zip(records, keyed[item_id]), 1):
-            try:
-                minimum, final_state, exposure, distinct_finals, counts, probability = validate_round(
-                    record, saved, number, kind, previous)
-                minima.append(minimum)
-                tape, goal, rule = record["input"], record["target"], record["forbidden"]
-                length_counts[kind, number, goal][len(tape.replace(" ", ""))] += 1
-                solution_counts[goal].append(counts)
-                maximum_probabilities[goal] = max(maximum_probabilities[goal], probability)
-                if goal > 0:
-                    multiset_count = counts["letter_multisets"]
-                    minimum_distinct_finals[goal] = min(minimum_distinct_finals.get(goal, distinct_finals),
-                                                        distinct_finals)
-                    minimum_multisets[goal] = min(minimum_multisets.get(goal, multiset_count), multiset_count)
-                shape = board_shape(tape)
-                require(shape not in shapes, "repeated input structure up to renaming letters")
-                require(rule not in rules, "repeated forbidden pair within item")
-                shapes.add(shape)
-                rules.add(rule)
-                spaces.add(tape.count(" "))
-                goals.append(goal)
-                goals_by_round[number - 1][goal] += 1
-                goals_by_type[kind][number - 1][goal] += 1
-                spaced_refs += int(" " in tape)
-                if previous is not None:
-                    if kind == "different_letter":
-                        require(sum(a != b for a, b in zip(rule, previous)) == 1,
-                                "exactly one endpoint of the directed pair must change")
-                    exposures[kind].append(exposure)
-                    probes += 1
-                if final_state in boundary_examples:
-                    boundary_examples[final_state].append([item_id, number])
-                previous = rule
-            except (KeyError, TypeError, ValueError, IndexError) as error:
-                raise ValueError(f"{item_id} R{number}: {error}") from error
-        require(set(goals) == set(range(4)) and all(a != b for a, b in zip(goals, goals[1:])),
-                f"{item_id}: use all four targets with no consecutive equal targets")
-        require(len(spaces) == 1, f"{item_id}: inconsistent boundary status")
-        boundaries[spaces.pop()] += 1
-    require(types == {"same_letter": 25, "different_letter": 25}, "expected 25 items of each type")
-    require(boundaries == {0: 30, 1: 20}, "expected 30 unspaced and 20 spaced items")
-    goals_total = sum(goals_by_round, Counter())
-    require(all(goals_total[t] in (62, 63) for t in range(4)), "unbalanced goals across all rounds")
-    for number, counts in enumerate(goals_by_round, 1):
-        require(all(counts[t] in (12, 13) for t in range(4)), f"R{number}: unbalanced goals")
-        for kind, rounds in goals_by_type.items():
-            require(all(rounds[number - 1][t] in (6, 7) for t in range(4)),
-                    f"{kind} R{number}: unbalanced goals")
-    for final, locations in boundary_examples.items():
-        require(locations, f"no saved ending {final!r}")
-    length_balance = validate_length_balance(length_counts)
-    solution_summary = summarize_solution_counts(solution_counts)
-    return {"valid": True, "items": len(items), "rounds": len(shapes), "boards": len(shapes), "type_counts": dict(types),
-            "spaced_items": boundaries[1], "unspaced_items": boundaries[0],
-            "previous_rule_probes": probes, "spaced_references_verified": spaced_refs,
-            "recoverable_probe_fraction_of_actions": {
-                kind: {"min": min(values), "max": max(values), "probes_at_least_40_percent":
-                       sum(value >= 0.4 for value in values)} for kind, values in sorted(exposures.items())},
-            "goals_by_round": goals_by_round, "goals_by_type_and_round": goals_by_type,
-            "goals_total": dict(sorted(goals_total.items())),
-            "input_length_balance": length_balance,
-            "solution_counts_by_target": solution_summary,
-            "uniform_legal_letter_policy": {
-                "maximum_complete_deletion_probability_at_target_zero": maximum_probabilities[0],
-                "maximum_conditional_multiset_probability_by_positive_target": {
-                    goal: maximum_probabilities[goal] for goal in (1, 2, 3)}},
-            "rounds_with_legal_failure": len(shapes),
-            "rounds_with_alternative_goal": len(shapes),
-            "minimum_distinct_normalized_finals_by_positive_target": dict(sorted(minimum_distinct_finals.items())),
-            "minimum_distinct_letter_multisets_by_positive_target": dict(sorted(minimum_multisets.items())),
-            "minimum_merged_deletions": min(m[0] for m in minima),
-            "minimum_singleton_merge_deletions": min(m[1] for m in minima),
-            "literal_AB_A_examples": boundary_examples["AB A"],
-            "literal_A_A_examples": boundary_examples["A A"]}
+    """Validate the dataset with the same exact checks used during generation."""
+    from .dataset import validate as validate_dataset
+    return validate_dataset(public, key)
 
 
 def board_shape(text):
@@ -617,24 +430,26 @@ def main():
     parser.add_argument("--data-dir", type=Path, default=DATA_DIR)
     parser.add_argument("id", nargs="?")
     parser.add_argument("round", nargs="?", type=int)
-    parser.add_argument("actions", nargs="?", help="numbered deletions such as 'A2 B1' (legacy 'AB' means 'A1 B1')")
+    parser.add_argument("--case", dest="case_id", help="input condition ID within the selected round, e.g. c01")
+    parser.add_argument("actions", nargs="?", help="numbered deletions such as 'A2 B1' ('AB' also means 'A1 B1')")
     parser.add_argument("--answer", help="the remaining string; quote spaces and use '' for the empty string")
-    args = parser.parse_args()
-    provided = (args.id, args.round, args.actions, args.answer)
+    args = parser.parse_intermixed_args()
+    provided = (args.id, args.round, args.case_id, args.actions, args.answer)
     if args.validate and any(value is not None for value in provided):
-        parser.error("--validate checks all boards and takes no item, round, actions, or answer")
+        parser.error("--validate checks all problems and takes no item, round, case, actions, or answer")
     if args.group_counts and (args.actions is not None or args.answer is not None):
-        parser.error("--group-counts takes an ID and ROUND without actions or an answer")
-    if not args.validate and (args.id is None or args.round is None
+        parser.error("--group-counts takes ID ROUND --case CASE without actions or an answer")
+    if not args.validate and (args.id is None or args.round is None or args.case_id is None
                               or (not args.group_counts and args.actions is None and args.answer is None)):
-        parser.error("provide ID ROUND with --group-counts, --answer TEXT, or ACTIONS; or use --validate")
+        parser.error("provide ID ROUND --case CASE with --group-counts, --answer TEXT, or ACTIONS; or use --validate")
     try:
         public = json.loads((args.data_dir / "problems.json").read_text(encoding="utf-8"))
         if args.validate:
             key = json.loads((args.data_dir / "answer_key.json").read_text(encoding="utf-8"))
             result = validate(public, key)
         else:
-            result = grade_item(public, args.id, args.round, args.actions, args.answer, group_counts=args.group_counts)
+            result = grade_case(public, args.id, args.round, args.case_id, args.actions, args.answer,
+                                group_counts=args.group_counts)
     except (OSError, KeyError, TypeError, ValueError, IndexError) as error:
         parser.exit(1, f"{error}\n")
     print(json.dumps(result, ensure_ascii=False, indent=2))

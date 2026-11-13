@@ -1,0 +1,18 @@
+{
+  "grade_response": "19cf4447ac166351d4fea39d12abd8c0f2e067423c88a05255af4cdc28301907",
+  "round_summary": "408e7b8d0aa946bec1a8f54098d64c73b8ec289317397a8bb0e2741630da481c",
+  "observed_mean": "b812c0ce62f4d4f7f6d19b46ebe9c6d674acc162aefdebe38e25c71b1b4aee1d",
+  "metrics": "bcd7bd5f8d8c957c612eaac0a7b41a60bb1de681ab80ce4164d06f4ceffb5d1d",
+  "EvaluationSession": "7f9fa702327f0d89a79a26fbae0c306c0eb0be99800c4cccc55425b2d5028e24",
+  "constants": {
+    "MAX_MOVES": 30,
+    "PERSISTENT_ERROR_BASIS": "previous_rule_compliant_current_incorrect",
+    "PER_DENOMINATOR": "max_attempts",
+    "SUBMISSION_CLASSES": [
+      "current_correct",
+      "persistent_error",
+      "ordinary_error",
+      "invalid"
+    ]
+  }
+}

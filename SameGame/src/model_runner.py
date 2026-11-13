@@ -1,4 +1,4 @@
-"""Run or resume provider-backed SameGame experiments."""
+"""Run or resume SameGame model evaluations."""
 
 import argparse
 from contextlib import contextmanager
@@ -15,16 +15,17 @@ from threading import Event, Thread
 import time
 import tomllib
 
-from .evaluate import EvaluationSession, INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS, load_items
+from .evaluate import INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS
 from .grade import Game, successful_paths
+from .catalog import load_catalog
+from .session import ExperimentSession
 from . import diagnostics, error_log, providers
 from ._paths import PACKAGE_DIR, PROJECT_DIR
 
-
 DEFAULT_CONFIGS = {
-    "sol": PROJECT_DIR / "configs" / "openai.toml",
-    "opus": PROJECT_DIR / "configs" / "anthropic.toml",
-    "sonnet": PROJECT_DIR / "configs" / "anthropic.toml",
+    "sol": PROJECT_DIR / "configs/openai.toml",
+    "opus": PROJECT_DIR / "configs/anthropic.toml",
+    "sonnet": PROJECT_DIR / "configs/anthropic.toml",
 }
 
 
@@ -92,42 +93,36 @@ def load_settings(path=None, profile=None):
 
 
 def select_items(settings, identifiers=None, limit=None):
-    return load_items(settings["dataset"], identifiers, limit)
+    items, seed = load_catalog(settings["dataset"], identifiers, limit)
+    settings["selection_seed"] = seed
+    return items
 
 
 def make_session(items, settings, responses=()):
-    session = EvaluationSession(items, max_attempts=settings["max_attempts"],
-                                required_streak=settings["required_streak"])
+    session = ExperimentSession(items, seed=settings["selection_seed"],
+        max_attempts=settings["max_attempts"], required_streak=settings["required_streak"])
     for raw in responses:
         if session.complete:
-            raise ValueError("저장된 응답이 실험 종료 이후까지 포함되어 있습니다.")
+            raise ValueError("실험 종료 이후의 응답이 저장되어 있습니다.")
         session.submit(raw)
     return session
 
 
 def implementation_fingerprint(settings=None):
-    sources = {
-        "instructions": INSTRUCTIONS,
-        "grader": sha256((PACKAGE_DIR / "grade.py").read_bytes()).hexdigest(),
-        "evaluator": sha256((PACKAGE_DIR / "evaluate.py").read_bytes()).hexdigest(),
-        "providers": sha256((PACKAGE_DIR / "providers.py").read_bytes()).hexdigest(),
-    }
-    if settings is not None and diagnostics.mode(settings) != "off":
-        sources["diagnostics"] = sha256((PACKAGE_DIR / "diagnostics.py").read_bytes()).hexdigest()
-        sources["runner"] = sha256((PACKAGE_DIR / "model_runner.py").read_bytes()).hexdigest()
-    return digest(sources)
+    return digest({"instructions": INSTRUCTIONS, "sources": {
+        name: sha256((PACKAGE_DIR / name).read_bytes()).hexdigest()
+        for name in ("evaluate.py", "grade.py", "providers.py", "diagnostics.py",
+                     "model_runner.py", "session.py", "catalog.py")
+    }})
 
 
 def compatible_fingerprint(frozen, settings):
-    """Accept only explicitly reviewed transport-only upgrades, never arbitrary code drift."""
-    current = implementation_fingerprint(settings)
-    if frozen == current:
-        return True
-    path = PROJECT_DIR / "configs" / "resume_compatibility.json"
-    if not path.exists():
-        return False
-    return any(entry.get("from") == frozen and entry.get("to") == current
-               for entry in read_json(path).get("transport_only_upgrades", []))
+    return frozen == implementation_fingerprint(settings)
+
+
+def require_protocol(frozen):
+    if frozen.get("version") != 1 or "selection_seed" not in frozen.get("settings", {}):
+        raise ValueError("저장된 실행 형식과 후보 선택 seed를 확인하세요.")
 
 
 def transport_options(settings, retries=10, delay=5.0, timeout=None):
@@ -268,6 +263,8 @@ class Terminal:
         answers = self.possible_answers(session.current_record)
         finals = ", ".join(self.format_answer(answer) for answer in answers) or "없음"
         self._line("현재 가능 정답", f"{len(answers)}개 · {finals}")
+        self._line("현재 목표", f"{session.current_record['target']}글자 남기기 · 평가자용")
+        self._line("현재 조건", session.current_record["case_id"])
 
     @contextmanager
     def waiting(self, session):
@@ -336,6 +333,7 @@ class Terminal:
         self._line("MPE", f"{100*mpe:.2f}% · 고정 T 기준 · 문제별 평균" if mpe is not None else "집계 대상 없음")
         if "observed_transition_rounds" in summary:
             self._line("측정 라운드", f"{summary['observed_transition_rounds']}/{summary['scheduled_transition_rounds']} · R2 이후")
+
 
 
 @contextmanager
@@ -441,6 +439,7 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
     with lock_directory(directory):
         if resume:
             frozen = read_json(directory / "protocol.json")
+            require_protocol(frozen)
             if not compatible_fingerprint(frozen["fingerprint"], settings):
                 raise ValueError("실행 중 지시문·채점기·API 코드가 변경되었습니다. 원래 코드로 재개하세요.")
             if frozen["items"] != items or frozen["settings"] != settings:
@@ -485,7 +484,7 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
                     current = session.current_record
                     diagnostic_context = {
                         "id": current_id, "round": current["round"], "attempt": session.attempt,
-                        "input": current["input"], "target": current["target"],
+                        "input": current["input"], "target": current["target"], "case_id": current["case_id"],
                         "forbidden": current["forbidden"],
                         "previous_forbidden": (session.current_item["rounds"][session.round_index-1]["forbidden"]
                                                if session.round_index else None),
@@ -600,8 +599,9 @@ def execute(items, settings, directory, *, resume=False, client=None, receive=pr
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="SameGame 모델 평가")
+    parser = argparse.ArgumentParser(description="SameGame · 모델 평가")
     parser.add_argument("--config", type=Path, help="OpenAI 또는 Anthropic TOML 설정")
+    parser.add_argument("--dataset", type=Path, help="시도별 조건 데이터 경로; 생략하면 설정 파일 사용")
     parser.add_argument("--profile", choices=tuple(DEFAULT_CONFIGS), help="sol, opus, sonnet")
     parser.add_argument("--item", action="append", help="문제 ID, 여러 번 지정 가능")
     parser.add_argument("--limit", type=int, help="실행할 문제 수")
@@ -617,13 +617,16 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.resume:
-            if args.config or args.profile or args.item or args.limit is not None or args.reasoning_summary is not None:
+            if args.config or args.dataset or args.profile or args.item or args.limit is not None or args.reasoning_summary is not None:
                 raise ValueError("--resume은 저장된 설정과 문제 목록을 사용합니다.")
             directory = args.resume.expanduser().resolve()
             frozen = read_json(directory / "protocol.json")
+            require_protocol(frozen)
             settings, items = frozen["settings"], frozen["items"]
         else:
             settings = load_settings(args.config, args.profile)
+            if args.dataset is not None:
+                settings["dataset"] = str(args.dataset.expanduser().resolve())
             if args.reasoning_summary is not None:
                 settings["reasoning_summary"] = args.reasoning_summary
             items = select_items(settings, args.item, args.limit)
@@ -664,6 +667,7 @@ def main(argv=None):
     except Exception as exc:
         print(f"실행 중단 · {type(exc).__name__}. 실행 폴더의 errors.log를 확인하세요.", file=sys.stderr)
         return 1
+
 
 
 if __name__ == "__main__":

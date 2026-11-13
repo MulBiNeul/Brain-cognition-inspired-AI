@@ -51,7 +51,7 @@ class TerminalTests(unittest.TestCase):
                 self.assertNotIn("PE=0", output.getvalue())
 
     def test_no_color_tty_wraps_hangul_paths_and_long_answers_to_terminal_cells(self):
-        record = {"input": "AA BB " * 5 + "CC", "target": 2, "forbidden": "BB"}
+        record = {"input": "AA BB " * 5 + "CC", "target": 2, "forbidden": "BB", "case_id": "c07"}
         session = SimpleNamespace(item_index=0, round_index=1, attempt=2, current_record=record,
                                   current_item={"id": "SG-026", "rounds": [{"forbidden": "AA"}, record]})
         with patch("shutil.get_terminal_size", return_value=os.terminal_size((64, 24))), \

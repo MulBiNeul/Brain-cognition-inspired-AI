@@ -10,11 +10,11 @@ import unittest
 from unittest.mock import patch
 
 from src import diagnostics, model_runner, providers
-from tests.test_model_runner import problem, response
+from tests.runtime_fixtures import answer, problem, response
 
 
-def summarized(text="Diagnostic summary.", *, marker="opaque-state"):
-    raw = response(marker=marker)
+def summarized(text="Diagnostic summary.", *, marker="opaque-state", request=None):
+    raw = response(answer(request), marker=marker) if request is not None else response(marker=marker)
     if text is not None:
         raw["output"][0]["summary"] = [{"type": "summary_text", "text": text}]
     return raw
@@ -23,7 +23,7 @@ def summarized(text="Diagnostic summary.", *, marker="opaque-state"):
 class ReasoningSummaryTests(unittest.TestCase):
     def setUp(self):
         self.settings = model_runner.load_settings(profile="sol")
-        self.settings.update(max_attempts=2, required_streak=1, reasoning_summary="auto")
+        self.settings.update(selection_seed=11, max_attempts=2, required_streak=1, reasoning_summary="auto")
 
     def execute(self, items, directory, receive, *, resume=False, settings=None):
         with redirect_stderr(StringIO()):
@@ -78,7 +78,7 @@ class ReasoningSummaryTests(unittest.TestCase):
 
         def receive(client, provider, request, path):
             requests.append(deepcopy(request))
-            raw = summarized(f"Summary for call {len(requests)}.", marker=f"opaque-{len(requests)}")
+            raw = summarized(f"Summary for call {len(requests)}.", marker=f"opaque-{len(requests)}", request=request)
             originals.append(deepcopy(raw))
             return raw
 
@@ -94,7 +94,12 @@ class ReasoningSummaryTests(unittest.TestCase):
             self.assertEqual([row["forbidden"] for row in saved], ["AA", "BB", "AA"])
             self.assertTrue(all(row["summary_mode"] == "auto" for row in saved))
             self.assertTrue(all(row["summary_status"] == "available" for row in saved))
-            self.assertTrue(all(row["input"] == "AABB" and row["target"] == 0 for row in saved))
+            for diagnostic, scored in zip(saved, report["submissions"]):
+                for key in ("input", "target", "case_id", "forbidden"):
+                    self.assertEqual(diagnostic[key], scored[key])
+            for before, after in zip(saved, saved[1:]):
+                self.assertNotEqual(before["input"], after["input"])
+                self.assertNotEqual(before["target"], after["target"])
             self.assertTrue(all(row["feedback"] == "Correct" for row in saved))
             log = (directory / "reasoning_log.txt").read_text()
             for number in (1, 2, 3):
@@ -111,7 +116,7 @@ class ReasoningSummaryTests(unittest.TestCase):
 
         def receive(*args):
             calls.append(1)
-            return summarized(None)
+            return summarized(None, request=args[2])
 
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -129,7 +134,7 @@ class ReasoningSummaryTests(unittest.TestCase):
         settings = dict(self.settings, reasoning_summary="off")
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
-            report = self.execute([problem("one")], directory, lambda *args: summarized(), settings=settings)
+            report = self.execute([problem("one")], directory, lambda *args: summarized(request=args[2]), settings=settings)
             self.assertTrue(report["complete"])
             self.assertFalse((directory / "reasoning_log.txt").exists())
             self.assertFalse(list((directory / "submissions").glob("*_reasoning_summary.json")))
@@ -139,7 +144,7 @@ class ReasoningSummaryTests(unittest.TestCase):
 
         def receive(*args):
             calls.append(1)
-            return summarized("Unique recovery diagnostic.")
+            return summarized("Unique recovery diagnostic.", request=args[2])
 
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -202,8 +207,18 @@ class ReasoningSummaryTests(unittest.TestCase):
             self.assertTrue(error.strip())
         self.assertEqual(model_runner.implementation_fingerprint(),
                          model_runner.implementation_fingerprint(dict(self.settings, reasoning_summary="off")))
-        self.assertNotEqual(model_runner.implementation_fingerprint(),
-                            model_runner.implementation_fingerprint(self.settings))
+        self.assertEqual(model_runner.implementation_fingerprint(),
+                         model_runner.implementation_fingerprint(self.settings))
+        baseline = model_runner.implementation_fingerprint()
+        original_read = Path.read_bytes
+
+        def changed_diagnostic_source(path):
+            source = original_read(path)
+            return source + b"\n# changed diagnostic behavior\n" if path.name == "diagnostics.py" else source
+
+        with patch.object(Path, "read_bytes", changed_diagnostic_source):
+            for settings in (dict(self.settings, reasoning_summary="off"), self.settings):
+                self.assertNotEqual(model_runner.implementation_fingerprint(settings), baseline)
 
 
 if __name__ == "__main__":

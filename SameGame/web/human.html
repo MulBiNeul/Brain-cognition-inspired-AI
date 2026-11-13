@@ -172,7 +172,7 @@
   <script>
     'use strict';
 
-    const storageKey = 'samegame.participant.v1';
+    const storageKey = 'samegame.participant';
     const $ = id => document.getElementById(id);
     let session = null;
     let draft = null;
@@ -213,6 +213,18 @@
         states.push({text, action: token, removed: group.chars});
       }
       return states;
+    }
+
+    function historyStates(entry) {
+      const moves = /^[A-E]+$/.test(entry.moves) ? Array.from(entry.moves, letter => letter + '1') : entry.moves.split(' ');
+      return typeof entry.input === 'string' ? replay(entry.input, moves, false) : [];
+    }
+
+    function historyAfterSubmission(previousHistory, submittedDraft, sent, updated) {
+      if (updated.round_token === submittedDraft.round_token) return updated.history;
+      const submitted = {attempt: previousHistory.length + 1, input: submittedDraft.input,
+        moves: sent.moves, answer: sent.answer, feedback: updated.last_feedback};
+      return [...previousHistory, submitted];
     }
 
     function showString(text) {
@@ -290,9 +302,7 @@
         }
         const sequence = node('ol', 'trace-list');
         sequence.setAttribute('aria-label', 'Deletion steps for attempt ' + entry.attempt);
-        const input = draft?.input ?? session.history_input;
-        const moves = /^[A-E]+$/.test(entry.moves) ? Array.from(entry.moves, letter => letter + '1') : entry.moves.split(' ');
-        const states = typeof input === 'string' ? replay(input, moves, false) : [];
+        const states = historyStates(entry);
         states.forEach((state, index) => {
           const step = node('li', 'trace-step');
           const title = index === 0 ? 'Initial string' : 'Step ' + index + ' · ' + state.action +
@@ -390,7 +400,7 @@
     function nextAttempt() {
       waitingForContinue = false;
       feedback = null;
-      draft = session.complete ? null : {turn_id: session.turn_id, input: session.input, moves: []};
+      draft = session.complete ? null : {turn_id: session.turn_id, input: session.input, round_token: session.round_token, moves: []};
       history = session.history;
       clearError();
       save();
@@ -406,8 +416,7 @@
       const sent = pending;
       try {
         const updated = await api('/api/submit', sent);
-        const submitted = {attempt: history.length + 1, moves: sent.moves, answer: sent.answer, feedback: updated.last_feedback};
-        history = updated.input === draft.input ? updated.history : [...history, submitted];
+        history = historyAfterSubmission(history, draft, sent, updated);
         session = updated;
         feedback = updated.last_feedback;
         pending = null;
@@ -466,7 +475,7 @@
           pending = saved.pending || null;
           waitingForContinue = Boolean(saved.waitingForContinue && saved.nextTurnId === session.turn_id);
           const reusable = saved.draft && (pending || waitingForContinue || saved.draft.turn_id === session.turn_id);
-          draft = reusable ? saved.draft : session.complete ? null : {turn_id: session.turn_id, input: session.input, moves: []};
+          draft = reusable ? saved.draft : session.complete ? null : {turn_id: session.turn_id, input: session.input, round_token: session.round_token, moves: []};
           if (draft) {
             try { replay(draft.input, draft.moves); } catch { draft.moves = []; }
           }

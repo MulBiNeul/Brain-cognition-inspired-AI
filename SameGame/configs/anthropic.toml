@@ -1,4 +1,4 @@
-# Both Claude profiles use the Tower-of-Hanoi evaluation settings.
+# Anthropic model profiles.
 config_version = 1
 default_profile = "opus"
 

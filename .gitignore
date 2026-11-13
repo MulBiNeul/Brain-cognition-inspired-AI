@@ -1,11 +1,11 @@
-# Other task kept outside the SameGame branch
+# Task directory outside this branch
 /tower-of-hanoi/
 
 # Local experiment outputs
 runs/
 
 # Python environments and caches
-.venv/
+.venv
 __pycache__/
 *.py[cod]
 .pytest_cache/

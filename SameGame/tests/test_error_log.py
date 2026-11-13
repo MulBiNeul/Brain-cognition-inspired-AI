@@ -67,7 +67,7 @@ class ErrorLogTests(unittest.TestCase):
         self.assertIn("중단 기록 있음", result)
         self.assertIn("읽을 수 없는 이벤트 1줄", result)
 
-    def test_legacy_partial_stream_reports_observation_not_timeout(self):
+    def test_partial_stream_without_error_record_reports_observation_not_timeout(self):
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
             trials = directory / "submissions"

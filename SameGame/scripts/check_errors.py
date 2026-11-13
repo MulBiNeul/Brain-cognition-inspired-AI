@@ -11,7 +11,7 @@ from src.error_log import inspect_run
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("directory", type=Path, help="실행 결과 폴더, 예: runs/sol_easy_r1")
+    parser.add_argument("directory", type=Path, help="실행 결과 폴더, 예: runs/sol")
     parser.add_argument("--limit", type=int, default=10, help="표시할 최근 오류·중단 기록 수(기본 10)")
     args = parser.parse_args()
     try:

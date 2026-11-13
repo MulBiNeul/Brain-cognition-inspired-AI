@@ -1,6 +1,7 @@
 """Serve the participant HTML and persist private evaluation sessions locally."""
 
 import argparse
+from copy import deepcopy
 import fcntl
 import hashlib
 import json
@@ -14,7 +15,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from .evaluate import EvaluationSession, INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS, load_items
+from .catalog import load_catalog
+from .evaluate import INSTRUCTIONS, PER_DENOMINATOR, PERSISTENT_ERROR_BASIS
+from .session import ExperimentSession
 from ._paths import DATA_DIR, PACKAGE_DIR, PROJECT_DIR, WEB_DIR
 
 
@@ -51,21 +54,22 @@ class RequestError(Exception):
 
 
 class HumanApp:
-    def __init__(self, items, output_dir, max_attempts, required_streak):
-        self.items = items
+    def __init__(self, items, output_dir, max_attempts, required_streak, *, seed):
+        self.items = deepcopy(items)
+        self.seed = seed
         self.output_dir = Path(output_dir)
         self.protocol = {"max_attempts": max_attempts, "required_streak": required_streak}
         self.implementation = fingerprint({
             name: hashlib.sha256((PACKAGE_DIR / name).read_bytes()).hexdigest()
-            for name in ("evaluate.py", "grade.py")
+            for name in ("evaluate.py", "grade.py", "session.py", "human_server.py")
         })
-        EvaluationSession(items, **self.protocol)
+        ExperimentSession(self.items, seed=seed, **self.protocol)
         self.lock = threading.RLock()
         self.sessions = {}
 
     @staticmethod
     def restore(data, count=None):
-        engine = EvaluationSession(data["items"], **data["protocol"])
+        engine = ExperimentSession(data["items"], seed=data["selection_seed"], **data["protocol"])
         for raw in data["responses"][:count]:
             engine.submit(raw)
         return engine
@@ -83,12 +87,13 @@ class HumanApp:
         for record in engine.records:
             if (record["id"], record["round"]) == (item_id, number):
                 submitted = json.loads(record["raw"])
-                history.append({"attempt": record["attempt"], "moves": submitted["moves"],
+                history.append({"attempt": record["attempt"], "input": record["input"], "moves": submitted["moves"],
                                 "answer": submitted["answer"], "feedback": record["feedback"]})
         return {
             "token": data["token"], "turn_id": turn_id or data["turn_id"],
             "instructions": INSTRUCTIONS, "input": current["input"] if current else None,
-            "history_input": current["input"] if current else (engine.records[-1]["input"] if engine.records else None),
+            # Group attempts without exposing the problem ID, goal, or rule.
+            "round_token": fingerprint([data["token"], item_id, number])[:32],
             "history": history, "complete": engine.complete,
             "last_feedback": data["last_feedback"] if last_feedback is None else last_feedback,
         }
@@ -128,15 +133,16 @@ class HumanApp:
             token = secrets.token_hex(24)
             data = {
                 "schema_version": 1, "token": token, "turn_id": secrets.token_hex(16),
+                "selection_seed": self.seed,
                 "participant_id": participant, "created_at": datetime.now(timezone.utc).isoformat(),
-                "items": self.items, "dataset_sha256": fingerprint(self.items),
-                "instructions_sha256": fingerprint(INSTRUCTIONS), "protocol": self.protocol,
+                "items": deepcopy(self.items), "dataset_sha256": fingerprint(self.items),
+                "instructions_sha256": fingerprint(INSTRUCTIONS), "protocol": deepcopy(self.protocol),
                 "implementation_sha256": self.implementation,
                 "persistent_error_basis": PERSISTENT_ERROR_BASIS,
                 "per_denominator": PER_DENOMINATOR,
                 "responses": [], "receipts": {}, "last_feedback": None,
             }
-            engine = EvaluationSession(self.items, **self.protocol)
+            engine = ExperimentSession(data["items"], seed=self.seed, **self.protocol)
             self.save(data, engine)
             self.sessions[token] = (data, engine)
             return self.public(data, engine)
@@ -248,8 +254,9 @@ class HumanServer(ThreadingHTTPServer):
             self.output_lock = None
 
 
-def create_server(items, output_dir, host="127.0.0.1", port=0, *, max_attempts=10, required_streak=2):
-    app = HumanApp(items, output_dir, max_attempts, required_streak)
+def create_server(items, output_dir, host="127.0.0.1", port=0, *, seed,
+                  max_attempts=10, required_streak=2):
+    app = HumanApp(items, output_dir, max_attempts, required_streak, seed=seed)
     app.output_dir.mkdir(parents=True, exist_ok=True)
     lock = (app.output_dir / ".server.lock").open("a")
     try:
@@ -275,8 +282,8 @@ def main():
     parser.add_argument("--required-streak", type=int, default=2)
     args = parser.parse_args()
     try:
-        items = load_items(args.data_dir, args.item, args.limit)
-        server = create_server(items, args.output, args.host, args.port,
+        items, seed = load_catalog(args.data_dir, args.item, args.limit)
+        server = create_server(items, args.output, args.host, args.port, seed=seed,
                                max_attempts=args.max_attempts, required_streak=args.required_streak)
     except (OSError, ValueError, KeyError) as error:
         parser.error(str(error))

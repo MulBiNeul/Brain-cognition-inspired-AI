@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from src import model_runner, providers
-from tests.test_transport_recovery import complete_response, item
+from tests.runtime_fixtures import complete_response, item
 
 
 def events(directory):
@@ -19,7 +19,7 @@ def events(directory):
 class ErrorLoggingIntegrationTests(unittest.TestCase):
     def setUp(self):
         self.settings = model_runner.load_settings(profile="sol")
-        self.settings.update(max_attempts=2, required_streak=1)
+        self.settings.update(selection_seed=11, max_attempts=2, required_streak=1)
 
     def execute(self, directory, receive, *, items=None):
         with redirect_stderr(StringIO()), patch.object(model_runner.time, "sleep"):
@@ -39,7 +39,7 @@ class ErrorLoggingIntegrationTests(unittest.TestCase):
                     stream={"event_count": 12, "last_event_type": "response.output_text.delta",
                             "seconds_since_last_event": 180.0, "response_id": "resp_diagnostic"},
                 )
-            return complete_response()
+            return complete_response(args[2])
 
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -149,7 +149,7 @@ class ErrorLoggingIntegrationTests(unittest.TestCase):
 
         def receive(*args):
             calls.append(1)
-            raw = complete_response()
+            raw = complete_response(args[2])
             if len(calls) == 1:
                 raw.update(status="incomplete", incomplete_details={"reason": "max_output_tokens"})
             return raw
